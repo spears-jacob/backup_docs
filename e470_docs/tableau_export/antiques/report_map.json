@@ -1,0 +1,18 @@
+{
+    "reports": [
+        {
+            "report_name": "ImageProcessingDaily_OriginalView",
+            "report_url": "https://prtableau.e-470.com/#/views/ImageProcessingDaily/OriginalView?:iid=1",
+            "report_title": "ImageProcessingDaily",
+            "view_name": "OriginalView",
+            "export_name": "views/ImageProcessingDaily/OriginalView"
+        },
+        {
+            "report_name": "DocketsOverview_Overview",
+            "report_url": "https://prtableau.e-470.com/#/views/DocketsOverview/Overview?:iid=1",
+            "report_title": "DocketsOverview",
+            "view_name": "Overview",
+            "export_name": "views/DocketsOverview/Overview"
+        }
+    ]
+}

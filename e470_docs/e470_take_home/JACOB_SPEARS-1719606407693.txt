@@ -1,0 +1,405 @@
+|Calendar_Date|Road_Way|Location_ID|Location_Name       |Lane_ID|Lane_Name   |
+|-------------|--------|-----------|--------------------|-------|------------|
+|2024-05-01   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-01   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-01   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-01   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-01   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-01   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-01   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-01   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-01   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-01   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-01   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-01   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-01   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-02   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-02   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-02   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-02   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-02   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-02   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-02   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-02   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-02   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-02   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-02   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-02   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-02   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-03   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-03   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-03   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-03   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-03   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-03   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-03   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-03   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-03   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-03   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-03   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-03   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-03   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-04   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-04   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-04   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-04   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-04   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-04   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-04   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-04   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-04   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-04   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-04   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-04   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-04   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-05   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-05   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-05   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-05   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-05   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-05   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-05   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-05   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-05   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-05   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-05   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-05   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-05   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-06   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-06   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-06   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-06   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-06   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-06   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-06   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-06   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-06   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-06   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-06   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-06   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-06   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-07   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-07   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-07   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-07   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-07   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-07   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-07   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-07   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-07   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-07   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-07   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-07   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-07   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-08   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-08   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-08   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-08   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-08   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-08   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-08   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-08   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-08   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-08   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-08   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-08   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-08   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-09   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-09   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-09   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-09   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-09   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-09   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-09   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-09   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-09   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-09   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-09   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-09   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-09   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-10   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-10   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-10   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-10   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-10   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-10   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-10   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-10   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-10   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-10   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-10   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-10   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-10   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-11   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-11   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-11   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-11   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-11   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-11   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-11   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-11   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-11   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-11   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-11   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-11   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-11   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-12   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-12   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-12   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-12   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-12   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-12   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-12   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-12   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-12   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-12   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-12   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-12   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-12   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-13   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-13   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-13   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-13   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-13   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-13   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-13   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-13   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-13   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-13   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-13   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-13   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-13   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-14   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-14   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-14   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-14   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-14   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-14   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-14   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-14   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-14   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-14   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-14   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-14   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-14   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-15   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-15   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-15   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-15   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-15   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-15   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-15   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-15   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-15   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-15   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-15   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-15   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-15   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-16   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-16   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-16   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-16   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-16   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-16   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-16   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-16   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-16   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-16   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-16   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-16   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-16   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-17   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-17   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-17   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-17   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-17   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-17   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-17   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-17   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-17   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-17   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-17   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-17   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-17   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-18   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-18   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-18   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-18   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-18   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-18   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-18   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-18   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-18   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-18   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-18   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-18   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-18   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-19   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-19   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-19   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-19   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-19   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-19   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-19   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-19   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-19   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-19   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-19   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-19   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-19   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-20   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-20   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-20   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-20   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-20   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-20   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-20   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-20   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-20   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-20   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-20   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-20   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-20   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-21   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-21   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-21   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-21   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-21   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-21   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-21   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-21   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-21   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-21   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-21   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-21   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-21   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-22   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-22   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-22   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-22   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-22   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-22   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-22   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-22   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-22   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-22   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-22   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-22   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-22   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-23   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-23   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-23   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-23   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-23   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-23   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-23   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-23   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-23   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-23   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-23   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-23   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-23   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-24   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-24   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-24   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-24   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-24   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-24   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-24   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-24   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-24   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-24   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-24   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-24   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-24   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-25   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-25   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-25   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-25   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-25   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-25   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-25   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-25   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-25   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-25   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-25   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-25   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-25   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-26   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-26   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-26   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-26   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-26   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-26   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-26   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-26   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-26   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-26   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-26   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-26   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-26   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-27   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-27   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-27   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-27   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-27   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-27   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-27   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-27   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-27   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-27   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-27   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-27   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-27   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-28   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-28   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-28   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-28   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-28   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-28   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-28   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-28   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-28   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-28   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-28   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-28   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-28   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-29   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-29   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-29   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-29   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-29   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-29   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-29   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-29   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-29   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-29   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-29   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-29   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-29   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-30   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-30   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-30   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-30   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-30   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-30   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-30   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-30   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-30   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-30   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-30   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-30   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-30   |E470    |9          |104TH AVE           |1      |Lane 1 North|
+|2024-05-31   |E470    |0          |Undefined (Reserved)|       |            |
+|2024-05-31   |E470    |10         |GARTRELL RD         |       |            |
+|2024-05-31   |E470    |11         |6TH PKWY            |       |            |
+|2024-05-31   |E470    |12         |SMOKY HILL RD       |       |            |
+|2024-05-31   |E470    |13         |QUINCY RD           |       |            |
+|2024-05-31   |E470    |14         |JEWELL AVE          |       |            |
+|2024-05-31   |E470    |4          |PLAZA D             |1      |Lane 1 North|
+|2024-05-31   |E470    |4          |PLAZA D             |2      |Lane 2 North|
+|2024-05-31   |E470    |4          |PLAZA D             |9      |Lane 9 North|
+|2024-05-31   |E470    |4          |PLAZA D             |21     |Lane 1 South|
+|2024-05-31   |E470    |4          |PLAZA D             |22     |Lane 2 South|
+|2024-05-31   |E470    |4          |PLAZA D             |29     |            |
+|2024-05-31   |E470    |9          |104TH AVE           |1      |Lane 1 North|

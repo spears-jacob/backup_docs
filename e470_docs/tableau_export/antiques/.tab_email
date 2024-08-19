@@ -1,0 +1,157 @@
+# tabcmd login -s https://prtableau.e-470.com -u jspears@e-470.com -p 
+
+# add a check that jq is installed. If not present (jq --version is empty), then run:
+# curl -L -o /usr/bin/jq.exe https://github.com/stedolan/jq/releases/latest/download/jq-win64.exe
+
+if [ $# -lt 1 ] || [ $# -gt 2 ] || [ -z "${1}" ] || [ -z "${2}" ]
+    then
+    echo "
+
+    Usage: tab_email.sh <user> <rptname>.
+
+    The shell script will conclude if these requirements are not met.
+    The Tableau Worksheet web address, email, and user must match values found in project.properties.
+
+      "
+    return
+fi
+
+# assigns input variables
+user=${1}
+echo $user
+rptname=${2}
+echo $rptname
+email="$user@e-470.com"
+echo $email
+
+grep --quiet user= project.properties
+is_user_present=$?
+grep --quiet rptname= project.properties
+is_rptname_present=$?
+
+echo '
+    ***** Checking for project.properties *****
+'
+
+if [ ! -f project.properties ] ; then
+    echo "
+
+    project.properties was not found.
+
+    Please prepare one with comma delimited entries for username and Tableau report name. "
+
+    return
+fi
+
+echo '
+    ***** Success: project.properties detected *****
+'
+
+if [ $is_rptname_present -ne 0 ] || [ $is_user_present -ne 0 ]; then
+    echo "
+
+    project.properties was not found to have all the requisite entries.
+
+    Please populate it with comma delimited entries for username and Tableau report name. "
+
+    return
+fi
+
+# parses out lists of variables
+export user_cdl=$(perl -nle'print $& while m{(?<=user=).*}g' project.properties);
+export rptname_cdl=$(perl -nle'print $& while m{(?<=rptname=).*}g' project.properties);
+
+# puts lists into arrays
+IFS=', ' read -r -a user_array <<< "$user_cdl"
+IFS=', ' read -r -a rptname_array <<< "$rptname_cdl"
+
+
+# tests that user input matches
+echo '
+    ***** Checking that user entry is valid *****
+'
+
+if ( ! printf '%s\n' ${user_array[@]} | grep -q "^$user$" ) ; then
+  echo "
+  The user entry in project.properties did not match what was entered ($user).
+
+  Please use a user in the following list or revise project.properties.
+
+  ${user_array[@]}
+
+  "
+  return
+fi
+
+echo '
+    ***** Success: User entry is valid *****
+'
+
+# tests that rptname input matches
+echo '
+    ***** Checking that rptname entry is valid *****
+'
+
+if ( ! printf '%s\n' ${rptname_array[@]} | grep -q "^$rptname$" ) ; then
+  echo "
+  The rptname entry in project.properties did not match what was entered ($rptname).
+
+  Please use a rptname in the following list or revise project.properties.
+
+  ${rptname_array[@]}
+
+  "
+  return
+fi
+
+echo '
+    ***** Success: rptname entry is valid *****
+'
+
+
+# Assigns secret password variable from credentials.json
+
+credjson=$(cat ./credentials.json)
+user_var=$user
+
+username=$(echo $credjson | jq -r '.profiles[] | select(.user=="'${user_var}'") | '.user'' )
+echo $username
+password=$(echo $credjson | jq -r '.profiles[] | select(.user=="'${user_var}'") | '.pwd'' )
+
+viewjson=$(cat ./reports.json)
+view_var=$rptname
+
+rptname=$(echo $viewjson | jq -r '.reports[] | select(.rptname=="'${view_var}'") | '.rptname'' )
+url=$(echo $viewjson | jq -r '.reports[] | select(.rptname=="'${view_var}'") | '.url'' )
+
+trimmed_name=$(echo "$url" | sed 's/.*\(views.*?\).*/\1/')
+scrub_name=$(echo "$trimmed_name" | sed 's/?//g; s/\\/\//g')
+report_name=$(echo "$scrub_name" | cut -d '/' -f 2)
+view_name=$(echo "$scrub_name" | cut -d '/' -f 3)
+output_name="$report_name""_""$view_name"
+
+# echo "$trimmed_name"
+# echo "$scrub_name"
+# echo "$report_name"
+# echo "$view_name"
+# echo "$output_name"
+
+# Assigns Tableau report properties from reports.json
+
+echo '
+    ***** Connecting to Tableau Server *****
+'
+
+echo 'tabcmd login -s https://prtableau.e-470.com -u '$email' -p    ***** '
+tabcmd login -s https://prtableau.e-470.com -u $email -p $password
+
+echo "
+    ***** Exporting Tableau View for: *****
+      
+          Report: $report_name 
+          View: $view_name
+          
+    "
+
+echo "tabcmd get "\'${scrub_name}.png\'" --filename "C:\\users\\${user}\\tableau_export\\${output_name}.png""
+tabcmd get "${scrub_name}.png" --filename "C:\users\\${user}\tableau_export\\${output_name}.png"

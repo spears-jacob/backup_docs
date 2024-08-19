@@ -1,0 +1,34 @@
+
+{
+    "security.allowedUNCHosts": [
+        "e-470.com"
+    ],
+    "explorer.confirmDragAndDrop": false,
+    "mssql.connections": [
+        {
+            "server": "TCSREPORTS",
+            "database": "",
+            "authenticationType": "Integrated",
+            "user": "E-470\jspears",
+            "password": "",
+            "emptyPasswordInput": false,
+            "savePassword": true,
+            "profileName": "TCS_Reports_DB",
+            "encrypt": "Mandatory",
+            "trustServerCertificate": true
+        },
+                {
+            "server": "HVDEVSQL",
+            "database": "",
+            "authenticationType": "Integrated",
+            "user": "E-470\jspears",
+            "password": "",
+            "emptyPasswordInput": false,
+            "savePassword": true,
+            "profileName": "HVDEVSQL_DB",
+            "encrypt": "Mandatory",
+            "trustServerCertificate": true
+        }
+   ]
+}
+

@@ -1,0 +1,67 @@
+.scp_portals_daily_variables: &scp_portals_daily_variables
+  JOB_NAME: "scp_portals_daily"
+  JOBS_DIR: "scp/scp_portals_daily"
+  ARTIFACTS_DIR: "${JOBS_DIR}/artifacts"
+  TERRAFORM_DIR: "${JOBS_DIR}/terraform"
+  SCRIPTS_DIR: "${JOBS_DIR}/scripts"
+  S3_ARTIFACTS_DIR: "${JOBS_DIR}"
+
+scp_portals_daily_build:
+  extends: .build
+  variables:
+    DDL_DIR: "${JOBS_DIR}/ddl"
+    HQL_DIR: "${JOBS_DIR}/hql"
+    PI_DL_USER_UTILS: >
+      spark/pyspark_sql_wrapper.py
+      spark/spark_run.sh
+      spark/conf/spark-defaults.conf.addendums
+      spark/conf/log4j2.properties.addendums
+      emr/emr_utils.sh
+    <<: *scp_portals_daily_variables
+
+#STG
+scp_portals_daily_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *scp_portals_daily_variables
+  dependencies:
+    - scp_portals_daily_build
+
+scp_portals_daily_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *scp_portals_daily_variables
+  dependencies:
+    - scp_portals_daily_build
+    - scp_portals_daily_plan_stg
+
+scp_portals_daily_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *scp_portals_daily_variables
+  dependencies:
+    - scp_portals_daily_build
+
+
+#PROD
+scp_portals_daily_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *scp_portals_daily_variables
+  dependencies:
+    - scp_portals_daily_build
+
+scp_portals_daily_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *scp_portals_daily_variables
+  dependencies:
+    - scp_portals_daily_build
+    - scp_portals_daily_plan_prod
+
+scp_portals_daily_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *scp_portals_daily_variables
+  dependencies:
+    - scp_portals_daily_build

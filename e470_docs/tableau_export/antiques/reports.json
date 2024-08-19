@@ -1,0 +1,12 @@
+{
+    "reports": [
+        {
+            "rptname": "ipg",
+            "url": "https://prtableau.e-470.com/#/views/ImageProcessingDaily/OriginalView?:iid=1"
+        },
+        {
+            "rptname": "dockets",
+            "url": "https://prtableau.e-470.com/#/views/DocketsOverview/Overview?:iid=1"
+        }
+    ]
+}
