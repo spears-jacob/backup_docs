@@ -1,0 +1,566 @@
+import pprint
+import pandas as pd
+import numpy as np
+
+
+# """
+#     file_handling.py
+#         read_csv
+#         - Read and output headers from CSV file
+#         - Read and output records from CSV file
+#         write_file
+#         - lines to an output_file_name
+#         read_hql_file
+#         - lines from a file
+#
+# """
+import csv
+
+
+def read_csv(input_file, delimiter):
+    #    """ read_csv
+    #        input_file - a file with headers
+    #        returns a list of headers from the csv and a 2d list of rows and cols
+    #    """
+    # setup file reader
+    file = open(input_file, "r")
+    reader = csv.reader(file, delimiter=delimiter)
+    # separate header from rows
+    headers, rows = [], []
+    get_headers = True
+    for row in reader:
+        if get_headers:
+            headers = row
+            get_headers = False
+        else:
+            rows.append(row)
+    return headers, rows
+
+
+# returns a list of dictionaries using the field headers as keys for each row
+def csv_to_dicts(input_file, delimiter):
+    file = open(input_file, 'r')
+    reader = csv.DictReader(file, delimiter=delimiter)
+    return reader
+
+
+# -------------------------------------------------
+# File Handling
+def write_file(output_file_name, lines):
+    output_file = open(output_file_name, "w")
+    output_file.writelines(lines)
+
+
+def read_hql_file(file_name):
+    file = open(file_name, "r")
+    return file.readlines()
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Build Granular Definitions DataFrame *****\n\n')
+
+
+granular_defs = pd.DataFrame(pd.read_csv('bin/granular_metrics.tsv', sep='\t'))
+
+granular_defs_bool = granular_defs.select_dtypes(include=[bool])
+booleanDictionary = {True: 'TRUE', False: 'FALSE'}
+
+for column in granular_defs_bool:
+    granular_defs[column] = granular_defs[column].map(booleanDictionary)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Build Squash Metric Name List *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+squash_defs = pd.DataFrame(pd.read_csv('bin/metric_repo/metrics_squash_list_unique.tsv'))
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n***** Build Singles Metric Name List *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+singles_defs = pd.DataFrame(pd.read_csv('bin/metric_repo/metrics_singles_list.tsv'))
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Compile Definitions *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+squashes_set = granular_defs[granular_defs['hive_metric'].isin(squash_defs['hive_metric'])]
+
+singles_set = granular_defs[granular_defs['hive_metric'].isin(singles_defs['hive_metric'])]
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Clean Squash Nulls *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+squashes_set[['version_note', 'note']] = squashes_set[['version_note', 'note']].fillna('N/A')
+squashes_set[['condition_1', 'condition_2', 'condition_3', 'condition_4', 'condition_5', 'condition_6']] = squashes_set[['condition_1', 'condition_2', 'condition_3', 'condition_4', 'condition_5', 'condition_6']].fillna('')
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Compile Individual Combined Definition Syntax *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+squashes_set.loc[squashes_set['condition_1'] != '', 'condition_1'] = '(' + squashes_set['condition_1']
+squashes_set.loc[squashes_set['condition_1'] == '', 'condition_1'] = squashes_set['condition_1']
+squashes_set.loc[squashes_set['condition_2'] != '', 'condition_2'] = ' AND ' + squashes_set['condition_2']
+squashes_set.loc[squashes_set['condition_2'] == '', 'condition_2'] = squashes_set['condition_2']
+squashes_set.loc[squashes_set['condition_3'] != '', 'condition_3'] = ' AND ' + squashes_set['condition_3']
+squashes_set.loc[squashes_set['condition_3'] == '', 'condition_3'] = squashes_set['condition_3']
+squashes_set.loc[squashes_set['condition_4'] != '', 'condition_4'] = ' AND ' + squashes_set['condition_4']
+squashes_set.loc[squashes_set['condition_4'] == '', 'condition_4'] = squashes_set['condition_4']
+squashes_set.loc[squashes_set['condition_5'] != '', 'condition_5'] = ' AND ' + squashes_set['condition_5']
+squashes_set.loc[squashes_set['condition_5'] == '', 'condition_5'] = squashes_set['condition_5']
+squashes_set.loc[squashes_set['condition_6'] != '', 'condition_6'] = ' AND ' + squashes_set['condition_6'] + ')'
+squashes_set.loc[squashes_set['condition_6'] == '', 'condition_6'] = squashes_set['condition_6'] + ')'
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Compile Individual Combined Definitions *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+squashes_set['condition_1'] = squashes_set['condition_1'] + squashes_set['condition_2'] + squashes_set['condition_3'] + squashes_set['condition_4'] + squashes_set['condition_5'] + squashes_set['condition_6']
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Compiling grouped joiner columns *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** run joiner *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+lst_run = pd.pivot_table(squashes_set, index=['hive_metric'], values=['run'], aggfunc=lambda x: '|'.join(map(str, x)))
+
+run_jn = pd.DataFrame(lst_run.to_records())
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Uncoupling TRUE/FALSE aggregate for run truths. If any element is 'TRUE', mark TRUE, otherwise, do not run
+# ----------------------------------------------------------------------------------------------------------------------
+run_jn['run'].loc[run_jn['run'].str.contains('TRUE')] = "TRUE"
+run_jn['run'].loc[~run_jn['run'].str.contains('TRUE')] = "FALSE"
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** application joiner *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+lst_application = pd.pivot_table(squashes_set, index=['hive_metric'], values=['application'], aggfunc=lambda x: '|'.join(map(str, x)))
+
+application_jn = pd.DataFrame(lst_application.to_records())
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** version_note joiner *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+lst_version_note = pd.pivot_table(squashes_set, index=['hive_metric'], values=['version_note'], aggfunc=lambda x: '|'.join(map(str, x)))
+
+version_note_jn = pd.DataFrame(lst_version_note.to_records())
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** note joiner *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+lst_note = pd.pivot_table(squashes_set, index=['hive_metric'], values=['note'], aggfunc=lambda x: '|'.join(map(str, x)))
+
+note_jn = pd.DataFrame(lst_note.to_records())
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** start_date joiner *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+lst_start_date = pd.pivot_table(squashes_set, index=['hive_metric'], values=['start_date'], aggfunc=lambda x: '|'.join(map(str, x)))
+
+start_date_jn = pd.DataFrame(lst_start_date.to_records())
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** end_date joiner *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+lst_end_date = pd.pivot_table(squashes_set, index=['hive_metric'], values=['end_date'], aggfunc=lambda x: '|'.join(map(str, x)))
+
+end_date_jn = pd.DataFrame(lst_end_date.to_records())
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** condition_1 joiner *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+lst_condition_1 = pd.pivot_table(squashes_set, index=['hive_metric'], values=['condition_1'], aggfunc=lambda x: ' OR '.join(map(str, x)))
+
+condition_1_jn = pd.DataFrame(lst_condition_1.to_records())
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Aggregate Combined Definitions *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+df_combined_defs = run_jn.merge(application_jn, on='hive_metric').merge(version_note_jn, on='hive_metric').merge(note_jn, on='hive_metric').merge(condition_1_jn, on='hive_metric')
+
+df_combined_defs['start_date'] = np.nan     # convert this to a string 'null'
+df_combined_defs['end_date'] = np.nan       # convert this to a string 'null'
+df_combined_defs['condition_2'] = np.nan    # convert this to a string 'null'
+df_combined_defs['condition_3'] = np.nan    # convert this to a string 'null'
+df_combined_defs['condition_4'] = np.nan    # convert this to a string 'null'
+df_combined_defs['condition_5'] = np.nan    # convert this to a string 'null'
+df_combined_defs['condition_6'] = np.nan    # convert this to a string 'null'
+
+df_combined_defs_ord = df_combined_defs[['run', 'hive_metric', 'application', 'version_note', 'note', 'start_date', 'end_date', 'condition_1', 'condition_2', 'condition_3', 'condition_4', 'condition_5', 'condition_6']]
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Append Squashes (combined) and Singles *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+squashes_and_singles = pd.concat([df_combined_defs_ord, singles_set], sort=False)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Sort Combined Definitions *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+squashes_and_singles_srt = squashes_and_singles.sort_values(by=['hive_metric', 'application'])
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** Export Combined Definitions to .TSV *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+combined_definitions_tsv = squashes_and_singles_srt.to_csv(r'bin/metric_repo/definitions.tsv', index=None, sep='\t', header=True)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** STARTING QUERY BUILDER *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** QUERY BUILDING  *****\n\n')
+# Build a metric script in properly formed HQL
+#   Adds a prefix,
+#   Iterates over a list of blocks and adds logic for each into block statements#
+#   Adds a suffix
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def build_query_script(query_type, dest_name, unit_type, block_type, run):
+    # read in HQL parts
+    if query_type == 'definitions':
+        met_agg_01 = read_hql_file('bin/hql_templates/' + query_type + "_met_agg_01.hql")
+        met_agg_02 = read_hql_file('bin/hql_templates/' + query_type + "_met_agg_02.hql")
+        building_query_met_agg = []
+        for line in met_agg_01:  # PREFIX
+            building_query_met_agg.append(replace_params(line, run))
+        all_blocks = build_all_blocks(query_type, run['block_type'], dest_name, run['unit_type'])
+        building_query_met_agg.append(all_blocks)
+        for line in met_agg_02:  # LOGIC - midsection
+            building_query_met_agg.append(replace_params(line, run))
+        return building_query_met_agg
+    elif query_type == 'sets' and dest_name == 'set_agg_01':
+        set_agg_01 = read_hql_file('bin/hql_templates/' + query_type + '_set_agg_01.hql')
+        building_query_set_agg_01 = []
+        for line in set_agg_01:  # PREFIX
+            building_query_set_agg_01.append(replace_params(line, run))
+        all_blocks = build_all_blocks(query_type, run['block_type'], dest_name, run['unit_type'])
+        building_query_set_agg_01.append(all_blocks)
+        return building_query_set_agg_01
+    elif query_type == 'sets' and dest_name == 'set_agg_instances_01':
+        set_agg_01 = read_hql_file('bin/hql_templates/' + query_type + '_set_agg_instances_01.hql')
+        building_query_set_agg_01 = []
+        for line in set_agg_01:  # PREFIX
+            building_query_set_agg_01.append(replace_params(line, run))
+        all_blocks = build_all_blocks(query_type, run['block_type'], dest_name, run['unit_type'])
+        building_query_set_agg_01.append(all_blocks)
+        return building_query_set_agg_01
+    elif query_type == 'sets' and dest_name == 'set_agg_02':
+        set_agg_02 = read_hql_file('bin/hql_templates/' + query_type + '_set_agg_02.hql')
+        building_query_set_agg_02 = []
+        for line in set_agg_02:  # PREFIX
+            building_query_set_agg_02.append(replace_params(line, run))
+        all_blocks = build_all_blocks(query_type, run['block_type'], dest_name, run['unit_type'])
+        building_query_set_agg_02.append(all_blocks)
+        return building_query_set_agg_02
+    elif query_type == 'sets' and dest_name == 'set_agg_instances_02':
+        set_agg_02 = read_hql_file('bin/hql_templates/' + query_type + '_set_agg_instances_02.hql')
+        building_query_set_agg_02 = []
+        for line in set_agg_02:  # PREFIX
+            building_query_set_agg_02.append(replace_params(line, run))
+        all_blocks = build_all_blocks(query_type, run['block_type'], dest_name, run['unit_type'])
+        building_query_set_agg_02.append(all_blocks)
+        return building_query_set_agg_02
+    elif query_type == 'sets' and dest_name == 'set_agg_03':
+        set_agg_03 = read_hql_file('bin/hql_templates/' + query_type + '_set_agg_03.hql')
+        building_query_set_agg_03 = []
+        for line in set_agg_03:  # PREFIX
+            building_query_set_agg_03.append(replace_params(line, run))
+        all_blocks = build_all_blocks(query_type, run['block_type'], dest_name, run['unit_type'])
+        building_query_set_agg_03.append(all_blocks)
+        return building_query_set_agg_03
+    elif query_type == 'sets' and dest_name == 'set_agg_instances_03':
+        set_agg_03 = read_hql_file('bin/hql_templates/' + query_type + '_set_agg_instances_03.hql')
+        building_query_set_agg_03 = []
+        for line in set_agg_03:  # PREFIX
+            building_query_set_agg_03.append(replace_params(line, run))
+#        all_blocks = build_all_blocks(query_type, run['block_type'], dest_name, run['unit_type'])
+#        building_query_set_agg_03.append(all_blocks)
+        return building_query_set_agg_03
+    elif query_type == 'sets' and dest_name == 'set_agg_04':
+        set_agg_04 = read_hql_file('bin/hql_templates/' + query_type + '_set_agg_04.hql')
+        building_query_set_agg_04 = []
+        for line in set_agg_04:  # PREFIX
+            building_query_set_agg_04.append(replace_params(line, run))
+        return building_query_set_agg_04
+    elif query_type == 'init':
+        met_init_01 = read_hql_file('bin/hql_templates/' + query_type + "_met_init_01.hql")
+        met_init_02 = read_hql_file('bin/hql_templates/' + query_type + "_met_init_02.hql")
+        building_query_met_init = []
+        for line in met_init_01:  # PREFIX
+            building_query_met_init.append(replace_params(line, run))
+        all_blocks = build_all_blocks(query_type, run['block_type'], dest_name, run['unit_type'])
+        building_query_met_init.append(all_blocks)
+        for line in met_init_02:  # LOGIC - midsection
+            building_query_met_init.append(replace_params(line, run))
+        return building_query_met_init
+    else:
+        building_query_end = []
+    print(building_query_end)
+    return building_query_end
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** REPLACE KEYS *****\n\n')
+#   #    - for each key, run through the queries and swap out the keys
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def replace_params(line, run):
+    for key in list(run.keys()):
+        line = line.replace(str('{' + key + '}'), str(run[key]))
+    return line
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** COMPILE METRICS *****\n\n')
+#    - get_metrics use components to build block statements
+#    - query_type specifies the spreadsheet to read in
+#    - returns a list of tuples [(metricLabel, comment, list of conditions)...]
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def get_metrics(query_type):
+    tsv_name = query_type
+    if query_type in ('sets', 'init'):
+        tsv_name = 'definitions'
+    file_name = 'bin/metric_repo/' + tsv_name + '.tsv'
+    headers, rows = read_csv(file_name, '\t')  # tsv
+    metrics = []
+    for row in rows:
+        run_flag = row[0]  # turns metrics on or off for a query build run
+        if run_flag == 'TRUE':
+            hive_name = row[1]
+            conditions = [_f for _f in row[7:] if _f]
+            metrics.append((hive_name, conditions))
+#    print(metrics)
+    return metrics
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** BUILDING BLOCKS *****\n\n')
+#    - Runs block generation for all blocks using the metrics file
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def build_all_blocks(query_type, block_type, dest_name, unit_type):
+    all_blocks = ''
+    metrics = get_metrics(query_type)
+    for metric_fields in metrics:
+        hive_name, conditions = metric_fields[0], metric_fields[1]
+        line_end = ''
+        if metric_fields != metrics[-1] and query_type == 'pivot':
+            line_end = ','
+        all_blocks += compose_block(query_type, block_type, hive_name, conditions, unit_type) + line_end
+#    print(all_blocks)
+    return all_blocks
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** DEFINE BLOCK STRING *****\n\n')
+#    - returns a bunch of strings depending on the block_type
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def block_strings(block_type, query_type, hive_name, dest_name, unit_type):
+    if block_type == 'sum_if_block':
+        block_start = '        SUM(IF('
+        block_end = ', 1, 0)) AS ' + hive_name + ',\n'
+        block_pivot = '\n                      \'' + hive_name + '\', ' + hive_name + '\n'
+    elif block_type == 'sum_as_block':
+        block_start = '        SUM(' + hive_name + ') AS '
+        block_end = ',\n'
+        block_pivot = '\n                      \'' + hive_name + '\', ' + hive_name + '\n'
+    elif block_type == 'if_sum_block':
+        block_start = '        IF(SUM('
+        block_end = ') > 0, 1, 0) AS ' + hive_name + ',\n'
+        block_pivot = '\n                      \'' + hive_name + '\', ' + hive_name + '\n'
+    elif block_type == 'dummy_block':
+        block_start = '     ' + hive_name + ' AS '
+        block_end = ',\n'
+        block_pivot = '\n'
+    elif block_type == 'sum_block':
+        block_start = '     \'' + hive_name + '\', SUM('
+        block_end = '),\n'
+        block_pivot = '\n'
+    elif block_type == 'init_block':
+        block_start = '  '
+        block_end = ' INT,\n'
+        block_pivot = '\n'
+    elif block_type == 'null_block':
+        block_start = ''
+        block_end = '\n'
+        block_pivot = '\n'
+    else:
+        block_start = block_end = block_pivot = ''
+    return block_start, block_end, block_pivot
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** COMPOSE BLOCK STYLE DEPENDENT ON QUERY TYPE *****\n\n')
+#    - compose_block generates one block in the block statement, run for each block to check
+#    - label - string - for THEN clause
+#    - comment - string (single line) - for final comment
+#    - conditions - list strings - for WHEN clause
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def compose_block(query_type, block_type, hive_name, conditions, unit_type):
+    block_start, block_end, block_pivot = block_strings(block_type, query_type, hive_name, 'dest_name', unit_type)
+    if query_type == 'definitions':
+        # loop over all conditions and add with AND
+        for i in range(len(conditions)):
+            if i == 0:
+                block_start += conditions[i]
+            else:
+                block_start += ' AND ' + conditions[i] + ' '
+        block = block_start + block_end
+        return block
+    elif query_type in ('sets', 'init'):
+        # loop over all conditions
+        for i in range(len(hive_name)):
+            if i == 0:
+                block_start += hive_name
+            else:
+                '___LOGIC_ERROR___'
+        block = block_start + block_end
+        return block
+    elif query_type == 'pivot':
+        return block_pivot
+    else:
+        return 'Unrecognized query_type: ' + query_type
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** RUN DETAILS *****\n\n')
+#    - Get the run parameters from the input file, use the mapping file for additional info for each dest_name (a join)
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def get_runs(input_parameters_file='bin/qb_input_parameters.csv'):
+    headers, rows = read_csv(input_parameters_file, ',')
+    mappings = {}
+    for row in rows:
+        mappings[row[1]] = {  # key is dest_name in row[0]
+            'unit_identifier': row[2].strip(),
+            'unit_type': row[3].strip(),
+            'group_variable': row[4].strip(),
+            'is_run': row[0].strip()
+        }
+    input_dicts = csv_to_dicts(input_parameters_file, ',')  # print input_dicts.fieldnames
+    runs = []
+    for row in input_dicts:
+        run = {}
+#        print(run)
+        for key in input_dicts.fieldnames:
+            run[key] = row[key].strip()
+        dest_name = run['dest_name']  # Join on dest_name, pull in mapping fields
+        unit_type = run['unit_type']  # Join on unit_type, pull in mapping fields
+        print(('dest_name' + ' ' + dest_name))
+        print(('unit_type' + ' ' + unit_type))
+        runs.append(run)
+#    print(runs)
+    return runs
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** MAIN *****\n\n')
+#    - Add exception parameters
+#    - Define arguments
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def add_table_params(input_params):
+    table_params = input_params.copy()
+    return table_params
+
+
+def main(argv):
+    if len(argv) != 3:
+        print("""Must be called with 1 input parameter:
+                               1: input_parameters ('bin/qb_input_parameters.csv')""")
+        pass
+    else:
+        output_file_list = []
+#        print(output_file_list)
+        runs = get_runs(argv[1])
+        print(runs)
+        for input_params in runs:
+            run = add_table_params(input_params)
+            if run['is_run'] == 'TRUE':
+                print("\nBuilding queries for the following parameters:")
+                pp = pprint.PrettyPrinter(indent=8)
+                pp.pprint(run)
+                print(('Output to: ', run['relative_output_path_file_name'], '\n'))
+                write_file(run['relative_output_path_file_name'], build_query_script(str(run['query_type']), str(run['dest_name']), str(run['unit_type']), str(run['block_type']), run))
+                output_file_list.append(run['relative_output_path_file_name'])
+        print("\nSuggested commands for job files:")
+        i = 1
+
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv)
+
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+print('\n\n**** END PYTHON FUNCTIONS *****\n\n')
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
