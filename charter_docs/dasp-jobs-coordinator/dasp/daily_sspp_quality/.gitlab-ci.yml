@@ -1,0 +1,54 @@
+.sspp_quality_daily_variables: &sspp_quality_daily_variables
+  JOB_TYPE: "daily_sspp_quality"
+  S3_ARTIFACTS_DIR: "sspp-quality-coordinator/daily"
+  PROJECT_DIR: "dasp"
+  COORDINATOR_TEMPLATE: "daily_sspp_quality"
+
+sspp_quality_daily_build:
+  extends: .build
+
+#STG
+stg_sspp_quality_daily_plan:
+  extends: .plan_stg
+  variables:
+    <<: *sspp_quality_daily_variables
+  dependencies:
+    - sspp_quality_daily_build
+
+stg_sspp_quality_daily_deploy:
+  extends: .deploy_stg
+  variables:
+    <<: *sspp_quality_daily_variables
+  dependencies:
+    - sspp_quality_daily_build
+    - stg_sspp_quality_daily_plan
+
+stg_sspp_quality_daily_destroy:
+  extends: .destroy_stg
+  variables:
+    <<: *sspp_quality_daily_variables
+  dependencies:
+    - sspp_quality_daily_build
+
+#PROD
+prod_sspp_quality_daily_plan:
+  extends: .plan_prod
+  variables:
+    <<: *sspp_quality_daily_variables
+  dependencies:
+    - sspp_quality_daily_build
+
+prod_sspp_quality_daily_deploy:
+  extends: .deploy_prod
+  variables:
+    <<: *sspp_quality_daily_variables
+  dependencies:
+    - sspp_quality_daily_build
+    - prod_sspp_quality_daily_plan
+
+prod_sspp_quality_daily_destroy:
+  extends: .destroy_prod
+  variables:
+    <<: *sspp_quality_daily_variables
+  dependencies:
+    - sspp_quality_daily_build

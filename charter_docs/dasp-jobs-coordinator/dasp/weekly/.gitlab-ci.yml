@@ -1,0 +1,54 @@
+.dasp_weekly_variables: &dasp_weekly_variables
+  JOB_TYPE: "weekly"
+  S3_ARTIFACTS_DIR: "dasp-jobs-coordinator/weekly"
+  PROJECT_DIR: "dasp"
+  COORDINATOR_TEMPLATE: "weekly"
+
+dasp_weekly_build:
+  extends: .build
+
+#STG
+stg_dasp_weekly_plan:
+  extends: .plan_stg
+  variables:
+    <<: *dasp_weekly_variables
+  dependencies:
+    - dasp_weekly_build
+
+stg_dasp_weekly_deploy:
+  extends: .deploy_stg
+  variables:
+    <<: *dasp_weekly_variables
+  dependencies:
+    - dasp_weekly_build
+    - stg_dasp_weekly_plan
+
+stg_dasp_weekly_destroy:
+  extends: .destroy_stg
+  variables:
+    <<: *dasp_weekly_variables
+  dependencies:
+    - dasp_weekly_build
+
+#PROD
+prod_dasp_weekly_plan:
+  extends: .plan_prod
+  variables:
+    <<: *dasp_weekly_variables
+  dependencies:
+    - dasp_weekly_build
+
+prod_dasp_weekly_deploy:
+  extends: .deploy_prod
+  variables:
+    <<: *dasp_weekly_variables
+  dependencies:
+    - dasp_weekly_build
+    - prod_dasp_weekly_plan
+
+prod_dasp_weekly_destroy:
+  extends: .destroy_prod
+  variables:
+    <<: *dasp_weekly_variables
+  dependencies:
+    - dasp_weekly_build

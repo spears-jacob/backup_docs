@@ -1,0 +1,14 @@
+variables:
+  COORDINATOR_TEMPLATE_REF: "v1.2"
+  PY_COORDINATOR_REF: "v3.0"
+
+
+include:
+  - project: 'awspilot/jobs-coordinator-template'
+    ref: v1.2
+    file: 'dot_gitlab-ci-template.yml'
+
+  - local: 'dasp/daily/dot_gitlab-ci.yml'
+  - local: 'dasp/monthly/dot_gitlab-ci.yml'
+  - local: 'dasp/weekly/dot_gitlab-ci.yml'
+  - local: 'dasp/daily_sspp_quality/dot_gitlab-ci.yml'

@@ -1,0 +1,13 @@
+.terraform
+.DS_Store
+coordinator_template/lambda/pkg
+*.swp
+.terragrunt-cache
+*.backup
+terraform.tfstate
+out
+.idea/
+old/
+*old
+env
+*.iml

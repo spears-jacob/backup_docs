@@ -1,0 +1,54 @@
+.dasp_daily_variables: &dasp_daily_variables
+  JOB_TYPE: "daily"
+  S3_ARTIFACTS_DIR: "dasp-jobs-coordinator/daily"
+  PROJECT_DIR: "dasp"
+  COORDINATOR_TEMPLATE: "daily"
+
+dasp_daily_build:
+  extends: .build
+
+#STG
+stg_dasp_daily_plan:
+  extends: .plan_stg
+  variables:
+    <<: *dasp_daily_variables
+  dependencies:
+    - dasp_daily_build
+
+stg_dasp_daily_deploy:
+  extends: .deploy_stg
+  variables:
+    <<: *dasp_daily_variables
+  dependencies:
+    - dasp_daily_build
+    - stg_dasp_daily_plan
+
+stg_dasp_daily_destroy:
+  extends: .destroy_stg
+  variables:
+    <<: *dasp_daily_variables
+  dependencies:
+    - dasp_daily_build
+
+#PROD
+prod_dasp_daily_plan:
+  extends: .plan_prod
+  variables:
+    <<: *dasp_daily_variables
+  dependencies:
+    - dasp_daily_build
+
+prod_dasp_daily_deploy:
+  extends: .deploy_prod
+  variables:
+    <<: *dasp_daily_variables
+  dependencies:
+    - dasp_daily_build
+    - prod_dasp_daily_plan
+
+prod_dasp_daily_destroy:
+  extends: .destroy_prod
+  variables:
+    <<: *dasp_daily_variables
+  dependencies:
+    - dasp_daily_build
