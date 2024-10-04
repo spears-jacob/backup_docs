@@ -1,0 +1,5 @@
+# percent_total_create_id_count_all job
+type=command
+dependencies=1_percent_calcs_stage
+command=whoami
+command.1=/bin/sh bin/1_percent_total_create_id_count_all.sh

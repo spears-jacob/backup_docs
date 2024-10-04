@@ -1,0 +1,9 @@
+# Events Init azkaban job
+type=command
+dependencies=03_lookup_load
+
+command=whoami
+command.1=bash -c "export dbprefix_raw=${dbprefix_raw}; export dbprefix_denorm=${dbprefix_denorm}; export dbprefix_calc=${dbprefix_calc}; export dbprefix_events_no_part=${dbprefix_events_no_part};  hive -f ../src/truncate_tmp.hql"
+command.2=/bin/sh -c "gunzip ${localFSworking}*-${filemask}.tsv.gz"
+command.3=/bin/sh -c "hadoop fs -copyFromLocal -f ${localFSworking}*-${filemask}.tsv /apps/hive/warehouse/${TMP_db}.db/${dbprefix}_raw/"
+command.4=bash -c "export dbprefix_raw_history=${dbprefix_raw_history}; export dbprefix_tmp_raw=${TMP_db}.${dbprefix_raw}; hive -f ../src/raw_history.hql"

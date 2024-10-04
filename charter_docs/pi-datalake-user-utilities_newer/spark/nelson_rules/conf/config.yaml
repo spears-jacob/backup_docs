@@ -1,0 +1,38 @@
+defaults:
+  window: 28
+  rules:
+    R1:
+      std: 3
+      recent_days: 3
+    R2:
+      param: 9
+      recent_days: 10
+      continous: false
+    R3:
+      param: 6
+      recent_days: 6
+      continous: true
+    R4:
+      param: 14
+      recent_days: 20
+      continous: false
+    R5:
+      param: 2
+      recent_days: 4
+      continous: true
+    R6:
+      param: 4
+      recent_days: 6
+      continous: true
+    R7:
+      param: 15
+      recent_days: 20
+      continous: false
+    R8:
+      param: 8
+      recent_days: 12
+      continous: false
+    R9:
+      param: 1
+      recent_days: 2
+      continous: false

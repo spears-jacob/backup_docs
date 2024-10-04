@@ -1,0 +1,6 @@
+# My Spectrum App Adobe Events Azkaban job
+type=noop
+dependencies=01_insert_definitions
+
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

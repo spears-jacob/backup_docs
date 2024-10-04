@@ -1,0 +1,5 @@
+#database init job
+type=command
+
+dependencies=0a_database_init
+command=/bin/bash ../bin/create_soteria_tables.sh

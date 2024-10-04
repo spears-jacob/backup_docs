@@ -1,0 +1,6 @@
+# Initialize parameters
+type=command
+
+command=whoami
+dependencies=07c_sb_agg_final_insert,init_07c_param
+command.1=/bin/bash ../../bin/working_dates.sh \"${TZ}\" ${IsCurrent1_Prior2_Reprocess3_ToBeProcessed} ${Cadence_CalendarMonth1_FiscalMonth2_Daily3} ${ReprocessingStartDate} ${ReprocessingEndDate}

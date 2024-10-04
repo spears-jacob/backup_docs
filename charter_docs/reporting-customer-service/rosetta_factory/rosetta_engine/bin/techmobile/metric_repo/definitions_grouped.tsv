@@ -1,0 +1,11 @@
+hive_metric
+aggregate_placeholder
+aggregate_placeholder
+error_count
+failed_login_count
+job_completion_closure_count
+job_completion_feature_count
+job_start_feature_count
+job_start_select_count
+login_events_count
+successful_login_count

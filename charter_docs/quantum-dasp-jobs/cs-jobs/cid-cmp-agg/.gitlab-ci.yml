@@ -1,0 +1,60 @@
+.cid_cmp_agg_variables: &cid_cmp_agg_variables
+  JOB_NAME: "cid-cmp-agg"
+  CID_CMP_AGG_DIR: "cs-jobs/cid-cmp-agg"
+  ARTIFACTS_DIR: "cs-jobs/cid-cmp-agg/artifacts"
+  TERRAFORM_DIR: "cs-jobs/cid-cmp-agg/terraform"
+  SCRIPTS_DIR: "cs-jobs/cid-cmp-agg/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/cid-cmp-agg"
+
+cid_cmp_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$CID_CMP_AGG_DIR/ddl"
+    HQL_DIR: "$CID_CMP_AGG_DIR/hql"
+    <<: *cid_cmp_agg_variables
+
+# PROD
+cid_cmp_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *cid_cmp_agg_variables
+  dependencies:
+    - cid_cmp_agg_build
+
+cid_cmp_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *cid_cmp_agg_variables
+  dependencies:
+    - cid_cmp_agg_build
+    - cid_cmp_agg_plan_prod
+
+cid_cmp_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *cid_cmp_agg_variables
+  dependencies:
+    - cid_cmp_agg_build
+
+#STG
+cid_cmp_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *cid_cmp_agg_variables
+  dependencies:
+    - cid_cmp_agg_build
+
+cid_cmp_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *cid_cmp_agg_variables
+  dependencies:
+    - cid_cmp_agg_build
+    - cid_cmp_agg_plan_stg
+
+cid_cmp_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *cid_cmp_agg_variables
+  dependencies:
+    - cid_cmp_agg_build

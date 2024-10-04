@@ -1,0 +1,4 @@
+type=command
+dependencies=01_parameter_init
+
+command=/bin/bash -c ' export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE; hive -f ../src/call_in_rate_visits_ETL_Legacy.hql'

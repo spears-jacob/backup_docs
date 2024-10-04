@@ -1,0 +1,5 @@
+# To be used when a backfill file is needed. Otherwise, ignore
+type=command
+command=whoami
+
+command.1=/bin/bash ../bin/transfer_backfill_file.sh

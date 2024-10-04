@@ -1,0 +1,22 @@
+# FHR BPSS Monthly Aggregate Azkaban Data Load Job
+type=command
+
+command=whoami
+
+command.1=hive -f src/fhr_bpss_man_tmp_truncate.hql
+# CHTR IVA Metrics
+command.2=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/fhr_chtr_bill_pay_iva_metrics_manual/
+command.3=hadoop fs -mkdir /apps/hive/warehouse/${TMP_db}.db/fhr_chtr_bill_pay_iva_metrics_manual/
+command.4=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/fhr_bpss_monthly/manual_data_uploads/fhr_chtr_bill_pay_iva_metrics_manual.tsv /apps/hive/warehouse/${TMP_db}.db/fhr_chtr_bill_pay_iva_metrics_manual/"
+# CHTR Brightcove Support Video Metrics
+command.5=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/fhr_chtr_brightcove_support_videos_manual/
+command.6=hadoop fs -mkdir /apps/hive/warehouse/${TMP_db}.db/fhr_chtr_brightcove_support_videos_manual/
+command.7=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/fhr_bpss_monthly/manual_data_uploads/fhr_chtr_brightcove_support_videos_manual.tsv /apps/hive/warehouse/${TMP_db}.db/fhr_chtr_brightcove_support_videos_manual/"
+# TWC IVA Metrics
+command.8=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/fhr_twc_iva_metrics_manual/
+command.9=hadoop fs -mkdir /apps/hive/warehouse/${TMP_db}.db/fhr_twc_iva_metrics_manual/
+command.10=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/fhr_bpss_monthly/manual_data_uploads/fhr_twc_iva_metrics_manual.tsv /apps/hive/warehouse/${TMP_db}.db/fhr_twc_iva_metrics_manual/"
+# BHN Bill Pay Type Metrics
+command.11=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/fhr_bhn_bill_pay_type_manual/
+command.12=hadoop fs -mkdir /apps/hive/warehouse/${TMP_db}.db/fhr_bhn_bill_pay_type_manual/
+command.13=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/fhr_bpss_monthly/manual_data_uploads/fhr_bhn_bill_pay_type_manual.tsv /apps/hive/warehouse/${TMP_db}.db/fhr_bhn_bill_pay_type_manual/"

@@ -1,0 +1,43 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS ${db_name}.asp_asapp_convos_metrics_ended_ingest (
+    customer_response_count INT,
+    rep_sent_msgs INT,
+    out_business_ct INT,
+    customer_id STRING,
+    auto_wait_for_agent_msgs INT,
+    company_name STRING,
+    auto_complete_msgs INT,
+    auto_suggest_msgs INT,
+    company_subdivision STRING,
+    first_rep_response_count INT,
+    total_session_time DOUBLE,
+    agent_sent_msgs INT,
+    customer_sent_msgs INT,
+    agent_response_count INT,
+    total_handle_time DOUBLE,
+    device_type STRING,
+    rep_response_count INT,
+    customer_wait_for_agent_msgs INT,
+    total_rep_seconds_to_respond DOUBLE,
+    auto_wait_for_rep_msgs INT,
+    issue_id BIGINT,
+    total_wrap_up_time DOUBLE,
+    assisted INT,
+    first_utterance_ts STRING,
+    auto_generated_msgs INT,
+    attempted_chat INT,
+    company_segments STRING,
+    platform STRING,
+    total_cust_seconds_to_respond DOUBLE,
+    conversation_id BIGINT,
+    time_in_queue DOUBLE,
+    total_lead_time DOUBLE,
+    total_seconds_to_first_rep_response DOUBLE,
+    customer_wait_for_rep_msgs INT,
+    partition_date STRING,
+    partition_hour STRING,
+    first_utterance_hour string
+)
+PARTITIONED BY (first_utterance_date string)
+STORED AS ORC
+LOCATION '${s3_location}'
+TBLPROPERTIES ("orc.compress"="SNAPPY");

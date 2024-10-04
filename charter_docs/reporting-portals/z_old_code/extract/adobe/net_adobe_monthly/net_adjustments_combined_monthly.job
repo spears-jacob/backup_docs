@@ -1,0 +1,5 @@
+# net_adjustments_combined_monthly job
+type=command
+dependencies=net_manual_files_insert_monthly
+command=whoami
+command.1=/bin/sh bin/net_adjustments_combined_monthly.sh

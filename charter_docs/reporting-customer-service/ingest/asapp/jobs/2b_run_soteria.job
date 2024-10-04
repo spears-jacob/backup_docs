@@ -1,0 +1,5 @@
+#database_initial_load job
+type=command
+
+dependencies=2a_create_asp_asapp_pii_temp_tables
+command=/bin/bash ../bin/run_soteria.sh ${DB_TEMP}

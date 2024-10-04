@@ -1,0 +1,60 @@
+.w_activationchannel_agg_variables: &w_activationchannel_agg_variables
+  JOB_NAME: "w-activationchannel-agg"
+  W_ACTIVATIONCHANNEL_AGG_DIR: "si-jobs/weekly-activationchannel-agg"
+  ARTIFACTS_DIR: "si-jobs/weekly-activationchannel-agg/artifacts"
+  TERRAFORM_DIR: "si-jobs/weekly-activationchannel-agg/terraform"
+  SCRIPTS_DIR: "si-jobs/weekly-activationchannel-agg/scripts"
+  S3_ARTIFACTS_DIR: "si-jobs/weekly-activationchannel-agg"
+
+w_activationchannel_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$W_ACTIVATIONCHANNEL_AGG_DIR/ddl"
+    HQL_DIR: "$W_ACTIVATIONCHANNEL_AGG_DIR/hql"
+    <<: *w_activationchannel_agg_variables
+
+#STG
+w_activationchannel_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *w_activationchannel_agg_variables
+  dependencies:
+    - w_activationchannel_agg_build
+
+w_activationchannel_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *w_activationchannel_agg_variables
+  dependencies:
+    - w_activationchannel_agg_build
+    - w_activationchannel_agg_plan_stg
+
+w_activationchannel_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *w_activationchannel_agg_variables
+  dependencies:
+    - w_activationchannel_agg_build
+
+#PROD
+w_activationchannel_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *w_activationchannel_agg_variables
+  dependencies:
+    - w_activationchannel_agg_build
+
+w_activationchannel_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *w_activationchannel_agg_variables
+  dependencies:
+    - w_activationchannel_agg_build
+    - w_activationchannel_agg_plan_prod
+
+w_activationchannel_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *w_activationchannel_agg_variables
+  dependencies:
+    - w_activationchannel_agg_build

@@ -1,0 +1,7 @@
+# Groovy
+type=Groovy
+dependencies=01_data_alert_email
+
+groovy.command.1=println 'This job starts the kickoff job because there is data available'
+groovy.command.2=import azkaban.executor.*; def paramsToPass = ["env.RUN_DATE": "${env.RUN_DATE}", "env.job_started_by_exec": "${azkaban.link.execution.url}", "env.job_started_by_project_flow": "${azkaban.link.workflow.url}" ]
+groovy.command.3=azkaban.execute("asp_extract_search_support_performance", "asp_extract_support_search_end_pd", paramsToPass);

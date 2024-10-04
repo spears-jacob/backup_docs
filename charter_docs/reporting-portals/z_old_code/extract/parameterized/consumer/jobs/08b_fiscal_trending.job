@@ -1,0 +1,5 @@
+# net_monthly_agg_totals job
+type=command
+dependencies=07_net_agg_final_insert,init_07_param
+command=whoami
+#command.1=/bin/bash -c 'export END_DATE=${END_DATE}; echo $END_DATE; export START_DATE=${START_DATE}; echo $START_DATE; export fm_lkp=${fm_lkp}; if [ "${CADENCE}" == "fiscal_monthly" ]; then hive -f ../src/08b_fiscal_trending.hql; fi '

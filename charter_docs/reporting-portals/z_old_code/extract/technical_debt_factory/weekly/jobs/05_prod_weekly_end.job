@@ -1,0 +1,7 @@
+# Endcap Azkaban job
+type=noop
+dependencies=04_refresh_tableau
+
+###########################################
+## PLEASE KEEP THIS JOB LAST IN THE FLOW ##
+###########################################

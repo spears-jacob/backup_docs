@@ -1,0 +1,18 @@
+-- QUERY DEFINITIONS FOR Click: Bill Delivery Save
+-- LAST UPDATED 03/29/2018 BY Jake McCune
+
+USE {env:ENVIRONMENT};
+
+-- NOTE - All queries set to calculate for most recent day (Denver Time)
+
+-- ***** RESIDENTIAL PORTAL QUERIES *****
+-- L-CHTR Query
+SELECT
+  'RES' as portal_platform,
+  'L-CHTR' as legacy_footprint,
+  SUM(IF(message__category = 'Custom Link'
+    AND message__name = 'Bill Delivery Submit'
+    AND visit__settings['post_prop24'] = 'Bill Delivery',1,0)) as click_bill_del_save
+FROM asp_v_net_events
+WHERE partition_date >= DATE_SUB(current_date,2)
+;

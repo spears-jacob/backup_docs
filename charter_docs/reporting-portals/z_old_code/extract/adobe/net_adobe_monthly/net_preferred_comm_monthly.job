@@ -1,0 +1,5 @@
+# .NET Preferred Communication Azkaban job
+type=command
+dependencies=run_net_preferred_comm
+command=whoami
+command.1=/bin/bash bin/net_preferred_comm_monthly.sh

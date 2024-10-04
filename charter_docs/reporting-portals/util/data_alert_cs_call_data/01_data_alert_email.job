@@ -1,0 +1,6 @@
+# Feed delayed alert Azkaban job
+type=command
+
+command=whoami
+command.1=/bin/bash check_table_under_view.sh ${table_for_checking} ${view_for_checking}
+command.2=/bin/bash /data/git_repos/platform-ops/azkaban-scripts/data_alert_email.sh ${email_TO_list_comma} ${email_CC_list_comma} ${email_DEBUG_TO_list_comma} ${email_DEBUG_CC_list_comma} ${email_FROM} ${filemasks_comma} ${datemask} ${hdfs_location} ${IsDebuggingEnabled} ${data_description} ${TZ} ${du_threshold} ${retry_after_min} ${retry_attempts} ${azkaban.url}\/executor\?execid=${azkaban.flow.execid} ${use_hours} ${start_offset} ${end_offset}

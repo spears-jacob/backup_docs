@@ -1,0 +1,5 @@
+# .NET Create Username Azkaban job
+type=command
+dependencies=net_extract_reporting_monthly
+command=whoami
+command.1=/bin/bash bin/net_create_username_monthly.sh

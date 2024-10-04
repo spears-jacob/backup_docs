@@ -1,0 +1,7 @@
+#  Azkaban job
+type=command
+dependencies=01_param_init_pd
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ; hive -f ../../src/cs_techmobile_metric_agg.hql '

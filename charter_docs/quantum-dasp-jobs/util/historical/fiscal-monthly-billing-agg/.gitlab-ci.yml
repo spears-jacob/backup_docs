@@ -1,0 +1,60 @@
+.fm_billing_agg_variables: &fm_billing_agg_variables
+  JOB_NAME: "parameterized-d-billing-agg"
+  W_BILLING_AGG_DIR: "parameterized/fiscal-monthly-billing-agg"
+  ARTIFACTS_DIR: "parameterized/fiscal-monthly-billing-agg/artifacts"
+  TERRAFORM_DIR: "parameterized/fiscal-monthly-billing-agg/terraform"
+  SCRIPTS_DIR: "parameterized/fiscal-monthly-billing-agg/scripts"
+  S3_ARTIFACTS_DIR: "parameterized/fiscal-monthly-billing-agg"
+
+fm_billing_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$W_BILLING_AGG_DIR/ddl"
+    HQL_DIR: "$W_BILLING_AGG_DIR/hql"
+    <<: *fm_billing_agg_variables
+
+#PROD
+fm_billing_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *fm_billing_agg_variables
+  dependencies:
+    - fm_billing_agg_build
+
+fm_billing_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *fm_billing_agg_variables
+  dependencies:
+    - fm_billing_agg_build
+    - fm_billing_agg_plan_prod
+
+fm_billing_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *fm_billing_agg_variables
+  dependencies:
+    - fm_billing_agg_build
+
+#STG
+fm_billing_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *fm_billing_agg_variables
+  dependencies:
+    - fm_billing_agg_build
+
+fm_billing_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *fm_billing_agg_variables
+  dependencies:
+    - fm_billing_agg_build
+    - fm_billing_agg_plan_stg
+
+fm_billing_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *fm_billing_agg_variables
+  dependencies:
+    - fm_billing_agg_build

@@ -1,0 +1,6 @@
+# NET Executive Monthly Aggregate Azkaban job
+type=command
+dependencies=init_01_run_all
+command=whoami
+command.1=hdfs dfs -mkdir -p ${HDFS_ARCHIVE_DIR}/net_product_monthly/manual_data_uploads
+#command.2=hdfs dfs -chmod -R 777  ${HDFS_ARCHIVE_DIR}/net_product_monthly

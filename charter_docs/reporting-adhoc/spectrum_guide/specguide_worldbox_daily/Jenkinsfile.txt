@@ -1,0 +1,18 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line, this is the magical library that does the, uh, 'magic'
+PIDeliveryPipeline {
+    azkabanProjectName = "compliance_worldbox_daily" // required, Azkaban project name. Jenkins build will prepend "${platform}_" before in prod/dev
+                                     // and append "_${branch}" after in dev Azkaban.
+    azkabanEnv = 'prod'              // optional, default to dev
+    azkabanProjectDesc = "compliance worldbox daily" // required
+    azkabanProjectOwner = 'dschmitt'    // required, put your AD login here
+    azkabanPlatform = 'SpecGuide'        // required, one of ['ASP', 'Authentication', 'Core', 'DAI', 'DynExp', 'HSD', 'Mobile',
+                                    //          'MVNO', 'ODN', 'Platform Ops', 'SGR', 'SpecGuide', 'Venona', 'VOD', 'Voice', 'WIFI']
+    azkabanEscalation = 'Marjorie Truitt'  // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Important - Within 12 hrs' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun = [] // optional, leave out or empty([])
+                                                                                 // if you do not want to kick off specified flow as a test
+    azkabanProdFlowSchedule = [flowName:'compliance_worldbox_daily', cronExpression: '0 0 20 ? * 3']   // optional, a groovy map, leave it out or empty ([])
+                                                                                      // if you don't want to override production schedule
+    gitDir = 'compliance_worldbox_daily'  // required, the sub dir where your project dir is
+}

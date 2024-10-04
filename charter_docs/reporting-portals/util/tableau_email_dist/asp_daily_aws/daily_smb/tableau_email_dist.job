@@ -1,0 +1,5 @@
+# Tableau E-mail distribution Azkaban job
+type=command
+
+command=whoami
+command.1=/bin/bash tableau_send_email.sh ${tableau_server} ${tableau_workbook_no} ${tableau_output_filename} ${tableau_project} ${tableau_workbook} ${tableau_views} ${tableau_metric_checking_view} ${tableau_width} ${tableau_height} ${email_TO_list_comma} ${email_CC_list_comma} ${email_BCC_list_comma} ${email_DEBUG_TO_list_comma} ${email_DEBUG_CC_list_comma} ${email_DEBUG_BCC_list_comma} ${email_FROM} ${email_SUBJECT} ${email_BOUNDARY} ${email_NOTIFY} ${email_TEMPLATE} ${email_POPULATED} ${email_FOLLOWUP_NOTE} ${email_BODY_IMG} ${report_table} ${report_table_counted_field} ${report_table_date_field} ${report_table_criterion1} ${IsDebuggingEnabled} ${report_table_where_field1} ${report_table_where_value1} ${csv_file_select} ${report_table_where_field2} ${report_table_where_value2}

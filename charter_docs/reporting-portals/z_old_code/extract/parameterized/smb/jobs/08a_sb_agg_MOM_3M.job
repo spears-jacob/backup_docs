@@ -1,0 +1,5 @@
+# sb agg MOM and 3Month
+type=command
+dependencies=07c_sb_agg_final_insert,init_07c_param
+command=whoami
+command.1=/bin/bash -c 'export CADENCE=${CADENCE}; echo $CADENCE; export pf=${PF}; echo $pf; hive -f ../src/08a_sb_agg_MOM_3M.hql '

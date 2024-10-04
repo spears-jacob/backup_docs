@@ -1,0 +1,5 @@
+# NET Monthly Load Init azkaban job
+type=command
+command=whoami
+
+command.1=hive -f src/net_products_agg_monthly_insert.hql

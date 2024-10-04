@@ -1,0 +1,6 @@
+# asp venona weekly counts end
+type=noop
+
+dependencies=01w_asp_venona_counts_consumer_prod_weekly,01w_asp_venona_counts_my_spc_prod_weekly,01w_asp_venona_counts_smb_prod_weekly,01w_asp_venona_counts_specmobile_prod_weekly
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW,

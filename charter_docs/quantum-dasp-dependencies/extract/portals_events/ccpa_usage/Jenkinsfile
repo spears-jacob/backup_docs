@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _                 // don't miss the '_' at the end of the line
+PIDeliveryPipeline {
+    azkabanProjectName = "asp_ccpa_usage"  // required
+    azkabanEnv = 'prod'                    // optional, default to dev
+    azkabanProjectDesc = "CCPA DASP Usage" // required
+    azkabanProjectOwner = 'jdutczak'       // required, AD login
+    azkabanPlatform = 'ASP'                // required
+    azkabanEscalation = 'Marjorie Truitt'  // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Optional - Next Day'     // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun=[]                      // not implemented, could have loop here too
+    azkabanProdFlowSchedule=[]
+    gitDir='extract/portals_events/ccpa_usage'  // project sub directory location
+}

@@ -1,0 +1,8 @@
+# Global Events Denormalization and Calculation azkaban job
+type=command
+dependencies=04_events_init
+
+command=whoami
+
+command.1=pig -f -useHCatalog ../src/denormalize.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT} -param dbprefix_raw=${dbprefix_raw} -param dbprefix_browser=${dbprefix_browser} -param dbprefix_country=${dbprefix_country} -param dbprefix_connection_type=${dbprefix_connection_type} -param dbprefix_os=${dbprefix_os} -param dbprefix_resolution=${dbprefix_resolution} -param dbprefix_denorm=${dbprefix_denorm}
+command.2=pig -f -useHCatalog ../src/calc.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT} -param dbprefix_denorm=${dbprefix_denorm} -param dbprefix_event=${dbprefix_event}  -param dbprefix_calc=${dbprefix_calc}

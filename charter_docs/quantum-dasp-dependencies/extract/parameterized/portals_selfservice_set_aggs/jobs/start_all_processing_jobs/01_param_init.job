@@ -1,0 +1,3 @@
+# Parameter Init job
+type=command
+command=/bin/bash -c "sort $JOB_PROP_FILE"

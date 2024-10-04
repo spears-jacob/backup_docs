@@ -1,0 +1,3 @@
+type=noop
+
+dependencies=build_call_in_rate_views

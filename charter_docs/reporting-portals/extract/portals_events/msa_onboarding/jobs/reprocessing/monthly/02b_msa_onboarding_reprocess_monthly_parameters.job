@@ -1,0 +1,5 @@
+#  Azkaban job
+type=Groovy
+dependencies=01_param_init_rm
+
+groovy.command.1=println 'This job allows the parameter to flow through that decides whether or not to continue reprocessing.'

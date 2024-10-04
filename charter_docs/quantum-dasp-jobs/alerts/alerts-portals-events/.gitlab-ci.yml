@@ -1,0 +1,57 @@
+.alerts_portals_events_variables: &alerts_portals_events_variables
+  JOB_NAME: "alert-portals-events"
+  ARTIFACTS_DIR: "alerts/alerts-portals-events/artifacts"
+  TERRAFORM_DIR: "alerts/alerts-portals-events/terraform"
+  ALERT_LAMBDA_DIR: "alerts/alerts-portals-events/lambda"
+  S3_ARTIFACTS_DIR: "alerts/alerts-portals-events"
+
+alerts_portals_events_build:
+  extends: .build_alerts
+  variables:
+    <<: *alerts_portals_events_variables
+
+#STG
+alerts_portals_events_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *alerts_portals_events_variables
+  dependencies:
+    - alerts_portals_events_build
+
+alerts_portals_events_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *alerts_portals_events_variables
+  dependencies:
+    - alerts_portals_events_build
+    - alerts_portals_events_plan_stg
+
+alerts_portals_events_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *alerts_portals_events_variables
+  dependencies:
+    - alerts_portals_events_build
+
+#PROD
+alerts_portals_events_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *alerts_portals_events_variables
+  dependencies:
+    - alerts_portals_events_build
+
+alerts_portals_events_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *alerts_portals_events_variables
+  dependencies:
+    - alerts_portals_events_build
+    - alerts_portals_events_plan_prod
+
+alerts_portals_events_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *alerts_portals_events_variables
+  dependencies:
+    - alerts_portals_events_build

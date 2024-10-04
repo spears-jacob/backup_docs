@@ -1,0 +1,2 @@
+type=command
+command=bash init/create_cwpv_agg_research.sh

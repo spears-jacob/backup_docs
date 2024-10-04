@@ -1,0 +1,6 @@
+# App Aggregation Azkaban Job for App Figures
+type=command
+
+command=whoami
+
+command.1=/bin/bash -c 'hive -f src/02_app_figures_daily_aggregation.hql'

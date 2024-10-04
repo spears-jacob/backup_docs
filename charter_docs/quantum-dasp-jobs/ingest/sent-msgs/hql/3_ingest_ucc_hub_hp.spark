@@ -1,0 +1,10 @@
+INSERT OVERWRITE TABLE prod_sec_repo_sspp.asp_sentmsgs_hp PARTITION (partition_date_utc)
+SELECT
+  header,
+  payload,
+  substr(payload.comm.startdatetime,1,10) as partition_date_utc
+FROM prod_sec_repo_sspp.asp_sentmsgs_hp_raw
+WHERE partition_date >= '${env:ROLLING_62_START_DATE}'
+  AND partition_date <  '${env:END_DATE}'
+DISTRIBUTE BY partition_date_utc
+;

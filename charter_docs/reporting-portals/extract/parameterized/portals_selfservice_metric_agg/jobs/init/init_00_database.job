@@ -1,0 +1,7 @@
+# Azkaban job that creates required tables and views
+
+type=command
+
+command=whoami
+
+command.1=/bin/bash -c ' export ReprocessDateTable_fiscal_monthly="${ReprocessDateTable_fiscal_monthly}"; echo $ReprocessDateTable_fiscal_monthly;  hive -f ../../src/init/portals_selfservice_create_tables_and_views.hql '

@@ -1,0 +1,60 @@
+.daily_adhoc_variables: &daily_adhoc_variables
+  JOB_NAME: "daily-adhoc"
+  DAILY_ADHOC_DIR: "util/daily-adhoc"
+  ARTIFACTS_DIR: "util/daily-adhoc/artifacts"
+  TERRAFORM_DIR: "util/daily-adhoc/terraform"
+  SCRIPTS_DIR: "util/daily-adhoc/scripts"
+  S3_ARTIFACTS_DIR: "util/daily-adhoc"
+
+daily_adhoc_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$DAILY_ADHOC_DIR/ddl"
+    HQL_DIR: "$DAILY_ADHOC_DIR/hql"
+    <<: *daily_adhoc_variables
+
+# PROD
+daily_adhoc_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *daily_adhoc_variables
+  dependencies:
+    - daily_adhoc_build
+
+daily_adhoc_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *daily_adhoc_variables
+  dependencies:
+    - daily_adhoc_build
+    - daily_adhoc_plan_prod
+
+daily_adhoc_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *daily_adhoc_variables
+  dependencies:
+    - daily_adhoc_build
+
+#STG
+daily_adhoc_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *daily_adhoc_variables
+  dependencies:
+    - daily_adhoc_build
+
+daily_adhoc_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *daily_adhoc_variables
+  dependencies:
+    - daily_adhoc_build
+    - daily_adhoc_plan_stg
+
+daily_adhoc_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *daily_adhoc_variables
+  dependencies:
+    - daily_adhoc_build

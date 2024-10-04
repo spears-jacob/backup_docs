@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line, this is the magical library that does the, uh, 'magic'
+PIDeliveryPipeline {
+    azkabanProjectName = "asp_extract_technical_debt_factory_weekly" // required
+    azkabanEnv = 'prod' // optional, default to dev
+    azkabanProjectDesc = "Product Weekly extract" // required
+    azkabanProjectOwner = 'jmccune' // required, put your AD login here
+    azkabanPlatform = 'ASP'  // required
+    azkabanEscalation = 'Marjorie Truitt' // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Optional - Next Day' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun=[] // not implemented, could have loop here too
+    azkabanProdFlowSchedule=[flowName:'04_prod_weekly_end', cronExpression:'0 35 12 ? * FRI']
+    gitDir='extract/technical_debt_factory/weekly'  // the sub dir where your project dir is
+}

@@ -1,0 +1,5 @@
+# 03_prod_monthly_smb_combined job
+type=command
+dependencies=02_prod_monthly_smb_adobe,02_prod_monthly_smb_quantum
+command=whoami
+command.1=/bin/bash -c 'hive -f ../src/03_prod_monthly_smb_combined.hql'

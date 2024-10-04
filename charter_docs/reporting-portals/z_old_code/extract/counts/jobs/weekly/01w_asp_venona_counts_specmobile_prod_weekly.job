@@ -1,0 +1,9 @@
+# asp counts SpectrumMobile prod weekly
+dependencies=00_parameter_init
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE;  hive -f ../../src/specmobile/01w_d_prod_asp_v_venona_events_specmobile__devices__prod_asp_venona_counts_weekly.hql'
+command.2=/bin/bash -c 'export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE;  hive -f ../../src/specmobile/01w_h_prod_asp_v_venona_events_specmobile__households__prod_asp_venona_counts_weekly.hql'
+command.3=/bin/bash -c 'export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE;  hive -f ../../src/specmobile/01w_i_prod_asp_v_venona_events_specmobile__instances__prod_asp_venona_counts_weekly.hql'
+command.4=/bin/bash -c 'export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE;  hive -f ../../src/specmobile/01w_v_prod_asp_v_venona_events_specmobile__visits__prod_asp_venona_counts_weekly.hql'

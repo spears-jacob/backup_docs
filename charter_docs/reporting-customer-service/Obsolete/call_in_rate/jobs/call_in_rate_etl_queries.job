@@ -1,0 +1,4 @@
+type=command
+dependencies=call_in_rate_process_dates
+
+command=/bin/bash -c 'export overwritedate="${overwritedate}"; echo $overwritedate; export startdate="${startdate}"; echo $startdate; export enddate="${enddate}"; echo $enddate; hive -f ../src/call_in_rate_etl_queries.hql'

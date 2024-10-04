@@ -1,0 +1,3 @@
+# database initiation job
+type=command
+command=hive -f ../src/init/pv_durations_init_tables.hql

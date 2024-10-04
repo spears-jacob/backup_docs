@@ -1,0 +1,909 @@
+image:
+  name: charter/gitlab-job:1.0
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+variables:
+  # TF State settings
+  TERRAFORM_STATE_DEV_S3_BUCKET_NAME: "charter-telemetry-pilot-tf-state-dev"
+  TERRAFORM_STATE_DEV_S3_BUCKET_REGION: "us-west-2"
+
+  TERRAFORM_STATE_STG_S3_BUCKET_NAME: "charter-telemetry-pilot-tf-state-dev"
+  TERRAFORM_STATE_STG_S3_BUCKET_REGION: "us-west-2"
+
+  TERRAFORM_STATE_PROD_S3_BUCKET_NAME: "charter-telemetry-pilot-tf-state"
+  TERRAFORM_STATE_PROD_S3_BUCKET_REGION: "us-east-1"
+
+  TERRAFORM_STATE_S3_BUCKET_ENCRYPT: "true"
+  TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE: "terraform-state-lock-dynamo"
+  # IPV
+  IPV_DB_TABLES_INIT_JOB_NAME: "ipv-db-tables-init"
+  IPV_DB_TABLES_INIT_TERRAFORM_DIR: "flows/ipv-db-tables-init/environments"
+  # GLOBAL
+  GLOBAL_DB_TABLES_INIT_JOB_NAME: "global-db-tables-init"
+  GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR: "flows/global-db-tables-init/environments"
+  # LKP
+  LKP_DB_TABLES_INIT_JOB_NAME: "lkp-db-tables-init"
+  LKP_DB_TABLES_INIT_TERRAFORM_DIR: "flows/lkp-db-tables-init/environments"
+  # DASP
+  DASP_DB_TABLES_INIT_JOB_NAME: "dasp-db-tables-init"
+  DASP_DB_TABLES_INIT_TERRAFORM_DIR: "flows/dasp-db-tables-init/environments"
+  # BI Red
+  BI_RED_DB_TABLES_INIT_JOB_NAME: "bi-red-db-tables-init"
+  BI_RED_DB_TABLES_INIT_TERRAFORM_DIR: "flows/bi-red-db-tables-init/environments"
+  # CS
+  CS_DB_TABLES_INIT_JOB_NAME: "cs-db-tables-init"
+  CS_DB_TABLES_INIT_TERRAFORM_DIR: "flows/cs-db-tables-init/environments"
+  # CS LKP
+  CS_LKP_DB_TABLES_INIT_JOB_NAME: "cs-lkp-db-tables-init"
+  CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR: "flows/cs-lkp-db-tables-init/environments"
+  #
+  PROD_REGION: "us-east-1"
+  STG_REGION: "us-east-1"
+  DEV_REGION: "us-west-2"
+
+  DEV_ACCOUNT: "213705006773"
+  STG_ACCOUNT: "213705006773"
+  PROD_ACCOUNT: "387455165365"
+
+  DEV_ENV_NAME: "dev"
+  STG_ENV_NAME: "stg"
+  PROD_ENV_NAME: "prod"
+  CICD_ROLE_NAME: "cicd_worker_role"
+
+  #
+  STG_CICD_ROLE: "arn:aws:iam::${STG_ACCOUNT}:role/dev-temp_${CICD_ROLE_NAME}"
+  DEV_CICD_ROLE: "arn:aws:iam::${DEV_ACCOUNT}:role/${DEV_ENV_NAME}-temp_${CICD_ROLE_NAME}"
+  PROD_CICD_ROLE: "arn:aws:iam::${PROD_ACCOUNT}:role/${PROD_ENV_NAME}_${CICD_ROLE_NAME}"
+  SSH_KNOWN_HOSTS: "gitlab.spectrumxg.com,35.193.245.239 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIzzqlSQDT/9ClFTk0zDoCojGohJs3NLQmiicc5RG3mX68AOwseMW9gu79Xl5PteXTaF06qaS0bUvHPQX12u3gY="
+
+before_script:
+  - terraform --version
+  # These SSH commands will be needed once the runners are moved to docker
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+
+stages:
+  - plan-dev
+  - deploy-dev
+  - plan-stg
+  - deploy-stg
+  - plan-prod
+  - deploy-prod
+
+# todo think about template usage
+
+# DEV
+# IPV
+ipv_db_tables_init_plan_dev:
+  stage: plan-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $TERRAFORM_STATE_DEV_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_DEV_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $IPV_DB_TABLES_INIT_JOB_NAME dev
+    - ./terraform-plan.sh $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+ipv_db_tables_init_deploy_dev:
+  stage: deploy-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+# DASP DEV
+dasp_db_tables_init_plan_dev:
+  stage: plan-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $TERRAFORM_STATE_DEV_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_DEV_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $DASP_DB_TABLES_INIT_JOB_NAME dev
+    - ./terraform-plan.sh $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+dasp_db_tables_init_deploy_dev:
+  stage: deploy-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+# GLOBAL DEV
+global_db_tables_init_plan_dev:
+  stage: plan-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $TERRAFORM_STATE_DEV_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_DEV_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $GLOBAL_DB_TABLES_INIT_JOB_NAME dev
+    - ./terraform-plan.sh $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+global_db_tables_init_deploy_dev:
+  stage: deploy-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $TERRAFORM_STATE_DEV_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_DEV_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $GLOBAL_DB_TABLES_INIT_JOB_NAME dev
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+# LKP DEV
+lkp_db_tables_init_plan_dev:
+  stage: plan-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $TERRAFORM_STATE_DEV_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_DEV_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $LKP_DB_TABLES_INIT_JOB_NAME dev
+    - ./terraform-plan.sh $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+lkp_db_tables_init_deploy_dev:
+  stage: deploy-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+# BI Red DEV
+bi_red_db_tables_init_plan_dev:
+  stage: plan-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $TERRAFORM_STATE_DEV_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_DEV_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $BI_RED_DB_TABLES_INIT_JOB_NAME dev
+    - ./terraform-plan.sh $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+bi_red_db_tables_init_deploy_dev:
+  stage: deploy-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+# CS DEV
+cs_db_tables_init_plan_dev:
+  stage: plan-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $CS_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $TERRAFORM_STATE_DEV_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_DEV_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $CS_DB_TABLES_INIT_JOB_NAME dev
+    - ./terraform-plan.sh $CS_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+cs_db_tables_init_deploy_dev:
+  stage: deploy-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $CS_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+#CS-LKP DEV
+cs_lkp_db_tables_init_plan_dev:
+  stage: plan-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $TERRAFORM_STATE_DEV_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_DEV_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $CS_LKP_DB_TABLES_INIT_JOB_NAME dev
+    - ./terraform-plan.sh $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+cs_lkp_db_tables_init_deploy_dev:
+  stage: deploy-dev
+  environment:
+    name: dev
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME $DEV_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/plan-$DEV_ENV_NAME.tf
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$DEV_ENV_NAME/.terraform/
+  only:
+    - dev
+    - /^feature\/.*$/
+    - /^hotfix\/.*$/
+
+# IPV STG
+ipv_db_tables_init_plan_stg:
+  stage: plan-stg
+  environment:
+    name: stg
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $TERRAFORM_STATE_STG_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_STG_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $IPV_DB_TABLES_INIT_JOB_NAME stg
+    - ./terraform-plan.sh $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $STG_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/plan-$STG_ENV_NAME.tf
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/.terraform/
+  only:
+    - stg
+    - /^hotfix\/stg-.*$/
+
+ipv_db_tables_init_deploy_stg:
+  stage: deploy-stg
+  environment:
+    name: stg
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $STG_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/plan-$STG_ENV_NAME.tf
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/.terraform/
+  only:
+    - stg
+    - /^hotfix\/stg-.*$/
+
+
+# DASP STG
+dasp_db_tables_init_plan_stg:
+  stage: plan-stg
+  environment:
+    name: stg
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $TERRAFORM_STATE_STG_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_STG_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $DASP_DB_TABLES_INIT_JOB_NAME stg
+    - ./terraform-plan.sh $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $STG_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/plan-$STG_ENV_NAME.tf
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/.terraform/
+  only:
+    - stg
+    - /^hotfix\/stg-.*$/
+
+dasp_db_tables_init_deploy_stg:
+  stage: deploy-stg
+  environment:
+    name: stg
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $STG_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/plan-$STG_ENV_NAME.tf
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/.terraform/
+  only:
+    - stg
+    - /^hotfix\/stg-.*$/
+
+# LKP STG
+lkp_db_tables_init_plan_stg:
+  stage: plan-stg
+  environment:
+    name: plan-stg
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $TERRAFORM_STATE_STG_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_STG_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $LKP_DB_TABLES_INIT_JOB_NAME stg
+    - ./terraform-plan.sh $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $STG_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/plan-$STG_ENV_NAME.tf
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/.terraform/
+  only:
+    - stg
+    - /^hotfix\/stg-.*$/
+
+lkp_db_tables_init_deploy_stg:
+  stage: deploy-stg
+  environment:
+    name: stg
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $STG_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/plan-$STG_ENV_NAME.tf
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/.terraform/
+  only:
+    - stg
+    - /^hotfix\/stg-.*$/
+
+# CS STG
+cs_db_tables_init_plan_stg:
+  stage: plan-stg
+  environment:
+    name: stg
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $CS_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $TERRAFORM_STATE_STG_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_DEV_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $CS_DB_TABLES_INIT_JOB_NAME stg
+    - ./terraform-plan.sh $CS_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $STG_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/plan-$STG_ENV_NAME.tf
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/.terraform/
+  only:
+    - stg
+    - /^hotfix\/stg-.*$/
+
+cs_db_tables_init_deploy_stg:
+  stage: deploy-stg
+  environment:
+    name: stg
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $CS_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $STG_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/plan-$STG_ENV_NAME.tf
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/.terraform/
+  only:
+    - stg
+    - /^hotfix\/stg-.*$/
+
+# CS-LKP STG
+cs_lkp_db_tables_init_plan_stg:
+  stage: plan-stg
+  environment:
+    name: plan-stg
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $TERRAFORM_STATE_STG_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_STG_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $CS_LKP_DB_TABLES_INIT_JOB_NAME stg
+    - ./terraform-plan.sh $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $STG_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/plan-$STG_ENV_NAME.tf
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/.terraform/
+  only:
+    - stg
+    - /^hotfix\/stg-.*$/
+
+cs_lkp_db_tables_init_deploy_stg:
+  stage: deploy-stg
+  environment:
+    name: stg
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME $STG_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/plan-$STG_ENV_NAME.tf
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$STG_ENV_NAME/.terraform/
+  only:
+    - stg
+    - /^hotfix\/stg-.*$/
+
+# IPV PROD
+ipv_db_tables_init_plan_prod:
+  stage: plan-prod
+  environment:
+    name: prod-plan
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $TERRAFORM_STATE_PROD_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_PROD_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $IPV_DB_TABLES_INIT_JOB_NAME prod
+    - ./terraform-plan.sh $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+ipv_db_tables_init_deploy_prod:
+  stage: deploy-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $IPV_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+# DASP PROD
+dasp_db_tables_init_plan_prod:
+  stage: plan-prod
+  environment:
+    name: prod-plan
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $TERRAFORM_STATE_PROD_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_PROD_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $DASP_DB_TABLES_INIT_JOB_NAME prod
+    - ./terraform-plan.sh $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+dasp_db_tables_init_deploy_prod:
+  stage: deploy-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $DASP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+# GLOBAL PROD
+global_db_tables_init_plan_prod:
+  stage: plan-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - rm -rf $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $TERRAFORM_STATE_PROD_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_PROD_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $GLOBAL_DB_TABLES_INIT_JOB_NAME prod
+    - ./terraform-plan.sh $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+  only:
+    - master
+    - tags
+
+global_db_tables_init_deploy_prod:
+  stage: deploy-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $TERRAFORM_STATE_PROD_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_PROD_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $GLOBAL_DB_TABLES_INIT_JOB_NAME prod
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $GLOBAL_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+  only:
+    - master
+    - tags
+
+# LKP PROD
+lkp_db_tables_init_plan_prod:
+  stage: plan-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $TERRAFORM_STATE_PROD_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_PROD_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $LKP_DB_TABLES_INIT_JOB_NAME prod
+    - ./terraform-plan.sh $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+lkp_db_tables_init_deploy_prod:
+  stage: deploy-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+# BI Red PROD
+bi_red_db_tables_init_plan_prod:
+  stage: plan-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $TERRAFORM_STATE_PROD_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_PROD_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $BI_RED_DB_TABLES_INIT_JOB_NAME prod
+    - ./terraform-plan.sh $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+bi_red_db_tables_init_deploy_prod:
+  stage: deploy-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $BI_RED_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+# CS PROD
+cs_db_tables_init_plan_prod:
+  stage: plan-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $CS_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $TERRAFORM_STATE_PROD_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_PROD_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $CS_DB_TABLES_INIT_JOB_NAME prod
+    - ./terraform-plan.sh $CS_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+cs_db_tables_init_deploy_prod:
+  stage: deploy-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $CS_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $CS_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+# CS-LKP PROD
+cs_lkp_db_tables_init_plan_prod:
+  stage: plan-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - ./terraform-init.sh $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $TERRAFORM_STATE_PROD_S3_BUCKET_NAME $TERRAFORM_STATE_S3_BUCKET_ENCRYPT $TERRAFORM_STATE_PROD_S3_BUCKET_REGION $TERRAFORM_STATE_LOCK_DYNAMO_DB_TABLE $CS_LKP_DB_TABLES_INIT_JOB_NAME prod
+    - ./terraform-plan.sh $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/
+
+cs_lkp_db_tables_init_deploy_prod:
+  stage: deploy-prod
+  environment:
+    name: prod
+  tags:
+    - awspilot
+  script:
+    - . ./assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - chmod +x terraform-apply.sh # TODO remove +x, it was not working w/o
+    - ./terraform-apply.sh $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME $PROD_ENV_NAME
+  allow_failure: true
+  when: manual
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/plan-$PROD_ENV_NAME.tf
+      - $CS_LKP_DB_TABLES_INIT_TERRAFORM_DIR/$PROD_ENV_NAME/.terraform/
+  only:
+    - master
+    - /^hotfix\/prod-.*$/

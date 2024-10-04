@@ -1,0 +1,5 @@
+# Parameter Init job
+type=command
+command=whoami
+
+command.1=/bin/bash transfer_files.sh

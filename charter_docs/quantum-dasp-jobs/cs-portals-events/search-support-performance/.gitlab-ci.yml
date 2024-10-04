@@ -1,0 +1,61 @@
+.search_support_performance_variables: &search_support_performance_variables
+  JOB_NAME: "cs-portals-events-search-support"
+  SEARCH_SUPPORT_DIR: "cs-portals-events/search-support-performance"
+  ARTIFACTS_DIR: "cs-portals-events/search-support-performance/artifacts"
+  TERRAFORM_DIR: "cs-portals-events/search-support-performance/terraform"
+  SCRIPTS_DIR: "cs-portals-events/search-support-performance/scripts"
+  S3_ARTIFACTS_DIR: "cs-portals-events/search-support-performance"
+
+search_support_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$SEARCH_SUPPORT_DIR/ddl"
+    HQL_DIR: "$SEARCH_SUPPORT_DIR/hql"
+    <<: *search_support_performance_variables
+
+#STG
+search_support_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *search_support_performance_variables
+  dependencies:
+    - search_support_build
+
+search_support_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *search_support_performance_variables
+  dependencies:
+    - search_support_build
+    - search_support_plan_stg
+
+search_support_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *search_support_performance_variables
+  dependencies:
+    - search_support_build
+
+
+#PROD
+search_support_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *search_support_performance_variables
+  dependencies:
+    - search_support_build
+
+search_support_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *search_support_performance_variables
+  dependencies:
+    - search_support_build
+    - search_support_plan_prod
+
+search_support_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *search_support_performance_variables
+  dependencies:
+    - search_support_build

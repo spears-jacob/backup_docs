@@ -1,0 +1,6 @@
+# azkaban-ftp azkaban job
+type=command
+command=whoami
+
+command.1=/bin/sh -c "mkdir -p ${data_sources_path}/net_webmail_twc_bhn/${ENVIRONMENT}"
+command.2=/bin/bash lftp.sh PROD_webmail_twc_bhn

@@ -1,0 +1,7 @@
+# Parameter Init job
+type=command
+
+dependencies=01_init_tables
+
+command=whoami
+command.1=/bin/bash -c 'export historical_load=${historical_load};/bin/bash ../bin/process_dates.sh'

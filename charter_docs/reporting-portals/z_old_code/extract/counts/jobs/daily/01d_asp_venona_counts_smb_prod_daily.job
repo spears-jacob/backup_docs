@@ -1,0 +1,10 @@
+# asp counts SpectrumBusiness.net prod daily
+dependencies=00_parameter_init
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../../src/smb/01d_d_prod_asp_v_venona_events_portals_smb__devices__prod_asp_venona_counts_daily.hql'
+command.2=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../../src/smb/01d_h_prod_asp_v_venona_events_portals_smb__households__prod_asp_venona_counts_daily.hql'
+command.3=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../../src/smb/01d_i_prod_asp_v_venona_events_portals_smb__instances__prod_asp_venona_counts_daily.hql'
+command.4=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../../src/smb/01d_v_prod_asp_v_venona_events_portals_smb__visits__prod_asp_venona_counts_daily.hql'
+command.5=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../../src/smb/01d_x_prod_asp_v_venona_events_portals_smb__manual__prod_asp_venona_counts_daily.hql'

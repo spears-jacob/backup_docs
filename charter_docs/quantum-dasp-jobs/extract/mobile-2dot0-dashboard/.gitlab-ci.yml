@@ -1,0 +1,61 @@
+.mobile_2dot0_dashboard_variables: &mobile_2dot0_dashboard_variables
+  JOB_NAME: "d-mobile-2dot0-dashboard"
+  MOBILE_2DOT0_DASHBOARD: "extract/mobile-2dot0-dashboard"
+  ARTIFACTS_DIR: "extract/mobile-2dot0-dashboard/artifacts"
+  TERRAFORM_DIR: "extract/mobile-2dot0-dashboard/terraform"
+  SCRIPTS_DIR: "extract/mobile-2dot0-dashboard/scripts"
+  S3_ARTIFACTS_DIR: "extract/mobile-2dot0-dashboard"
+
+mobile_2dot0_dashboard_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$MOBILE_2DOT0_DASHBOARD/ddl"
+    HQL_DIR: "$MOBILE_2DOT0_DASHBOARD/hql"
+    <<: *mobile_2dot0_dashboard_variables
+
+#STG
+mobile_2dot0_dashboard_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *mobile_2dot0_dashboard_variables
+  dependencies:
+    - mobile_2dot0_dashboard_build
+
+mobile_2dot0_dashboard_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *mobile_2dot0_dashboard_variables
+  dependencies:
+    - mobile_2dot0_dashboard_build
+    - mobile_2dot0_dashboard_plan_stg
+
+mobile_2dot0_dashboard_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *mobile_2dot0_dashboard_variables
+  dependencies:
+    - mobile_2dot0_dashboard_build
+
+
+#PROD
+mobile_2dot0_dashboard_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *mobile_2dot0_dashboard_variables
+  dependencies:
+    - mobile_2dot0_dashboard_build
+
+mobile_2dot0_dashboard_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *mobile_2dot0_dashboard_variables
+  dependencies:
+    - mobile_2dot0_dashboard_build
+    - mobile_2dot0_dashboard_plan_prod
+
+mobile_2dot0_dashboard_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *mobile_2dot0_dashboard_variables
+  dependencies:
+    - mobile_2dot0_dashboard_build

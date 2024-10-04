@@ -1,0 +1,5 @@
+# .NET User Reset Azkaban job
+type=command
+dependencies=net_message_names_monthly
+command=whoami
+command.1=/bin/sh bin/net_reset_user_monthly.sh

@@ -1,0 +1,6 @@
+# consumer net Adobe Events Azkaban end job
+type=noop
+dependencies=12_start_adobe_consumer_counts
+
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

@@ -1,0 +1,60 @@
+.call_care_validation_variables: &call_care_validation_variables
+  JOB_NAME: "call-care-validation"
+  CALL_CARE_VALIDATION_DIR: "call-care-validation"
+  ARTIFACTS_DIR: "call-care-validation/artifacts"
+  TERRAFORM_DIR: "call-care-validation/terraform"
+  SCRIPTS_DIR: "call-care-validation/scripts"
+  S3_ARTIFACTS_DIR: "call-care-validation"
+
+call_care_validation_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$CALL_CARE_VALIDATION_DIR/ddl"
+    HQL_DIR: "$CALL_CARE_VALIDATION_DIR/hql"
+    <<: *call_care_validation_variables
+
+#STG
+call_care_validation_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *call_care_validation_variables
+  dependencies:
+    - call_care_validation_build
+
+call_care_validation_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *call_care_validation_variables
+  dependencies:
+    - call_care_validation_build
+    - call_care_validation_plan_stg
+
+call_care_validation_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *call_care_validation_variables
+  dependencies:
+    - call_care_validation_build
+
+#PROD
+call_care_validation_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *call_care_validation_variables
+  dependencies:
+    - call_care_validation_build
+
+call_care_validation_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *call_care_validation_variables
+  dependencies:
+    - call_care_validation_build
+    - call_care_validation_plan_prod
+
+call_care_validation_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *call_care_validation_variables
+  dependencies:
+    - call_care_validation_build

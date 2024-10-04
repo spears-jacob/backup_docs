@@ -1,0 +1,6 @@
+# Groovy
+type=Groovy
+dependencies=04_portals_selfservice_set_agg_process_daily_final
+
+groovy.command.1=println 'This job runs aggregates that depend on the Portals daily set agg'
+groovy.command.2=println props; import azkaban.executor.*; def paramsToPass = ["env.RUN_DATE": "${env.RUN_DATE}", "env.job_started_by_exec": "${azkaban.link.execution.url}", "env.job_started_by_project_flow": "${azkaban.link.workflow.url}" ]

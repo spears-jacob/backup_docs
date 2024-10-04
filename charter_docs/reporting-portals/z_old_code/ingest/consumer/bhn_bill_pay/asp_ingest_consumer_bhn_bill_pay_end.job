@@ -1,0 +1,6 @@
+# BHN Bill Pay Adobe Events Azkaban job
+type=noop
+dependencies=06_bhn_bill_pay_events_partition
+
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

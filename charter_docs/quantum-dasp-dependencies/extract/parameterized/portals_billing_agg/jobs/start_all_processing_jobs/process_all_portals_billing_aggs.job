@@ -1,0 +1,10 @@
+# Groovy
+type=Groovy
+
+groovy.command.1=println 'This job runs each Portals billing agg job (daily, fiscal monthly, monthly, and weekly)'
+groovy.command.2=import azkaban.executor.*
+groovy.command.3=def paramsToPass = ["env.RUN_DATE": "${env.RUN_DATE}", "env.job_started_by_exec": "${azkaban.link.execution.url}", "env.job_started_by_project_flow": "${azkaban.link.workflow.url}" ]
+groovy.command.4=azkaban.execute("asp_extract_parameterized_billing_agg","portals_billing_agg_process_daily_end", paramsToPass)
+groovy.command.5=azkaban.execute("asp_extract_parameterized_billing_agg","portals_billing_agg_process_fiscal_monthly_end", paramsToPass)
+groovy.command.6=azkaban.execute("asp_extract_parameterized_billing_agg","portals_billing_agg_process_monthly_end", paramsToPass)
+groovy.command.7=azkaban.execute("asp_extract_parameterized_billing_agg","portals_billing_agg_process_weekly_end", paramsToPass)

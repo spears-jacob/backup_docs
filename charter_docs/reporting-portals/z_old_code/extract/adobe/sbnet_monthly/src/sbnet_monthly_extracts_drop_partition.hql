@@ -1,0 +1,3 @@
+USE ${env:ENVIRONMENT};
+
+ALTER TABLE ${hiveconf:TABLE_NAME} DROP IF EXISTS PARTITION (year_month='${hiveconf:YEAR_MONTH}');

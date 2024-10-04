@@ -1,0 +1,6 @@
+# SB.NET Executive Monthly Aggregate Azkaban END job
+type=noop
+dependencies=1_sbnet_percents_combined_monthly
+
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

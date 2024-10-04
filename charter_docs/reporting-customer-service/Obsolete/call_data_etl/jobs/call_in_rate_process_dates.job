@@ -1,0 +1,4 @@
+type=command
+
+dependencies=initialize_tables
+command=/bin/bash -c '/bin/bash ../bin/process_dates.sh'

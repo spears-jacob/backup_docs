@@ -1,0 +1,28 @@
+# App Aggregation Azkaban Job - Adds adjustments/manual files,
+# performs calculations and totals, then moves data to aggregation table
+
+type=command
+dependencies=02a_asp_app_agg_app_figures,02b_asp_app_agg_my_bhn,02c_asp_app_agg_my_twc,02d_asp_app_agg_my_spc,02e_pass_parameters
+
+command=whoami
+
+# First, login to ambari:   https://pi-datamart-proxy.corp.chartercom.com/ambari/#/login
+# Below is the spot where to go to drop the TAB DELIMITED asp_app_monthly_adjustment.txt  for processing
+# https://pi-datamart-proxy.corp.chartercom.com/ambari/views/FILES/1.0.0/AUTO_FILES_INSTANCE/#/files?path=%2Fdev_archive%2Fasp_app_monthly_agg%2Fmanual_adjustment
+# See the asp_app_monthly_agg/manual_adjustment_history folder in hdfs (abmari) to see prior files for the format
+
+# Manual Adjustments including manual files:
+# 1. First, command.1 sets variables for (f)ile, (h)istory filename, (d)atabase table where raw file will go to
+# 2. Next, the raw database table is cleaned of existing files, and the folder is made.
+# 3. Then, an hdfs file-existence-test is run to see if there is a file in the spot where it is expected for adjustments.
+# 4. If there is a file, then it is copied to the database, then copied into the file history folder, and then deleted.
+command.1=/bin/bash -c "f=${HDFS_ARCHIVE_DIR}/asp_app_monthly_agg/manual_adjustment/asp_app_monthly_adjustment.txt ; h=${HDFS_ARCHIVE_DIR}/asp_app_monthly_agg/manual_adjustment_historical/asp_app_monthly_adjustment${archive_date_time}.txt ;   d=/apps/hive/warehouse/${TMP_db}.db/asp_app_monthly_adjustments_raw/ ;   hdfs dfs -rm -r $d;    hdfs dfs -mkdir $d;    hdfs dfs -test -e $f;    if [ $? -eq 0 ]; then hdfs dfs -cp $f $d;  hdfs dfs -cp $f $h ;  hdfs dfs -rm -f $f; fi;"
+command.2=/bin/bash hive -f src/asp_app_agg_03_adjustments.hql
+
+# Calculations
+command.3=/bin/bash  -c "export CADENCE=${CADENCE}; echo $CADENCE; hive -f init/asp_app_agg_truncate.hql "
+command.4=/bin/bash  -c "export adj=${adj}; export ymd=${ymd}; export CADENCE=${CADENCE}; echo $adj; echo $ymd; echo $CADENCE; hive -f src/asp_app_agg_04_calc.hql "
+
+# Aggregation
+command.5=/bin/bash -c "export adj=${adj}; export ymd=${ymd}; export CADENCE=${CADENCE}; export START_DATE=${START_DATE}; export END_DATE=${END_DATE};echo $adj; echo $ymd; echo $CADENCE; export YM=${YM}; export IsReprocess=${IsReprocess}; echo $YM; echo $IsReprocess; echo $START_DATE;  echo $END_DATE; hive -f src/asp_app_agg_05.hql "
+ 

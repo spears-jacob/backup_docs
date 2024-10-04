@@ -1,0 +1,6 @@
+*.out
+*.txt
+*.tmp
+XGAN*
+settings.json
+.DS_Store

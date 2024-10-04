@@ -1,0 +1,4 @@
+# database init job
+type=command
+command=whoami
+command.1=/bin/bash -c "hive -f ../init/definitions_init_tables.hql"

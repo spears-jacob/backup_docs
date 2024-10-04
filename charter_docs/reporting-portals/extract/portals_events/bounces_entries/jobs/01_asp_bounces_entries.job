@@ -1,0 +1,6 @@
+# asp venona all apps prod daily - bounces and entries by page name
+dependencies=00_parameter_init
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE; export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../src/01_bounces_entries.hql '

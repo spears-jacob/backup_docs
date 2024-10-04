@@ -1,0 +1,5 @@
+# 0202_prod_monthly_resi_adobe job
+type=command
+dependencies=01_metric_lookup
+command=whoami
+command.1=/bin/bash -c 'hive -f ../src/0202_prod_monthly_resi_adobe.hql'

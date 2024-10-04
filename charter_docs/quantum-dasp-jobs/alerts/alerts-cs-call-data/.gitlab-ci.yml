@@ -1,0 +1,57 @@
+.alerts_cs_call_data_variables: &alerts_cs_call_data_variables
+  JOB_NAME: "alert-cs-call-data"
+  ARTIFACTS_DIR: "alerts/alerts-cs-call-data/artifacts"
+  TERRAFORM_DIR: "alerts/alerts-cs-call-data/terraform"
+  ALERT_LAMBDA_DIR: "alerts/alerts-cs-call-data/lambda"
+  S3_ARTIFACTS_DIR: "alerts/alerts-cs-call-data"
+
+alerts_cs_call_data_build:
+  extends: .build_alerts
+  variables:
+    <<: *alerts_cs_call_data_variables
+
+#STG
+alerts_cs_call_data_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *alerts_cs_call_data_variables
+  dependencies:
+    - alerts_cs_call_data_build
+
+alerts_cs_call_data_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *alerts_cs_call_data_variables
+  dependencies:
+    - alerts_cs_call_data_build
+    - alerts_cs_call_data_plan_stg
+
+alerts_cs_call_data_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *alerts_cs_call_data_variables
+  dependencies:
+    - alerts_cs_call_data_build
+
+#PROD
+alerts_cs_call_data_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *alerts_cs_call_data_variables
+  dependencies:
+    - alerts_cs_call_data_build
+
+alerts_cs_call_data_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *alerts_cs_call_data_variables
+  dependencies:
+    - alerts_cs_call_data_build
+    - alerts_cs_call_data_plan_prod
+
+alerts_cs_call_data_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *alerts_cs_call_data_variables
+  dependencies:
+    - alerts_cs_call_data_build

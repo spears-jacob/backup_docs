@@ -1,0 +1,7 @@
+# App Aggregation Azkaban Job that passes parameters to final job
+type=command
+dependencies=02a_asp_app_agg_app_figures,02b_asp_app_agg_my_bhn,02c_asp_app_agg_my_twc,02d_asp_app_agg_my_spc,02e_pass_parameters
+
+command=whoami
+
+command.1=/bin/bash bin/working_dates.sh \"${TZ}\" ${IsCurrent1_Prior2_Reprocess3_ToBeProcessed} ${Cadence_CalendarMonth1_FiscalMonth2_Daily3} ${ReprocessingStartDate} ${ReprocessingEndDate}

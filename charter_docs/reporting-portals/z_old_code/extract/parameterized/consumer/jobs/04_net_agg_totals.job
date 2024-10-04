@@ -1,0 +1,8 @@
+# net_agg_totals job
+type=command
+dependencies=main_03a_net_products_agg_monthly_billpay,main_03b_net_products_agg_monthly_fedid,main_03c_net_products_agg_monthly_L-BHN,main_03d_net_products_agg_monthly_L-CHTR,main_03e_net_products_agg_monthly_L-TWC,main_03f_net_products_agg_monthly_newids,main_03g_net_products_agg_monthly_webmail,main_03h_net_products_agg_monthly_bounces,main_03i_net_products_agg_monthly_exits_auth,main_03j_net_products_agg_monthly_exits_unauth,adj_04_net_adjustments_combined_monthly,init_03_param
+command=whoami
+command.1=/bin/bash -c 'export CADENCE=${CADENCE}; echo $CADENCE; export END_DATE=${END_DATE}; echo $END_DATE; export START_DATE=${START_DATE}; echo $START_DATE; export pf=${PF}; echo $pf; export adj=${ADJ}; echo $adj; export ym=${YM}; echo $ym; export IsReprocess=${IsReprocess}; echo $IsReprocess; hive -f ../src/04_net_agg_totals.hql '
+
+# prepares parameters for subsequent job
+command.2=/bin/bash ../bin/working_dates.sh \"${TZ}\" ${IsCurrent1_Prior2_Reprocess3_ToBeProcessed} ${Cadence_CalendarMonth1_FiscalMonth2_Daily3} ${ReprocessingStartDate} ${ReprocessingEndDate}

@@ -1,0 +1,7 @@
+# .NET Events population azkaban job
+type=command
+
+dependencies=04_net_events_calc
+
+command=whoami
+command.1=pig -f -useHCatalog src/net_events.pig -param TMP=${TMP_db} -param LKP=${LKP_db} -param ENV=${ENVIRONMENT}

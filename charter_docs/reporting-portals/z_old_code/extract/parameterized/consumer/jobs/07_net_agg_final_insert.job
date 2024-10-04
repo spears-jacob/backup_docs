@@ -1,0 +1,6 @@
+# net agg final inserts
+# this pushes all processed data into final tables, including month over month and 3-month percent change calcs
+type=command
+dependencies=06_net_agg_null_placeholders
+command=whoami
+command.1=/bin/bash -c 'export CADENCE=${CADENCE}; echo $CADENCE; export pf=${PF}; hive -f ../src/07_net_agg_final_insert.hql'

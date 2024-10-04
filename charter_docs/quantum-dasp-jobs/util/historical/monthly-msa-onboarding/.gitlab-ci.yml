@@ -1,0 +1,60 @@
+.m_msa_onboarding_variables: &m_msa_onboarding_variables
+  JOB_NAME: "portals-events-monthly-msa-onboarding"
+  M_MSA_ONBOARDING_DIR: "portals-events/monthly-msa-onboarding"
+  ARTIFACTS_DIR: "portals-events/monthly-msa-onboarding/artifacts"
+  TERRAFORM_DIR: "portals-events/monthly-msa-onboarding/terraform"
+  SCRIPTS_DIR: "portals-events/monthly-msa-onboarding/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/monthly-msa-onboarding"
+
+m_msa_onboarding_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$M_MSA_ONBOARDING_DIR/ddl"
+    HQL_DIR: "$M_MSA_ONBOARDING_DIR/hql"
+    <<: *m_msa_onboarding_variables
+
+#STG
+m_msa_onboarding_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *m_msa_onboarding_variables
+  dependencies:
+    - m_msa_onboarding_build
+
+m_msa_onboarding_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *m_msa_onboarding_variables
+  dependencies:
+    - m_msa_onboarding_build
+    - m_msa_onboarding_plan_stg
+
+m_msa_onboarding_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *m_msa_onboarding_variables
+  dependencies:
+    - m_msa_onboarding_build
+
+#PROD
+m_msa_onboarding_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *m_msa_onboarding_variables
+  dependencies:
+    - m_msa_onboarding_build
+
+m_msa_onboarding_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *m_msa_onboarding_variables
+  dependencies:
+    - m_msa_onboarding_build
+    - m_msa_onboarding_plan_prod
+
+m_msa_onboarding_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *m_msa_onboarding_variables
+  dependencies:
+    - m_msa_onboarding_build

@@ -1,0 +1,5 @@
+# net_manual_files_insert_monthly job
+type=command
+dependencies=net_extract_monthly_init_load
+command=whoami
+command.1=/bin/sh bin/net_manual_files_insert_monthly.sh

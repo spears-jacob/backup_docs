@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line, this is the magical library that does the, uh, 'magic'
+PIDeliveryPipeline {
+    azkabanProjectName = "xp_extract_parameterized_portals_idm_agg" // required
+    azkabanEnv = 'prod' // optional, default to dev
+    azkabanProjectDesc = "Parameterized extract portals api agg - started by asp_extract_start_all_extracts_end" // required
+    azkabanProjectOwner = 'jmccune' // required, put your AD login here
+    azkabanPlatform = 'ASP'  // required
+    azkabanEscalation = 'Marjorie Truitt' // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Critical - Immediate Response' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun=[] // not implemented, could have loop here too
+    azkabanProdFlowSchedule=[]
+    gitDir='extract/parameterized/portals_idm_agg'  // the sub dir where your project dir is
+}

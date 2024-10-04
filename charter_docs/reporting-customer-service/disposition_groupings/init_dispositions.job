@@ -1,0 +1,2 @@
+type=command
+command=hive -f init/init_dispositions.hql

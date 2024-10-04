@@ -1,0 +1,61 @@
+.cs_pageview_daily_variables: &cs_pageview_daily_variables
+  JOB_NAME: "cs-pageview-daily"
+  CS_CALL_CARE_DERIVED_TABLES_DIR: "cs-jobs/pageview-daily"
+  ARTIFACTS_DIR: "cs-jobs/pageview-daily/artifacts"
+  TERRAFORM_DIR: "cs-jobs/pageview-daily/terraform"
+  SCRIPTS_DIR: "cs-jobs/pageview-daily/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/pageview-daily"
+#  PATH_TO_SCALA_CODE: "cs/pageview-daily/spark_code/cs-call-care-derivations"
+
+cs_pageview_daily_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$CS_CALL_CARE_DERIVED_TABLES_DIR/ddl"
+    HQL_DIR: "$CS_CALL_CARE_DERIVED_TABLES_DIR/hql"
+    <<: *cs_pageview_daily_variables
+
+#PROD
+cs_pageview_daily_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *cs_pageview_daily_variables
+  dependencies:
+    - cs_pageview_daily_build
+
+cs_pageview_daily_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *cs_pageview_daily_variables
+  dependencies:
+    - cs_pageview_daily_build
+    - cs_pageview_daily_plan_prod
+
+cs_pageview_dailydestroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *cs_pageview_daily_variables
+  dependencies:
+    - cs_pageview_daily_build
+
+#STG
+cs_pageview_daily_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *cs_pageview_daily_variables
+  dependencies:
+    - cs_pageview_daily_build
+
+cs_pageview_daily_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *cs_pageview_daily_variables
+  dependencies:
+    - cs_pageview_daily_build
+    - cs_pageview_daily_plan_stg
+
+cs_pageview_dailydestroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *cs_pageview_daily_variables
+  dependencies:
+    - cs_pageview_daily_build

@@ -1,0 +1,7 @@
+# SB.NET Events population azkaban job
+type=command
+dependencies=sbnet_events_calc
+
+command=whoami
+
+command.1=pig -f -useHCatalog src/sbnet_events.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}

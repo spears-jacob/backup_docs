@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line
+PIDeliveryPipeline {
+    azkabanProjectName = "asp_extract_msa_onboarding" // required
+    azkabanEnv = 'prod' // optional, default to dev
+    azkabanProjectDesc = "MSA onboarding Metrics" // required
+    azkabanProjectOwner = 'azheng' // required, put your AD login here
+    azkabanPlatform = 'ASP'  // required
+    azkabanEscalation = 'Marjorie Truitt' // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Optional - Next Day' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun=[] // not implemented, could have loop here too
+    azkabanProdFlowSchedule=[]
+    gitDir='extract/portals_events/msa_onboarding'  // the sub dir where your project dir is
+}

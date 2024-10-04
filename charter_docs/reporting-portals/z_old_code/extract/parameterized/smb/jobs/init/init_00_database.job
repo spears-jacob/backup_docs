@@ -1,0 +1,8 @@
+# Azkaban job that creates required tables and views
+
+type=command
+
+command=whoami
+
+command.1=/bin/bash hive -f ../../src/init/sb_tables_init.hql
+command.2=/bin/bash hive -f ../../src/init/asp_sb_agg_db_init.hql

@@ -1,0 +1,10 @@
+# Groovy test job
+type=Groovy
+
+groovy.command.1=println 'This job runs each Tableau Email jobs for daily asp reporting'
+groovy.command.2=import azkaban.executor.*
+
+groovy.command.3=azkaban.execute("asp_daily_performance_email_aws_idm",     "tableau_email_dist_idm_end")
+groovy.command.4=azkaban.execute("asp_daily_operational_email_aws_specnet", "tableau_email_dist_specnet_end")
+groovy.command.5=azkaban.execute("asp_daily_operational_email_aws_smb",     "tableau_email_dist_smb_end")
+groovy.command.6=azkaban.execute("asp_daily_operational_email_aws_msa",     "tableau_email_dist_msa_end")

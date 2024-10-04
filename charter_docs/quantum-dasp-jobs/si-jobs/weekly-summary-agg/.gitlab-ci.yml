@@ -1,0 +1,60 @@
+.w_summary_agg_variables: &w_summary_agg_variables
+  JOB_NAME: "w-summary-agg"
+  W_SUMMARY_AGG_DIR: "si-jobs/weekly-summary-agg"
+  ARTIFACTS_DIR: "si-jobs/weekly-summary-agg/artifacts"
+  TERRAFORM_DIR: "si-jobs/weekly-summary-agg/terraform"
+  SCRIPTS_DIR: "si-jobs/weekly-summary-agg/scripts"
+  S3_ARTIFACTS_DIR: "si-jobs/weekly-summary-agg"
+
+w_summary_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$W_SUMMARY_AGG_DIR/ddl"
+    HQL_DIR: "$W_SUMMARY_AGG_DIR/hql"
+    <<: *w_summary_agg_variables
+
+#STG
+w_summary_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *w_summary_agg_variables
+  dependencies:
+    - w_summary_agg_build
+
+w_summary_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *w_summary_agg_variables
+  dependencies:
+    - w_summary_agg_build
+    - w_summary_agg_plan_stg
+
+w_summary_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *w_summary_agg_variables
+  dependencies:
+    - w_summary_agg_build
+
+#PROD
+w_summary_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *w_summary_agg_variables
+  dependencies:
+    - w_summary_agg_build
+
+w_summary_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *w_summary_agg_variables
+  dependencies:
+    - w_summary_agg_build
+    - w_summary_agg_plan_prod
+
+w_summary_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *w_summary_agg_variables
+  dependencies:
+    - w_summary_agg_build

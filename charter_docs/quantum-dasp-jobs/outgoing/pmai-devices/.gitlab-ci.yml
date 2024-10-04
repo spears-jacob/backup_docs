@@ -1,0 +1,60 @@
+.pmai_devices_variables: &pmai_devices_variables
+  JOB_NAME: "outgoing-pmai-devices"
+  pmai_devices_DIR: "outgoing/pmai-devices"
+  ARTIFACTS_DIR: "outgoing/pmai-devices/artifacts"
+  TERRAFORM_DIR: "outgoing/pmai-devices/terraform"
+  SCRIPTS_DIR: "outgoing/pmai-devices/scripts"
+  S3_ARTIFACTS_DIR: "outgoing/pmai-devices"
+
+pmai_devices_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$pmai_devices_DIR/ddl"
+    HQL_DIR: "$pmai_devices_DIR/hql"
+    <<: *pmai_devices_variables
+
+#stg
+pmai_devices_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *pmai_devices_variables
+  dependencies:
+    - pmai_devices_build
+
+pmai_devices_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *pmai_devices_variables
+  dependencies:
+    - pmai_devices_build
+    - pmai_devices_plan_stg
+
+pmai_devices_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *pmai_devices_variables
+  dependencies:
+    - pmai_devices_build
+
+#PROD
+pmai_devices_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *pmai_devices_variables
+  dependencies:
+    - pmai_devices_build
+
+pmai_devices_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *pmai_devices_variables
+  dependencies:
+    - pmai_devices_build
+    - pmai_devices_plan_prod
+
+pmai_devices_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *pmai_devices_variables
+  dependencies:
+    - pmai_devices_build

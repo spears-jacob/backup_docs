@@ -1,0 +1,7 @@
+# database object initialization job
+type=command
+command=whoami
+
+dependencies=01_parameter_init, 02_call_in_rate_visits_ETL_Legacy
+command=hive -f ../init/call_in_rate_views_Legacy.hql
+

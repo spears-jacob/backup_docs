@@ -1,0 +1,6 @@
+# .NET Preferred Communication Azkaban job
+type=command
+dependencies=database_init
+
+command=whoami
+command.1=/bin/bash net_preferred_comm_monthly.sh

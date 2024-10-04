@@ -1,0 +1,6 @@
+# asp venona page render times all applications prod daily
+dependencies=00_parameter_init
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../src/01a_page_load_time_page_views_visits.hql'

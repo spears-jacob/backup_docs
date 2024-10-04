@@ -1,0 +1,5 @@
+# FHR BPSS Monthly Aggregate Azkaban Data Load Job
+type=command
+dependencies=fhr_bpss_monthly_src_agg
+command=whoami
+command.1=/bin/sh bin/fhr_bpss_monthly_agg.sh

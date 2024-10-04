@@ -1,0 +1,6 @@
+#  Azkaban job
+type=command
+dependencies=03_portals_selfservice_set_agg_reprocess_weekly_instances,03_portals_selfservice_set_agg_reprocess_weekly_visits,03_portals_selfservice_set_agg_reprocess_weekly_devices,03_portals_selfservice_set_agg_reprocess_weekly_accounts
+command=whoami
+
+command.1=/bin/bash -c 'export execid=${azkaban.flow.execid}; echo $execid; export ProcessUser="${azkaban.flow.submituser}"; echo $ProcessUser; hive -f ../../../src/portals_selfservice_set_agg_final.hql'

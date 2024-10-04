@@ -1,0 +1,4 @@
+#azkaban job to clean up the tmp table 
+dependencies=care_all_trbl_call_consolidate_twc
+type=command
+command=/bin/bash bin/care_all_trbl_call_cleanup_twc.sh

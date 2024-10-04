@@ -1,0 +1,7 @@
+#  Azkaban job
+type=command
+dependencies=01_param_init_rd
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export execid=${azkaban.flow.execid}; echo $execid; export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ; export $LABEL_DATE_DENVER="${LABEL_DATE_DENVER}"; echo $LABEL_DATE_DENVER; export START_DATE="${START_DATE}"; echo $START_DATE;  export END_DATE="${END_DATE}"; echo $END_DATE; export FLOW_BACKFILL=backfill; echo $FLOW_BACKFILL; hive -f ../../src/parameterized_msa.hql '

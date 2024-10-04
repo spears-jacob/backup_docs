@@ -1,0 +1,5 @@
+include:
+  - local: 'coordinator-template/dot_gitlab-ci-template.yml'
+# CS
+  - local: 'cs/daily/dot_gitlab-ci.yml'
+  - local: 'cs/monthly/dot_gitlab-ci.yml'

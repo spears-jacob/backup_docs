@@ -1,0 +1,9 @@
+# .NET Events population azkaban job
+type=command
+dependencies=net_events_calc
+
+command=whoami
+
+command.1=pig -f -useHCatalog src/net_events.pig -param TMP=${TMP_db} -param LKP=${LKP_db} -param ENV=${ENVIRONMENT}
+command.2=bash -c "cd ${data_sources_path}/net_events/${env.property} ;tar --force-local --warning=no-file-changed -czvf net_adobe_${azkaban.flow.start.timestamp}.tgz * --remove-files || [[ $? -eq 1 ]]"
+command.3=bash -c "cd ${data_sources_path}/net_events/${env.property} ; for i in *:*; do mv "$i" "${i//:/_}"; done ; hadoop fs -moveFromLocal net_adobe_*tgz   /archive/net_events/${env.property}/"

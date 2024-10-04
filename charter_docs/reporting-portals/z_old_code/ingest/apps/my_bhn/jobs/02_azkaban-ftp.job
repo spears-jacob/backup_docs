@@ -1,0 +1,12 @@
+# azkaban-ftp azkaban job
+type=command
+command=whoami
+
+command.1=/bin/sh -c "mkdir -p ${localFSarchive}"
+command.2=/bin/sh -c "mkdir -p ${localFSworking}"
+command.3=/bin/sh -c "if [[ ${clean_working} == 1 ]]; then rm -f ${localFSworking}*.*; else echo Not cleaning working folder ${localFSworking} ; fi "
+command.4=/bin/sh -c "if [[ ${clean_archive} == 1 ]]; then rm -f ${localFSarchive}*.*; else echo Not cleaning archive folder ${localFSarchive} ; fi "
+command.5=/bin/sh -c "ls -al ${localFSarchive}"
+command.6=/bin/sh -c "ls -al ${localFSworking}"
+command.7=/bin/bash ../lftp.sh ../${lftpjson}
+command.8=/bin/bash ../bin/${utilityScript} ${localFSworking} ${localFSarchive}

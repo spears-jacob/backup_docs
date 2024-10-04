@@ -1,0 +1,4 @@
+#database init job
+type=command
+
+command=/bin/bash ../bin/database_init.sh ${DB_TEMP}

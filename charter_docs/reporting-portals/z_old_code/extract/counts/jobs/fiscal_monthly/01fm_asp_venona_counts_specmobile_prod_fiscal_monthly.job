@@ -1,0 +1,9 @@
+# asp counts SpectrumMobile prod fiscal_monthly
+dependencies=00_parameter_init
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE_TZ="2018-07-01_06"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../../src/specmobile/01fm_d_prod_asp_v_venona_events_specmobile__devices__prod_asp_venona_counts_fiscal_monthly.hql'
+command.2=/bin/bash -c 'export START_DATE_TZ="2018-07-01_06"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../../src/specmobile/01fm_h_prod_asp_v_venona_events_specmobile__households__prod_asp_venona_counts_fiscal_monthly.hql'
+command.3=/bin/bash -c 'export START_DATE_TZ="2018-07-01_06"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../../src/specmobile/01fm_i_prod_asp_v_venona_events_specmobile__instances__prod_asp_venona_counts_fiscal_monthly.hql'
+command.4=/bin/bash -c 'export START_DATE_TZ="2018-07-01_06"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../../src/specmobile/01fm_v_prod_asp_v_venona_events_specmobile__visits__prod_asp_venona_counts_fiscal_monthly.hql'

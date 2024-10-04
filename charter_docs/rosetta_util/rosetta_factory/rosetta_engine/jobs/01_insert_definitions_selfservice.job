@@ -1,0 +1,4 @@
+# insert selfservice definitions job
+type=command
+command=whoami
+command.1=/bin/bash -c 'export project_title="selfservice"; hive -f ../src/insert_definitions.hql'

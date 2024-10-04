@@ -1,0 +1,4 @@
+#azkaban job to repair any newly added partitions to the prod_tmp.care_all_trbl_call_twc
+dependencies=database_init_twc
+type=command
+command=hive -f src/msck_repair_twc.hql

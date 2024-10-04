@@ -1,0 +1,3 @@
+#  operational daily end
+type=noop
+dependencies=03_check_refresh_tableau

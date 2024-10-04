@@ -1,0 +1,5 @@
+# .NET Extract Reporting Azkaban job
+type=command
+dependencies=run_net_monthly_aggregations
+command=whoami
+command.1=/bin/sh bin/net_extract_monthly_preprocess.sh

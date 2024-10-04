@@ -1,0 +1,60 @@
+.call_care_data_agg_variables: &call_care_data_agg_variables
+  JOB_NAME: "call-care-data-agg"
+  CALL_CARE_DATA_AGG_DIR: "cs-jobs/call-care-data-agg"
+  ARTIFACTS_DIR: "cs-jobs/call-care-data-agg/artifacts"
+  TERRAFORM_DIR: "cs-jobs/call-care-data-agg/terraform"
+  SCRIPTS_DIR: "cs-jobs/call-care-data-agg/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/call-care-data-agg"
+
+call_care_data_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$CALL_CARE_DATA_AGG_DIR/ddl"
+    HQL_DIR: "$CALL_CARE_DATA_AGG_DIR/hql"
+    <<: *call_care_data_agg_variables
+
+#STG
+call_care_data_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *call_care_data_agg_variables
+  dependencies:
+    - call_care_data_agg_build
+
+call_care_data_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *call_care_data_agg_variables
+  dependencies:
+    - call_care_data_agg_build
+    - call_care_data_agg_plan_stg
+
+call_care_data_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *call_care_data_agg_variables
+  dependencies:
+    - call_care_data_agg_build
+
+#PROD
+call_care_data_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *call_care_data_agg_variables
+  dependencies:
+    - call_care_data_agg_build
+
+call_care_data_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *call_care_data_agg_variables
+  dependencies:
+    - call_care_data_agg_build
+    - call_care_data_agg_plan_prod
+
+call_care_data_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *call_care_data_agg_variables
+  dependencies:
+    - call_care_data_agg_build

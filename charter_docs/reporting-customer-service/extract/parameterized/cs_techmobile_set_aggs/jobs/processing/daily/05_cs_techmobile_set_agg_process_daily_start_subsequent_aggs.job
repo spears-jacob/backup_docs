@@ -1,0 +1,7 @@
+# Groovy
+type=Groovy
+dependencies=04_cs_techmobile_set_agg_process_daily_final
+
+groovy.command.1=println 'This job runs aggregates that depend on the Portals daily set agg'
+groovy.command.2=println props; import azkaban.executor.*; def paramsToPass = ["env.RUN_DATE": "${env.RUN_DATE}", "env.job_started_by_exec": "${azkaban.link.execution.url}", "env.job_started_by_project_flow": "${azkaban.link.workflow.url}" ]
+groovy.command.3=if ("${azkaban.url}" == "https://pi-datamart-west.corp.chartercom.com/azkaban1" ) { azkaban.execute("asp_ccpa_usage","asp_ccpa_usage_process_daily_end", paramsToPass) } else {println 'Since this is not the production environment, the subsequent job will not be started'}

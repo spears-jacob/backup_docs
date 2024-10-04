@@ -1,0 +1,5 @@
+# sb chtr operational operational daily
+type=command
+dependencies=00_data_check_and_wait
+command=whoami
+command.1=/bin/bash -c 'hive -f ../src/01c_smb_daily_operational.hql'

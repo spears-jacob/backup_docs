@@ -1,0 +1,60 @@
+.spec_mobile_data_variables: &spec_mobile_data_variables
+  JOB_NAME: "spec-mobile-data"
+  SPEC_MOBILE_DATA_DIR: "portals-events/spec-mobile-data"
+  ARTIFACTS_DIR: "portals-events/spec-mobile-data/artifacts"
+  TERRAFORM_DIR: "portals-events/spec-mobile-data/terraform"
+  SCRIPTS_DIR: "portals-events/spec-mobile-data/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/spec-mobile-data"
+
+spec_mobile_data_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$SPEC_MOBILE_DATA_DIR/ddl"
+    HQL_DIR: "$SPEC_MOBILE_DATA_DIR/hql"
+    <<: *spec_mobile_data_variables
+
+# PROD
+spec_mobile_data_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *spec_mobile_data_variables
+  dependencies:
+    - spec_mobile_data_build
+
+spec_mobile_data_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *spec_mobile_data_variables
+  dependencies:
+    - spec_mobile_data_build
+    - spec_mobile_data_plan_prod
+
+spec_mobile_data_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *spec_mobile_data_variables
+  dependencies:
+    - spec_mobile_data_build
+
+#STG
+spec_mobile_data_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *spec_mobile_data_variables
+  dependencies:
+    - spec_mobile_data_build
+
+spec_mobile_data_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *spec_mobile_data_variables
+  dependencies:
+    - spec_mobile_data_build
+    - spec_mobile_data_plan_stg
+
+spec_mobile_data_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *spec_mobile_data_variables
+  dependencies:
+    - spec_mobile_data_build

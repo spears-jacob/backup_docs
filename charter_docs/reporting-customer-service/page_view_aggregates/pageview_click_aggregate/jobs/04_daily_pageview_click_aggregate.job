@@ -1,0 +1,4 @@
+type=command
+
+dependencies=03_extract_quantum_event_data
+command=hive -f ../src/daily_pageview_click_aggregate.hql

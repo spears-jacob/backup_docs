@@ -1,0 +1,60 @@
+.page_render_times_variables: &page_render_times_variables
+  JOB_NAME: "page-render-times"
+  PAGE_RENDER_TIMES_DIR: "portals-events/page-render-times"
+  ARTIFACTS_DIR: "portals-events/page-render-times/artifacts"
+  TERRAFORM_DIR: "portals-events/page-render-times/terraform"
+  SCRIPTS_DIR: "portals-events/page-render-times/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/page-render-times"
+
+page_render_times_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$PAGE_RENDER_TIMES_DIR/ddl"
+    HQL_DIR: "$PAGE_RENDER_TIMES_DIR/hql"
+    <<: *page_render_times_variables
+
+# PROD
+page_render_times_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *page_render_times_variables
+  dependencies:
+    - page_render_times_build
+
+page_render_times_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *page_render_times_variables
+  dependencies:
+    - page_render_times_build
+    - page_render_times_plan_prod
+
+page_render_times_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *page_render_times_variables
+  dependencies:
+    - page_render_times_build
+
+#STG
+page_render_times_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *page_render_times_variables
+  dependencies:
+    - page_render_times_build
+
+page_render_times_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *page_render_times_variables
+  dependencies:
+    - page_render_times_build
+    - page_render_times_plan_stg
+
+page_render_times_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *page_render_times_variables
+  dependencies:
+    - page_render_times_build

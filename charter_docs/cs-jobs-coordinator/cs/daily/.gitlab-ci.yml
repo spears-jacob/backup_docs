@@ -1,0 +1,76 @@
+.cs_daily_variables: &cs_daily_variables
+  JOB_TYPE: "daily"
+  S3_ARTIFACTS_DIR: "cs-jobs-coordinator/daily"
+  PROJECT_DIR: "cs"
+
+cs_daily_build:
+  extends: .build
+
+#DEV
+dev_cs_daily_plan:
+  extends: .plan_dev
+  variables:
+    <<: *cs_daily_variables
+  dependencies:
+    - cs_daily_build
+
+dev_cs_daily_deploy:
+  extends: .deploy_dev
+  variables:
+    <<: *cs_daily_variables
+  dependencies:
+    - cs_daily_build
+    - dev_cs_daily_plan
+
+dev_cs_daily_destroy:
+  extends: .destroy_dev
+  variables:
+    <<: *cs_daily_variables
+  dependencies:
+    - cs_daily_build
+
+#STG
+stg_cs_daily_plan:
+  extends: .plan_stg
+  variables:
+    <<: *cs_daily_variables
+  dependencies:
+    - cs_daily_build
+
+stg_cs_daily_deploy:
+  extends: .deploy_stg
+  variables:
+    <<: *cs_daily_variables
+  dependencies:
+    - cs_daily_build
+    - stg_cs_daily_plan
+
+stg_cs_daily_destroy:
+  extends: .destroy_stg
+  variables:
+    <<: *cs_daily_variables
+  dependencies:
+    - cs_daily_build
+
+#PROD
+prod_cs_daily_plan:
+  extends: .plan_prod
+  variables:
+    <<: *cs_daily_variables
+  dependencies:
+    - cs_daily_build
+
+prod_cs_daily_deploy:
+  extends: .deploy_prod
+  variables:
+    <<: *cs_daily_variables
+  dependencies:
+    - cs_daily_build
+    - prod_cs_daily_plan
+
+prod_cs_daily_destroy:
+  extends: .destroy_prod
+  variables:
+    <<: *cs_daily_variables
+  dependencies:
+    - cs_daily_build

@@ -1,0 +1,11 @@
+# Groovy
+type=Groovy
+
+groovy.command.01=println 'This job runs each Portals extract job outside of the metric factory'
+groovy.command.02=import azkaban.executor.*; def paramsToPass = ["env.RUN_DATE": "${env.RUN_DATE}", "env.job_started_by_exec": "${azkaban.link.execution.url}", "env.job_started_by_project_flow": "${azkaban.link.workflow.url}" ]
+groovy.command.03=azkaban.execute("asp_extract_bounces_entries", "asp_extract_bounces_entries_end", paramsToPass); sleep(54321);
+groovy.command.04=azkaban.execute("asp_extract_parameterized_portals_ss_metric_agg", "portals_selfservice_metric_agg_process_daily_end", paramsToPass); sleep(54321);
+groovy.command.05=azkaban.execute("asp_extract_screen_resolutions", "asp_extract_screen_resolutions", paramsToPass); sleep(54321);
+groovy.command.06=azkaban.execute("asp_extract_page_render_times", "asp_extract_page_render_times_end", paramsToPass); sleep(54321);
+groovy.command.07=azkaban.execute("asp_extract_api_responses", "asp_extract_api_responses_end", paramsToPass); sleep(54321);
+groovy.command.08=azkaban.execute("xp_extract_parameterized_portals_idm_agg", "portals_idm_agg_process_daily_end", paramsToPass); sleep(54321);

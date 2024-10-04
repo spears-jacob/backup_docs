@@ -1,0 +1,61 @@
+.osc_dashboard_variables: &osc_dashboard_variables
+  JOB_NAME: "osc-dashboard"
+  OSC_DASHBOARD: "extract/osc-dashboard"
+  ARTIFACTS_DIR: "extract/osc-dashboard/artifacts"
+  TERRAFORM_DIR: "extract/osc-dashboard/terraform"
+  SCRIPTS_DIR: "extract/osc-dashboard/scripts"
+  S3_ARTIFACTS_DIR: "extract/osc-dashboard"
+
+osc_dashboard_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$OSC_DASHBOARD/ddl"
+    HQL_DIR: "$OSC_DASHBOARD/hql"
+    <<: *osc_dashboard_variables
+
+#STG
+osc_dashboard_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *osc_dashboard_variables
+  dependencies:
+    - osc_dashboard_build
+
+osc_dashboard_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *osc_dashboard_variables
+  dependencies:
+    - osc_dashboard_build
+    - osc_dashboard_plan_stg
+
+osc_dashboard_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *osc_dashboard_variables
+  dependencies:
+    - osc_dashboard_build
+
+
+#PROD
+osc_dashboard_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *osc_dashboard_variables
+  dependencies:
+    - osc_dashboard_build
+
+osc_dashboard_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *osc_dashboard_variables
+  dependencies:
+    - osc_dashboard_build
+    - osc_dashboard_plan_prod
+
+osc_dashboard_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *osc_dashboard_variables
+  dependencies:
+    - osc_dashboard_build

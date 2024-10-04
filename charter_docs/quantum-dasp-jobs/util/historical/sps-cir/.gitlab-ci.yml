@@ -1,0 +1,61 @@
+.cs_sps_cir_variables: &cs_sps_cir_variables
+  JOB_NAME: "cs-sps-cir"
+  CS_CALL_CARE_DERIVED_TABLES_DIR: "cs-jobs/sps-cir"
+  ARTIFACTS_DIR: "cs-jobs/sps-cir/artifacts"
+  TERRAFORM_DIR: "cs-jobs/sps-cir/terraform"
+  SCRIPTS_DIR: "cs-jobs/sps-cir/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/sps-cir"
+#  PATH_TO_SCALA_CODE: "cs/sps-cir/spark_code/cs-call-care-derivations"
+
+cs_sps_cir_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$CS_CALL_CARE_DERIVED_TABLES_DIR/ddl"
+    HQL_DIR: "$CS_CALL_CARE_DERIVED_TABLES_DIR/hql"
+    <<: *cs_sps_cir_variables
+
+#PROD
+cs_sps_cir_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *cs_sps_cir_variables
+  dependencies:
+    - cs_sps_cir_build
+
+cs_sps_cir_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *cs_sps_cir_variables
+  dependencies:
+    - cs_sps_cir_build
+    - cs_sps_cir_plan_prod
+
+cs_sps_cirdestroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *cs_sps_cir_variables
+  dependencies:
+    - cs_sps_cir_build
+
+#STG
+cs_sps_cir_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *cs_sps_cir_variables
+  dependencies:
+    - cs_sps_cir_build
+
+cs_sps_cir_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *cs_sps_cir_variables
+  dependencies:
+    - cs_sps_cir_build
+    - cs_sps_cir_plan_stg
+
+cs_sps_cirdestroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *cs_sps_cir_variables
+  dependencies:
+    - cs_sps_cir_build

@@ -1,0 +1,7 @@
+# Endcap Azkaban job
+type=noop
+dependencies=03_prod_monthly_resi_combined,03_prod_monthly_app_combined,03_prod_monthly_smb_combined
+
+###########################################
+## PLEASE KEEP THIS JOB LAST IN THE FLOW ##
+###########################################

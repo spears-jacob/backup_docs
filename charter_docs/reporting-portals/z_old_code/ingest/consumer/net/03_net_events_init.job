@@ -1,0 +1,11 @@
+# .NET Events Init azkaban job
+type=command
+
+dependencies=02_lookup_load
+command=whoami
+command.1=hive -f src/net_truncate.hql
+command.2=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/net_raw/
+command.3=hadoop fs -mkdir /apps/hive/warehouse/${TMP_db}.db/net_raw/
+command.4=/bin/sh -c "gunzip ${data_sources_path}/net_events/*charterdotnetprod*.tsv.gz"
+command.5=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_events/*charterdotnetprod*tsv /apps/hive/warehouse/${TMP_db}.db/net_raw/"
+command.6=hive -f src/net_raw_history.hql

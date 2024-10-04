@@ -1,0 +1,8 @@
+# NET Executive Monthly Aggregate Azkaban job
+type=command
+dependencies=database_init
+
+command=whoami
+
+command.1=hdfs dfs -mkdir -p ${HDFS_ARCHIVE_DIR}/fhr_bpss_monthly/manual_data_uploads
+command.2=hdfs dfs -chmod -R 777  ${HDFS_ARCHIVE_DIR}/fhr_bpss_monthly

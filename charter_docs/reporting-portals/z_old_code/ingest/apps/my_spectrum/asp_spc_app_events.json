@@ -1,0 +1,16 @@
+{
+  "host": "ftp2.omniture.com",
+  "username": "portal_apps",
+  "password": "jxKxNUQd",
+  "ftp_directory": "/prod",
+  "filemask": "*chartermyspectrumappprod*",
+  "local_directory":"/data/tmp/my_spectrum_app_archive/",
+  "display": "asp_spc_app_events",
+  "user": "portal_apps",
+  "curl": "/asp_spc_app_events",
+  "protocol": "sftp",
+  "processed_filemask": "",
+  "mode": "delete",
+  "ftp_archive_directory": "",
+  "removal_filemask": ""
+}

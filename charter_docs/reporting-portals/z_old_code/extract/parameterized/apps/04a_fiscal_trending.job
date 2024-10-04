@@ -1,0 +1,8 @@
+# App Aggregation Azkaban Job - aggregations for operational daily
+
+type=command
+dependencies=03_asp_app_agg,03b_asp_app_agg_operational,03c_pass_parameters
+
+command=whoami
+
+# command.1=/bin/bash -c 'export END_DATE=${END_DATE}; echo $END_DATE; export START_DATE=${START_DATE}; echo $START_DATE; export fm_lkp=${fm_lkp}; if [ "${CADENCE}" == "fiscal_monthly" ]; then hive -f src/asp_app_agg_04a_fiscal_trending.hql; fi '

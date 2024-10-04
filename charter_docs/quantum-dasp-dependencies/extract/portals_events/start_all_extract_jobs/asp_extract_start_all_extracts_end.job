@@ -1,0 +1,6 @@
+# Endcap Azkaban job
+type=noop
+dependencies=01_start_all_extracts
+
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

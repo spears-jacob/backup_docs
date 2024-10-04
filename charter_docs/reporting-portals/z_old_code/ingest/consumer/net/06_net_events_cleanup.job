@@ -1,0 +1,7 @@
+# .NET Events population azkaban job
+type=command
+
+dependencies=05_net_events
+command=whoami
+command.1=bash -c "cd ${data_sources_path}/net_events/ ;tar --force-local --warning=no-file-changed -czvf net_adobe_${azkaban.flow.execid}.tgz * --remove-files || [[ $? -eq 1 ]]"
+command.2=bash -c "cd ${data_sources_path}/net_events/ ; hadoop fs -moveFromLocal net_adobe_*tgz   $HDFS_ARCHIVE_DIR/net_events"

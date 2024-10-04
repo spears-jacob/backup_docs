@@ -1,0 +1,8 @@
+# sb totals job
+type=command
+dependencies=05c_percent_auto_pay_success, 05d_percent_hhs_logged_in, 05e_percent_login_success, 05f_percent_one_time_payment_success,  05h_percent_total_password_reset_success,   05k_percent_total_account_creation_success, 05m_percent_total_sub_user_creation_success, 05n_percent_total_success_recover_reset_username_password, 05q_bounce_rate_Login, 05r_exit_rate_auth, 05s_exit_rate_unauth, init_05_param
+command=whoami
+command.1=/bin/bash -c 'export CADENCE=${CADENCE}; echo $CADENCE; export pf=${PF}; hive -f ../src/06a_sb_agg_null_placeholders.hql'
+
+# prepares parameters for subsequent job
+command.2=/bin/bash ../bin/working_dates.sh \"${TZ}\" ${IsCurrent1_Prior2_Reprocess3_ToBeProcessed} ${Cadence_CalendarMonth1_FiscalMonth2_Daily3} ${ReprocessingStartDate} ${ReprocessingEndDate}

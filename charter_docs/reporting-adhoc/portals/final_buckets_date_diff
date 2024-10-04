@@ -1,0 +1,64 @@
+--- XGANALYTIC-9467
+--- Generates the avg time between visits for device IDs 
+Select
+	CASE
+		WHEN avg_date_diff > 0 and avg_date_diff <= 15 THEN '0-15 Days'
+		WHEN avg_date_diff > 15 and avg_date_diff <= 45 THEN '16-45 Days'
+		WHEN avg_date_diff > 45 and avg_date_diff <= 60 THEN '46-60 Days'
+		WHEN avg_date_diff > 60   and avg_date_diff <= 90 THEN '61-90 Days'
+		WHEN avg_date_diff > 90   and avg_date_diff <= 120 THEN '91-120 Days'
+		WHEN avg_date_diff > 120   and avg_date_diff <= 150 THEN '121-150 Days'
+		WHEN avg_date_diff > 150  and avg_date_diff <= 180 THEN '151-180 Days'
+		WHEN avg_date_diff > 180 THEN '181+ Days'
+		WHEN avg_date_diff is null then 'single visits'
+		else 'other'
+	END as buckets,
+	count(distinct b.visit__device__uuid) as count_distinct_devices
+FROM
+	(
+	Select
+	  a.visit__device__uuid,
+	  SUM(a.date_diff)/(SUM(a.count_distinct_visit_ids) - 1) as avg_date_diff
+	FROM
+	  (
+		Select
+			d.min_partition_date_utc_by_visit,
+			d.visit__device__uuid,
+			count(distinct d.visit__visit_id) as count_distinct_visit_ids,
+			DATEDIFF(d.min_partition_date_utc_by_visit, lag(d.min_partition_date_utc_by_visit) over (partition by d.visit__device__uuid Order by d.min_partition_date_utc_by_visit)) AS date_diff
+		From
+		(
+			Select
+				visit__device__uuid,
+				visit__visit_id,
+				MIN(partition_date_utc) as min_partition_date_utc_by_visit
+			from 
+				dev.my_twc_app_events  
+			where 
+				partition_date_utc between '2017-01-01' and '2017-12-31'
+		  	Group BY
+		    	visit__device__uuid,
+				visit__visit_id
+		) d
+		Group By
+			d.min_partition_date_utc_by_visit,
+			d.visit__device__uuid
+	  ) a
+	Group By
+	    a.visit__device__uuid
+	) b
+---Where
+	---b.avg_date_diff is not null
+Group By
+	CASE
+		WHEN avg_date_diff > 0 and avg_date_diff <= 15 THEN '0-15 Days'
+		WHEN avg_date_diff > 15 and avg_date_diff <= 45 THEN '16-45 Days'
+		WHEN avg_date_diff > 45 and avg_date_diff <= 60 THEN '46-60 Days'
+		WHEN avg_date_diff > 60   and avg_date_diff <= 90 THEN '61-90 Days'
+		WHEN avg_date_diff > 90   and avg_date_diff <= 120 THEN '91-120 Days'
+		WHEN avg_date_diff > 120   and avg_date_diff <= 150 THEN '121-150 Days'
+		WHEN avg_date_diff > 150  and avg_date_diff <= 180 THEN '151-180 Days'
+		WHEN avg_date_diff > 180 THEN '181+ Days'
+		WHEN avg_date_diff is null then 'single visits'
+		else 'other'
+	END;

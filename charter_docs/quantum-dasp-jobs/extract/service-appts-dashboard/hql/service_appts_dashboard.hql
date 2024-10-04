@@ -1,0 +1,88 @@
+USE ${env:DASP_db};
+
+--always use
+SET mapreduce.input.fileinputformat.split.maxsize=5368709120;
+SET mapreduce.input.fileinputformat.split.minsize=5368709120;
+SET hive.tez.input.format=org.apache.hadoop.hive.ql.io.CombineHiveInputFormat;
+SET hive.merge.tezfiles=true;
+SET hive.merge.smallfiles.avgsize=2048000000;
+SET hive.merge.size.per.task=2048000000;
+SET tez.am.resource.memory.mb=12288;
+
+
+
+-- Write your script here --
+INSERT OVERWRITE TABLE ${env:DASP_db}.asp_service_appts PARTITION(partition_date_utc)
+SELECT
+  message__event_case_id AS eid
+ ,count(visit__visit_id) AS instance_cnt
+ ,count(DISTINCT visit__account__enc_account_number) AS account_cnt
+ ,visit__application_details__application_name  AS app_name
+ ,partition_date_utc
+FROM
+`${env:CQE_SSPP}`
+WHERE
+partition_date_utc = '${env:START_DATE}'
+AND visit__application_details__application_name IN ('MySpectrum', 'SpecNet', 'SMB')
+AND message__event_case_id IN ('SPECTRUM_assetDisplayed_appointments_appointmentScheduler',
+'SPECTRUM_assetDisplayed_appointments_bannerFailure',
+'SPECTRUM_assetDisplayed_appointments_bannerSuccess',
+'SPECTRUM_assetDisplayed_appointments_dynamicScheduleAppointment',
+'SPECTRUM_assetDisplayed_appointments_noAppointmentDates',
+'SPECTRUM_featureStart_appointments_reschedule_rescheduleAppointment',
+'SPECTRUM_featureStop_appointments_reschedule_abandon',
+'SPECTRUM_featureStop_appointments_reschedule_flowFailure',
+'SPECTRUM_featureStop_appointments_reschedule_flowSuccess',
+'SPECTRUM_featureStop_appointments_reschedule_noAppointments',
+'SPECTRUM_featureStart_appointments_afterCancel_scheduleAppointment',
+'SPECTRUM_featureStop_appointments_afterCancel_abandon',
+'SPECTRUM_featureStop_appointments_afterCancel_flowFailure',
+'SPECTRUM_featureStop_appointments_afterCancel_flowSuccess',
+'SPECTRUM_featureStop_appointments_afterCancel_noAppointments',
+'SPECTRUM_featureStart_appointments_signalLeakageAppt_scheduleAppointment',
+'SPECTRUM_featureStop_appointments_signalLeakageAppt_abandon',
+'SPECTRUM_featureStop_appointments_signalLeakageAppt_flowFailure',
+'SPECTRUM_featureStop_appointments_signalLeakageAppt_flowSuccess',
+'SPECTRUM_featureStop_appointments_signalLeakageAppt_noAppointments',
+'SPECTRUM_featureStart_appointments_proactiveAlert_scheduleAppointment',
+'SPECTRUM_featureStop_appointments_proactiveAlert_abandon',
+'SPECTRUM_featureStop_appointments_proactiveAlert_flowFailure',
+'SPECTRUM_featureStop_appointments_proactiveAlert_flowSuccess',
+'SPECTRUM_featureStop_appointments_proactiveAlert_noAppointments',
+'mySpectrum_pageView_serviceAppt_scheduleApp',
+'mySpectrum_assetDisplayed_serviceAppt_homeCard',
+'mySpectrum_modalView_serviceAppt_noApptsAvailable',
+'mySpectrum_featureStart_serviceAppt_rescheduleAppt',
+'mySpectrum_featureStop_serviceAppt_rescheduleApptAbandon',
+'mySpectrum_featureStop_serviceAppt_rescheduleApptFailure',
+'mySpectrum_featureStop_serviceAppt_rescheduleApptSuccess',
+'mySpectrum_featureStart_serviceAppt_reschedulePostCancel',
+'mySpectrum_featureStop_serviceAppt_reschedulePostCancel_abandon',
+'mySpectrum_featureStop_serviceAppt_reschedulePostCancel_unableToScheduleFailure',
+'mySpectrum_featureStop_serviceAppt_reschedulePostCancel_success',
+'mySpectrum_featureStop_serviceAppt_reschedulePostCancel_noApptAvailFailure',
+'mySpectrum_featureStart_serviceAppt_scheduleAppt',
+'mySpectrum_featureStop_serviceAppt_scheduleAppt_abandon',
+'mySpectrum_featureStop_serviceAppt_scheduleAppt_unableToScheduleFailure',
+'mySpectrum_featureStop_serviceAppt_scheduleAppt_success',
+'mySpectrum_featureStop_serviceAppt_scheduleAppt_noApptAvailFailure',
+'mySpectrum_featureStart_serviceAppt_scheduleAppt',
+'mySpectrum_featureStop_serviceAppt_scheduleAppt_abandon',
+'mySpectrum_featureStop_serviceAppt_scheduleAppt_unableToScheduleFailure',
+'mySpectrum_featureStop_serviceAppt_scheduleAppt_success',
+'mySpectrum_featureStop_serviceAppt_scheduleAppt_noApptAvailFailure',
+'mySpectrum_featureStart_serviceAppt_cancelAppt',
+'mySpectrum_featureStop_serviceAppt_cancelApptSuccess',
+'mySpectrum_featureStop_serviceAppt_cancelApptAbandon',
+'mySpectrum_featureStop_serviceAppt_cancelApptFailure')
+
+GROUP BY
+  message__event_case_id
+ ,visit__application_details__application_name
+ ,partition_date_utc
+
+ORDER BY
+partition_date_utc
+,app_name
+,eid 
+;

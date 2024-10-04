@@ -1,0 +1,2 @@
+type=command
+command=bash bin/update_disposition_research.sh

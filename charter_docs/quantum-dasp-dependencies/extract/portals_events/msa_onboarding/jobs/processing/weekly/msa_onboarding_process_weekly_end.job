@@ -1,0 +1,7 @@
+# Endcap Azkaban job
+type=noop
+dependencies=02_msa_onboarding_process_weekly
+
+###########################################
+## PLEASE KEEP THIS JOB LAST IN THE FLOW ##
+###########################################

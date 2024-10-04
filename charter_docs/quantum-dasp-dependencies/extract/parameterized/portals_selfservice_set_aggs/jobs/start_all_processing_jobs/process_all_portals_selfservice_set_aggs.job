@@ -1,0 +1,13 @@
+# Groovy
+type=Groovy
+dependencies=01_param_init
+
+groovy.command.1=println 'This job runs each Portals set agg job (daily, fiscal monthly, monthly, and weekly)'
+groovy.command.2=println props; import azkaban.executor.*; def paramsToPass = ["env.RUN_DATE": "${env.RUN_DATE}", "env.job_started_by_exec": "${azkaban.link.execution.url}", "env.job_started_by_project_flow": "${azkaban.link.workflow.url}" ]
+groovy.command.3=import azkaban.executor.*
+groovy.command.4=def PropsString = props.toString()
+groovy.command.5=def project_name = (PropsString =~ "azkaban\\\\.flow\\\\.projectname: ([^,]*),")[0][1]; println project_name
+groovy.command.6=azkaban.execute( project_name, "portals_selfservice_set_agg_process_daily_end", paramsToPass)
+groovy.command.7=azkaban.execute( project_name, "portals_selfservice_set_agg_process_fiscal_monthly_end", paramsToPass)
+groovy.command.8=azkaban.execute( project_name, "portals_selfservice_set_agg_process_monthly_end", paramsToPass)
+groovy.command.9=azkaban.execute( project_name, "portals_selfservice_set_agg_process_weekly_end", paramsToPass)

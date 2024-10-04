@@ -1,0 +1,11 @@
+# TWC/BHN Webmail Init azkaban job
+type=command
+dependencies=azkaban-ftp
+command=whoami
+
+command.1=hive -f src/net_webmail_twc_bhn_truncate.hql
+command.2=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/net_webmail_twc_bhn_raw_strings/
+command.3=hadoop fs -mkdir /apps/hive/warehouse/${TMP_db}.db/net_webmail_twc_bhn_raw_strings/
+command.4=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_webmail_twc_bhn/${ENVIRONMENT}/*webmail*.csv /apps/hive/warehouse/${TMP_db}.db/net_webmail_twc_bhn_raw_strings/"
+command.5=hive -f src/net_webmail_twc_bhn_raw.hql
+command.6=hive -f src/net_webmail_twc_bhn_raw_history.hql

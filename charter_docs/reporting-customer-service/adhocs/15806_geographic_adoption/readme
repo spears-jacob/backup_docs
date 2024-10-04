@@ -1,0 +1,6 @@
+At the moment the dates are hard-coded. A loop would be better, but BASH dates are hard.
+
+Also because it runs each month separately, a login that occurred in august in Denver but September in London will be on a separate line than one that occurred in September by both timezones.
+I solved this with a manually-created pivot table and some vlookups in 15806; a general solution would be better
+
+(Yeah I know it sucks but it got the job done)

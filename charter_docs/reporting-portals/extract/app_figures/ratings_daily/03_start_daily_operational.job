@@ -1,0 +1,8 @@
+# Groovy
+type=Groovy
+dependencies=01_app_figures_daily_rating,02_app_figures_daily_aggregation
+
+groovy.command.1=println 'This job starts the daily Portals operational extracts)'
+groovy.command.2=import azkaban.executor.*
+groovy.command.3=def paramsToPass = ["env.RUN_DATE": "${env.RUN_DATE}", "env.job_started_by_exec": "${azkaban.link.execution.url}", "env.job_started_by_project_flow": "${azkaban.link.workflow.url}" ]
+groovy.command.4=azkaban.execute("asp_extract_daily_report_data", "asp_extract_daily_report_data_end", paramsToPass)

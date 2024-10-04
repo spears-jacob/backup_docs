@@ -1,0 +1,5 @@
+# sbnet_exec_monthly_pivot job
+type=command
+dependencies=sbnet_exec_monthly_agg
+command=whoami
+command.1=/bin/sh bin/sbnet_exec_monthly_pivot.sh

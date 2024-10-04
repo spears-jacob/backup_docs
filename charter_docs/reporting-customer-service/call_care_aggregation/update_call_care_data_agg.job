@@ -1,0 +1,2 @@
+type=command
+command=bash bin/update_call_care_agg.sh

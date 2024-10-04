@@ -1,0 +1,2 @@
+type=command
+command=bash init/create_call_care_agg.sh

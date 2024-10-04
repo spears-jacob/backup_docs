@@ -1,0 +1,7 @@
+#  Azkaban job
+type=Groovy
+dependencies=01_rename_tables
+
+groovy.command.1=println 'This job starts the dbinit to set the run_date and create the metric agg table.'
+groovy.command.2=import azkaban.executor.*
+groovy.command.3=azkaban.execute('asp_extract_parameterized_portals_ss_metric_agg', 'init_00_database')

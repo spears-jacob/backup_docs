@@ -1,0 +1,13 @@
+{
+  "host": "ftp2.omniture.com",
+  "username": "{USNNSU}",
+  "password": "{PWDDWP}",
+  "filemask": "*bhnbusinessprod_2019-08-17*",
+  "local_directory": ".",
+  "ftp_directory": "/",
+  "ftp_archive_directory": "",
+  "mode": "normal",
+  "protocol": "sftp",
+  "processed_filemask": "",
+  "removal_filemask": ""
+}

@@ -1,0 +1,10 @@
+# Updates the monthly run partition_date to prepare for next month
+type=command
+dependencies=1_net_percents_combined_monthly,net_preferred_comm_monthly
+command=whoami
+command.1=/bin/sh bin/net_monthly_extract.sh
+
+
+#########################################
+# PLEASE KEEP THIS JOB LAST IN THE FLOW
+#########################################

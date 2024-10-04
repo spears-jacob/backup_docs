@@ -1,0 +1,59 @@
+.cs_jobs_msa_variables: &cs_jobs_msa_variables
+  JOB_NAME: "cs-jobs-msa"
+  CS_JOBS_MSA: "cs-jobs/msa"
+  ARTIFACTS_DIR: "cs-jobs/msa/artifacts"
+  TERRAFORM_DIR: "cs-jobs/msa/terraform"
+  SCRIPTS_DIR: "cs-jobs/msa/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/msa"
+
+cs_jobs_msa_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$CS_JOBS_MSA/ddl"
+    HQL_DIR: "$CS_JOBS_MSA/hql"
+    <<: *cs_jobs_msa_variables
+
+#STG
+cs_jobs_msa_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *cs_jobs_msa_variables
+  dependencies:
+    - cs_jobs_msa_build
+
+cs_jobs_msa_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *cs_jobs_msa_variables
+  dependencies:
+    - cs_jobs_msa_build
+    - cs_jobs_msa_plan_stg
+
+cs_jobs_msa_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *cs_jobs_msa_variables
+  dependencies:
+    - cs_jobs_msa_build
+#PROD
+cs_jobs_msa_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *cs_jobs_msa_variables
+  dependencies:
+    - cs_jobs_msa_build
+
+cs_jobs_msa_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *cs_jobs_msa_variables
+  dependencies:
+    - cs_jobs_msa_build
+    - cs_jobs_msa_plan_prod
+
+cs_jobs_msa_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *cs_jobs_msa_variables
+  dependencies:
+    - cs_jobs_msa_build

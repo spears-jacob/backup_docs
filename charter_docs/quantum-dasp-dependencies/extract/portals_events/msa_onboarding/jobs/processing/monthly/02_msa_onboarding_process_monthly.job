@@ -1,0 +1,8 @@
+#  Azkaban job
+type=command
+dependencies=01_param_init_pm
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE;  export label_date_denver="${LABEL_DATE_DENVER}"; echo $label_date_denver; export grain="${GRAIN}"; echo $grain; export ProcessTimestamp="${ProcessTimestamp}"; echo $ProcessTimestamp; export ProcessUser="${azkaban.flow.submituser}"; echo $ProcessUser;  hive -f ../../../src/2_msa_onboarding_metrics.hql'
+command.2=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  export label_date_denver="${LABEL_DATE_DENVER}"; echo $label_date_denver; export grain="${GRAIN}"; echo $grain; export ProcessTimestamp="${ProcessTimestamp}"; echo $ProcessTimestamp; export ProcessUser="${azkaban.flow.submituser}"; echo $ProcessUser;  hive -f ../../../src/3_msa_onboarding_time.hql'

@@ -1,0 +1,5 @@
+#database_initial_load job
+type=command
+dependencies=2b_run_soteria
+
+command=/bin/bash -c ' export DB_NIFI="${DB_NIFI}"; echo $DB_NIFI; export DB_TEMP="${DB_TEMP}"; echo $DB_TEMP; hive -f ../src/2c_insert_asp_asapp_pii_tables.hql'

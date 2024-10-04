@@ -1,0 +1,6 @@
+# SB.NET TWC Events population azkaban job
+type=command
+dependencies=sbnet_twc_events_calc
+command=whoami
+
+command.1=pig -f -useHCatalog src/sbnet_twc_events.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}

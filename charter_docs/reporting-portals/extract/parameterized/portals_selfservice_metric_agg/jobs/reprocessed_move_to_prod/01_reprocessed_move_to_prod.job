@@ -1,0 +1,3 @@
+# Parameter Init job
+type=command
+command=/bin/bash -c 'export azurl=${azkaban.url}; echo $azurl; export reprocess_env=${Reprocess_environment}; echo $reprocess_env; if [ ${ENVIRONMENT} == "prod" ]; then /bin/bash ../../bin/reprocessed_move_to_prod.sh; else echo -e "\n\n\texiting because environment is not production\n\n"; fi '

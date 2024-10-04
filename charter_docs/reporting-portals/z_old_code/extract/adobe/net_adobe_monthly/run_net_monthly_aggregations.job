@@ -1,0 +1,5 @@
+# Run NET monthly aggregations branch
+type=command
+dependencies=database_init
+command=whoami
+

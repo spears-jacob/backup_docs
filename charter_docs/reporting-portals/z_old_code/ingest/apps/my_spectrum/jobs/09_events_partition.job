@@ -1,0 +1,6 @@
+# Events partition population azkaban job
+type=command
+dependencies=08_events_file_cleanup
+command=whoami
+
+command.1=bash -c "export dbprefix_events=${dbprefix_events}; export tmp_dbprefix_events_no_part=${TMP_db}.${dbprefix_events_no_part}; hive -f ../src/events_partition.hql"

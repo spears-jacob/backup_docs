@@ -1,0 +1,5 @@
+# sbnet_exec_monthly_agg_totals job
+type=command
+dependencies=sbnet_exec_monthly_adjustments_combined,sbnet_exec_monthly_pivot
+command=whoami
+command.1=/bin/sh bin/sbnet_exec_monthly_agg_totals.sh

@@ -1,0 +1,7 @@
+# Groovy
+type=Groovy
+dependencies=01_data_alert_email
+
+groovy.command.1=println 'This job starts the kickoff job because there is data available'
+groovy.command.2=import azkaban.executor.*
+groovy.command.3=azkaban.execute("asp_extract_start_all_jobs", "asp_extract_start_all_extracts_end")

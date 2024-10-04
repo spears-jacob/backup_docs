@@ -1,0 +1,6 @@
+# azkaban-ftp azkaban job
+type=command
+command=whoami
+command.1=/bin/sh -c "mkdir -p ${data_sources_path}/net_events/"
+command.2=bash -c "hadoop fs -mkdir -p $HDFS_ARCHIVE_DIR/net_events"
+command.3=/bin/bash lftp.sh PROD_net_events

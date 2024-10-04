@@ -1,0 +1,60 @@
+.prod_monthly_final_variables: &prod_monthly_final_variables
+  JOB_NAME: "prod-monthly-final"
+  PROD_MONTHLY_FINAL_DIR: "cs-jobs/prod-monthly-final"
+  ARTIFACTS_DIR: "cs-jobs/prod-monthly-final/artifacts"
+  TERRAFORM_DIR: "cs-jobs/prod-monthly-final/terraform"
+  SCRIPTS_DIR: "cs-jobs/prod-monthly-final/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/prod-monthly-final"
+
+prod_monthly_final_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$PROD_MONTHLY_FINAL_DIR/ddl"
+    HQL_DIR: "$PROD_MONTHLY_FINAL_DIR/hql"
+    <<: *prod_monthly_final_variables
+
+#STG
+prod_monthly_final_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *prod_monthly_final_variables
+  dependencies:
+    - prod_monthly_final_build
+
+prod_monthly_final_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *prod_monthly_final_variables
+  dependencies:
+    - prod_monthly_final_build
+    - prod_monthly_final_plan_stg
+
+prod_monthly_final_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *prod_monthly_final_variables
+  dependencies:
+    - prod_monthly_final_build
+
+#PROD
+prod_monthly_final_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *prod_monthly_final_variables
+  dependencies:
+    - prod_monthly_final_build
+
+prod_monthly_final_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *prod_monthly_final_variables
+  dependencies:
+    - prod_monthly_final_build
+    - prod_monthly_final_plan_prod
+
+prod_monthly_final_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *prod_monthly_final_variables
+  dependencies:
+    - prod_monthly_final_build

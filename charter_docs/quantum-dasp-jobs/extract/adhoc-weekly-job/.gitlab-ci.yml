@@ -1,0 +1,62 @@
+.adhoc_weekly_job_variables: &adhoc_weekly_job_variables
+  JOB_NAME: "adhoc-weekly-job"
+  ADHOC_WEEKLY_JOB_DIR: "extract/adhoc-weekly-job"
+  ARTIFACTS_DIR: "extract/adhoc-weekly-job/artifacts"
+  TERRAFORM_DIR: "extract/adhoc-weekly-job/terraform"
+  SCRIPTS_DIR: "extract/adhoc-weekly-job/scripts"
+  S3_ARTIFACTS_DIR: "extract/adhoc-weekly-job"
+
+adhoc_weekly_job_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$ADHOC_WEEKLY_JOB_DIR/ddl"
+    HQL_DIR: "$ADHOC_WEEKLY_JOB_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *adhoc_weekly_job_variables
+
+# STG
+adhoc_weekly_job_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *adhoc_weekly_job_variables
+  dependencies:
+    - adhoc_weekly_job_build
+
+adhoc_weekly_job_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *adhoc_weekly_job_variables
+  dependencies:
+    - adhoc_weekly_job_build
+    - adhoc_weekly_job_plan_stg
+
+adhoc_weekly_job_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *adhoc_weekly_job_variables
+  dependencies:
+    - adhoc_weekly_job_build
+
+# PROD
+adhoc_weekly_job_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *adhoc_weekly_job_variables
+  dependencies:
+    - adhoc_weekly_job_build
+
+adhoc_weekly_job_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *adhoc_weekly_job_variables
+  dependencies:
+    - adhoc_weekly_job_build
+    - adhoc_weekly_job_plan_prod
+
+adhoc_weekly_job_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *adhoc_weekly_job_variables
+  dependencies:
+    - adhoc_weekly_job_build

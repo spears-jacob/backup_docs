@@ -1,0 +1,7 @@
+# database object initialization job
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export ReprocessDateTable=${ReprocessDateTable}; hive -f ../src/init/1_migration_init_tables.hql '
+command.2=/bin/bash -c 'export ReprocessDateTable=${ReprocessDateTable}; hive -f ../src/init/2_create_waveTables.hql '
+command.3=/bin/bash -c 'export MigrationStartDate="${MigrationStartDate}"; echo $MigrationStartDate; hive -f ../src/init/3_create_waveAccount.hql'

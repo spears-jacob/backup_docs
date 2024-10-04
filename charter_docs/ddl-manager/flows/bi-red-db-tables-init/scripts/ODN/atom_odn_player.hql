@@ -1,0 +1,40 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS ${db_name}.atom_odn_player(
+  version int,
+  address_type string,
+  encrypted_stb_address_256 string,
+  message_domain string,
+  message_transaction_id int,
+  data_date string,
+  tag_id_count int,
+  total_channel_session_count int,
+  power_off_session_count int,
+  power_off_duration_s bigint,
+  average_power_off_duration_s bigint,
+  broadcast_channel_session_count int,
+  broadcast_channel_duration_s bigint,
+  average_broadcast_channel_duration_s bigint,
+  dvr_playback_session_count int,
+  dvr_playback_duration_s bigint,
+  average_dvr_playback_duration_s bigint,
+  vod_session_count int,
+  vod_duration_s bigint,
+  average_vod_duration_s bigint,
+  ppv_session_count int,
+  ppv_duration_s bigint,
+  average_ppv_duration_s bigint,
+  vod_portal_session_count int,
+  vod_portal_duration_s bigint,
+  average_vod_portal_duration_s bigint,
+  vod_biaxial_session_count int,
+  vod_biaxial_duration_s bigint,
+  average_vod_biaxial_duration_s bigint,
+  virtual_channel_session_count int,
+  virtual_channel_duration_s bigint,
+  average_virtual_channel_duration_s bigint,
+  site_code string)
+PARTITIONED BY (
+  partition_date string,
+  partition_hour string)
+STORED AS ORC
+LOCATION '${s3_location}'
+TBLPROPERTIES ("orc.compress" = "ZLIB");

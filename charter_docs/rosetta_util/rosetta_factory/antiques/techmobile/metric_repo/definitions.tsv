@@ -1,0 +1,10 @@
+run	hive_metric	application	version_note	note	start_date	end_date	condition_1	condition_2	condition_3	condition_4	condition_5	condition_6
+FALSE	aggregate_placeholder	placeholder_1|placeholder_2	N/A|N/A	N/A|N/A			(test_2 AND test_3) OR (test_2 AND test_3)					
+TRUE	error_count	TechMobile					message.name = 'error'	message.triggeredBy = 'application'				
+TRUE	failed_login_count	TechMobile					message.name = 'loginStop'	operation.success = false				
+TRUE	job_completion_closure_count	TechMobile					message.name = 'selectAction'	state.view.currentPage.pageName = 'completeJobStep3'	state.view.currentPage.elements.standardizedName = 'continue'			
+TRUE	job_completion_feature_count	TechMobile					message.name = 'featureStop'	operation.success = true	message.feature.featureStepName = 'jobComplete'			
+TRUE	job_start_feature_count	TechMobile					message.name = 'apiCall'	application.api.apiName = 'profileStatus'	message.feature.featureStepName = 'jobStart'	operation.success = true		
+TRUE	job_start_select_count	TechMobile					message.name = 'apiCall'	application.api.apiName = 'profileStatus'	message.feature.featureStepName = 'jobStart'			
+TRUE	login_events_count	TechMobile					message.name = 'loginStop'					
+TRUE	successful_login_count	TechMobile					message.name = 'loginStop'	operation.success = true				

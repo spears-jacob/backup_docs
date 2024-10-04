@@ -1,0 +1,9 @@
+# api responses job
+type=command
+dependencies=01_parameter_init
+command=whoami
+
+# use this one if dates are needed
+command.1=/bin/bash -c ' export REPORT_MONTH="${REPORT_MONTH}"; echo $REPORT_MONTH; export MAX_IDM_TWC="${MAX_IDM_TWC}"; echo $MAX_IDM_TWC; export ID_IDM_DATE="${ID_IDM_DATE}"; echo $ID_IDM_DATE; export ACCOUNT_HISTORY_DATE="${ACCOUNT_HISTORY_DATE}"; echo $ACCOUNT_HISTORY_DATE; export FID_START_DATE="${FID_START_DATE}"; echo $FID_START_DATE; export FID_END_DATE="${FID_END_DATE}"; echo $FID_END_DATE; export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE;  hive -f ../src/02_phase4_sizing_twc.hql '
+command.2=/bin/bash -c ' export REPORT_MONTH="${REPORT_MONTH}"; echo $REPORT_MONTH; export MAX_IDM_BHN="${MAX_IDM_BHN}"; echo $MAX_IDM_BHN; export ID_IDM_DATE="${ID_IDM_DATE}"; echo $ID_IDM_DATE; export ACCOUNT_HISTORY_DATE="${ACCOUNT_HISTORY_DATE}"; echo $ACCOUNT_HISTORY_DATE; export FID_START_DATE="${FID_START_DATE}"; echo $FID_START_DATE; export FID_END_DATE="${FID_END_DATE}"; echo $FID_END_DATE; export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE;  hive -f ../src/02_phase4_sizing_bhn.hql '
+command.3=/bin/bash -c ' export REPORT_MONTH="${REPORT_MONTH}"; echo $REPORT_MONTH; export MAX_IDM_CHARTER="${MAX_IDM_CHARTER}"; echo $MAX_IDM_CHARTER; export ID_IDM_DATE="${ID_IDM_DATE}"; echo $ID_IDM_DATE; export ACCOUNT_HISTORY_DATE="${ACCOUNT_HISTORY_DATE}"; echo $ACCOUNT_HISTORY_DATE; export FID_START_DATE="${FID_START_DATE}"; echo $FID_START_DATE; export FID_END_DATE="${FID_END_DATE}"; echo $FID_END_DATE; export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE;  hive -f ../src/02_phase4_sizing_charter.hql '

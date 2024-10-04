@@ -1,0 +1,5 @@
+# Parameter Init job
+type=command
+command=whoami
+
+command.1=/bin/bash ../bin/transfer_file.sh ${RUN_DATE}

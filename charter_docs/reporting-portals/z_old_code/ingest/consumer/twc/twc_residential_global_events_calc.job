@@ -1,0 +1,9 @@
+# TWC Residential Global Events Denormalization and Calculation azkaban job
+type=command
+dependencies=twc_residential_global_events_init
+
+command=whoami
+
+command.1=sh bin/denorm_data.sh
+command.2=pig -f -useHCatalog src/twc_residential_global_calc.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}
+command.3=hive -f src/twc_residential_global_calc_regroup.hql

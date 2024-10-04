@@ -1,0 +1,4 @@
+# database object initialization job
+type=command
+
+command=/bin/bash -c 'export ReprocessDateTable_daily="${ReprocessDateTable_daily}"; echo $ReprocessDateTable_daily; export ReprocessDateTable_monthly="${ReprocessDateTable_monthly}"; echo $ReprocessDateTable_monthly; export ReprocessDateTable_weekly="${ReprocessDateTable_weekly}"; echo $ReprocessDateTable_weekly; hive -f ../../src/init/1_msa_onboarding_init_tables.hql'

@@ -1,0 +1,7 @@
+# SB.NET Combined Visits Daily Aggregate Azkaban job
+type=command
+dependencies=sbnet_combined_pageviews_links_agg
+
+command=whoami
+
+command.1=/bin/bash bin/sbnet_combined_visits_agg.sh

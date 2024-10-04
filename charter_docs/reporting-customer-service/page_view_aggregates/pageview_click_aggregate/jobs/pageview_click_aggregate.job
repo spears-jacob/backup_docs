@@ -1,0 +1,4 @@
+type=command
+
+dependencies=04_daily_pageview_click_aggregate,04_weekly_pageview_click_aggregate,04_monthly_pageview_click_aggregate,04_calendar_monthly_pageview_click_aggregate
+command=hive -f ../src/selectaction_aggregate_view.hql

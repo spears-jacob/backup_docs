@@ -1,0 +1,8 @@
+# SB.NET Events partition population azkaban job
+type=command
+dependencies=sbnet_events
+
+command=whoami
+
+command.1=hive -e "set hive.execution.engine=mr; INSERT INTO TABLE ${ENVIRONMENT}.sbnet_dev_events PARTITION(partition_date_utc, partition_date_hour_utc) SELECT *, ${ENVIRONMENT}.epoch_converter(cast(message__timestamp*1000 as bigint),'UTC') as partition_date_utc, ${ENVIRONMENT}.epoch_datehour(cast(message__timestamp*1000 as bigint),'UTC') as partition_date_hour_utc FROM ${TMP_db}.sbnet_dev_events_no_part;"
+command.2=hive -f src/sbnet_truncate.hql

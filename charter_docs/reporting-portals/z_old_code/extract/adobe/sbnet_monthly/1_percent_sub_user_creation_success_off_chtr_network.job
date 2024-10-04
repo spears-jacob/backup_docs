@@ -1,0 +1,5 @@
+# percent_sub_user_creation_success_off_chtr_network job
+type=command
+dependencies=1_percent_calcs_stage
+command=whoami
+command.1=/bin/sh bin/1_percent_sub_user_creation_success_off_chtr_network.sh

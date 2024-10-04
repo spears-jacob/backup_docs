@@ -1,0 +1,7 @@
+# SB.NET BHN Events partition population azkaban job
+type=command
+dependencies=05_smb_bhn_events
+command=whoami
+
+command.1=hive -f src/sbnet_bhn_events_partition.hql
+command.2=hive -f src/sbnet_bhn_truncate.hql

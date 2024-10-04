@@ -1,0 +1,5 @@
+# Data check before running Azkaban job
+type=command
+
+command=whoami
+command.1=/bin/bash /data/git_repos/platform-ops/azkaban-scripts/data_check_and_wait.sh ${filemasks_comma} ${datemask} ${hdfs_location} ${data_description} ${TZ} ${du_threshold} ${retry_after_min} ${retry_attempts} ${use_hours} ${start_offset} ${end_offset}

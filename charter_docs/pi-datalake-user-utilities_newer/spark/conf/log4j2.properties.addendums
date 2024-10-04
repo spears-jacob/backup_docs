@@ -1,0 +1,24 @@
+# This file is appended to the conf that lives here:  /usr/lib/spark/conf/log4j2.properties
+# and is used to load configurations for log4j2, the logger.  The former one lives here: /usr/lib/spark/conf/log4j.properties
+#
+#
+# Available configuration properties are located at the following address
+# https://logging.apache.org/log4j/2.x/manual/configuration.html#configuration-with-properties
+#
+
+rootLogger.level = warn
+
+log4j.logger.org.apache.hadoop=WARN
+
+# Set everything to be logged to the console
+log4j.rootCategory=WARN, console
+log4j.appender.console=org.apache.log4j.ConsoleAppender
+log4j.appender.console.target=System.err
+log4j.appender.console.layout=org.apache.log4j.PatternLayout
+log4j.appender.console.layout.ConversionPattern=%d{yyyy/MM/dd HH:mm:ss} %p %c{1}: %m%n
+
+# Settings to quiet third party logs that are too verbose
+log4j.logger.org.eclipse.jetty=WARN
+log4j.logger.org.eclipse.jetty.util.component.AbstractLifeCycle=ERROR
+log4j.logger.org.apache.spark.repl.SparkIMain$exprTyper=WARN
+log4j.logger.org.apache.spark.repl.SparkILoop$SparkILoopInterpreter=WARN

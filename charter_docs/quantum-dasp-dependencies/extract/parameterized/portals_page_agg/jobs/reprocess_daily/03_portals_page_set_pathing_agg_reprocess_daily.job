@@ -1,0 +1,7 @@
+#  Azkaban job
+type=command
+dependencies=01_param_init_rd,02a_portals_page_agg_reprocess_daily,02c_portals_page_agg_reprocess_daily_parameters
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE; hive -f ../../src/3_portals_page_set_pathing_agg.hql '

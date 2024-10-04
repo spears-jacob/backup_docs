@@ -1,0 +1,18 @@
+USE dev;
+
+TRUNCATE TABLE dev.asp_metric_pivot_resi_adobe;
+TRUNCATE TABLE dev.asp_metric_pivot_resi_quantum;
+TRUNCATE TABLE dev.asp_metric_pivot_smb_adobe;
+TRUNCATE TABLE dev.asp_metric_pivot_smb_quantum;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_resi_adobe_chtr;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_resi_adobe_bhn1;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_resi_adobe_bhn2;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_resi_adobe_twc;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_smb_adobe_bhn1;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_smb_adobe_bhn2;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_smb_adobe_twc;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_smb_quantum1;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_smb_quantum2;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_app_quantum1;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_app_quantum2;
+DROP TABLE IF EXISTS ${env:TMP_db}.asp_metric_pull_app_adobe_mytwc;

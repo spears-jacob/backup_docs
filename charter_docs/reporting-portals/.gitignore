@@ -1,0 +1,5 @@
+.DS_Store
+
+*.pyc
+*.zip
+rosetta_factory/temp_file_dump/temp_files/*.hql

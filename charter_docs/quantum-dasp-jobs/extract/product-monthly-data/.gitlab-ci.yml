@@ -1,0 +1,60 @@
+.product_monthly_data_variables: &product_monthly_data_variables
+  JOB_NAME: "product-monthly-data"
+  PRODUCT_MONTHLY_DATA_DIR: "extract/product-monthly-data"
+  ARTIFACTS_DIR: "extract/product-monthly-data/artifacts"
+  TERRAFORM_DIR: "extract/product-monthly-data/terraform"
+  SCRIPTS_DIR: "extract/product-monthly-data/scripts"
+  S3_ARTIFACTS_DIR: "extract/product-monthly-data"
+
+product_monthly_data_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$PRODUCT_MONTHLY_DATA_DIR/ddl"
+    HQL_DIR: "$PRODUCT_MONTHLY_DATA_DIR/hql"
+    <<: *product_monthly_data_variables
+
+# STG
+product_monthly_data_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *product_monthly_data_variables
+  dependencies:
+    - product_monthly_data_build
+
+product_monthly_data_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *product_monthly_data_variables
+  dependencies:
+    - product_monthly_data_build
+    - product_monthly_data_plan_stg
+
+product_monthly_data_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *product_monthly_data_variables
+  dependencies:
+    - product_monthly_data_build
+
+# PROD
+product_monthly_data_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *product_monthly_data_variables
+  dependencies:
+    - product_monthly_data_build
+
+product_monthly_data_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *product_monthly_data_variables
+  dependencies:
+    - product_monthly_data_build
+    - product_monthly_data_plan_prod
+
+product_monthly_data_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *product_monthly_data_variables
+  dependencies:
+    - product_monthly_data_build

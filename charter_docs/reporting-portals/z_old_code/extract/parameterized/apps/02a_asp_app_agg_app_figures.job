@@ -1,0 +1,7 @@
+# App Aggregation Azkaban Job for App Figures
+type=command
+dependencies=01_param_init
+
+command=whoami
+
+command.1=/bin/bash -c 'export END_DATE=${END_DATE}; export START_DATE=${START_DATE}; export ymd=${YMD}; export afp="${AFP}"; export CADENCE=${CADENCE}; export fm_lkp=${fm_lkp};  echo $START_DATE; echo $END_DATE; echo $ymd; echo $afp; echo $CADENCE; echo $fm_lkp; hive -f src/asp_app_agg_02a_app_figures.hql'

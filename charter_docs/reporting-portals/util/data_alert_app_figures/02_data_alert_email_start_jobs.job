@@ -1,0 +1,7 @@
+# Groovy
+type=Groovy
+dependencies=01_data_alert_email
+
+groovy.command.1=println 'This job starts the kickoff job because there is data available'
+groovy.command.2=import azkaban.executor.*
+groovy.command.3=if ( '${ENVIRONMENT}' == 'prod' ) { println 'Starting app figures ingest in production.';  azkaban.execute("asp_ingest_app_figures", "asp_ingest_app_figures_end") } else { println ' -> process has ended. <-' }

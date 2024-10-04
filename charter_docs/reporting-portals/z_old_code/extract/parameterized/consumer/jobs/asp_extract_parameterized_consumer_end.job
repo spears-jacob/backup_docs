@@ -1,0 +1,7 @@
+# Endcap Azkaban job
+type=noop
+dependencies=08_net_agg_daily_operational,08b_fiscal_trending
+
+###########################################
+## PLEASE KEEP THIS JOB LAST IN THE FLOW ##
+###########################################

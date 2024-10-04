@@ -1,0 +1,60 @@
+.calls_with_prior_visits_agg_variables: &calls_with_prior_visits_agg_variables
+  JOB_NAME: "calls-w-prior-visits-agg"
+  CALLS_WITH_PRIOR_VISITS_AGG_DIR: "cs-jobs/calls-with-prior-visits-agg"
+  ARTIFACTS_DIR: "cs-jobs/calls-with-prior-visits-agg/artifacts"
+  TERRAFORM_DIR: "cs-jobs/calls-with-prior-visits-agg/terraform"
+  SCRIPTS_DIR: "cs-jobs/calls-with-prior-visits-agg/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/calls-with-prior-visits-agg"
+
+calls_with_prior_visits_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$CALLS_WITH_PRIOR_VISITS_AGG_DIR/ddl"
+    HQL_DIR: "$CALLS_WITH_PRIOR_VISITS_AGG_DIR/hql"
+    <<: *calls_with_prior_visits_agg_variables
+
+#STG
+calls_with_prior_visits_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *calls_with_prior_visits_agg_variables
+  dependencies:
+    - calls_with_prior_visits_agg_build
+
+calls_with_prior_visits_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *calls_with_prior_visits_agg_variables
+  dependencies:
+    - calls_with_prior_visits_agg_build
+    - calls_with_prior_visits_agg_plan_stg
+
+calls_with_prior_visits_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *calls_with_prior_visits_agg_variables
+  dependencies:
+    - calls_with_prior_visits_agg_build
+
+#PROD
+calls_with_prior_visits_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *calls_with_prior_visits_agg_variables
+  dependencies:
+    - calls_with_prior_visits_agg_build
+
+calls_with_prior_visits_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *calls_with_prior_visits_agg_variables
+  dependencies:
+    - calls_with_prior_visits_agg_build
+    - calls_with_prior_visits_agg_plan_prod
+
+calls_with_prior_visits_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *calls_with_prior_visits_agg_variables
+  dependencies:
+    - calls_with_prior_visits_agg_build

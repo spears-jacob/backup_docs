@@ -1,0 +1,6 @@
+# SB.NET Executive Monthly Aggregate Azkaban job
+type=command
+
+command=whoami
+
+command.1=/bin/bash bin/database_init.sh

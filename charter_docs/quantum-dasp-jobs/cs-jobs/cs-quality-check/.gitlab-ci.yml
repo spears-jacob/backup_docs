@@ -1,0 +1,62 @@
+.cs_quality_check_variables: &cs_quality_check_variables
+  JOB_NAME: "cs-quality-check"
+  CS_QUALITY_CHECK_DIR: "cs-jobs/cs-quality-check"
+  ARTIFACTS_DIR: "cs-jobs/cs-quality-check/artifacts"
+  TERRAFORM_DIR: "cs-jobs/cs-quality-check/terraform"
+  SCRIPTS_DIR: "cs-jobs/cs-quality-check/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/cs-quality-check"
+#  PATH_TO_SCALA_CODE: "cs/cs-quality-check/spark-code/cs-call-care-derivations"
+
+cs_quality_check_build:
+  extends: .build
+  variables:
+#    PATH_TO_SCALA_CODE: "$PATH_TO_SCALA_CODE"
+    DDL_DIR: "$CS_QUALITY_CHECK_DIR/ddl"
+    HQL_DIR: "$CS_QUALITY_CHECK_DIR/hql"
+    <<: *cs_quality_check_variables
+
+#PROD
+cs_quality_check_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *cs_quality_check_variables
+  dependencies:
+    - cs_quality_check_build
+
+cs_quality_check_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *cs_quality_check_variables
+  dependencies:
+    - cs_quality_check_build
+    - cs_quality_check_plan_prod
+
+cs_quality_checkdestroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *cs_quality_check_variables
+  dependencies:
+    - cs_quality_check_build
+
+#STG
+cs_quality_check_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *cs_quality_check_variables
+  dependencies:
+    - cs_quality_check_build
+
+cs_quality_check_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *cs_quality_check_variables
+  dependencies:
+    - cs_quality_check_build
+    - cs_quality_check_plan_stg
+
+cs_quality_checkdestroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *cs_quality_check_variables
+  dependencies:
+    - cs_quality_check_build

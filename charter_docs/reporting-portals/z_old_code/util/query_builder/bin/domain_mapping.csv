@@ -1,0 +1,9 @@
+sourceName,platform,domain,company,timestampMultiplier
+MySpectrum_adobe,asp,app,MySpectrum,message__timestamp * 1000
+MyTWC_adobe,asp,app,L-TWCC,message__timestamp * 1000
+Spectrum.net_adobe,asp,resi,L-CHTR,message__timestamp * 1000
+SpectrumBusiness.net_adobe,asp,sb,L-CHTR,message__timestamp * 1000
+MySpectrum,asp,app,MySpectrum_mso,received__timestamp
+Spectrum.net,asp,resi,Spectrum.net_mso,received__timestamp
+SpectrumBusiness.net,asp,sb,SpectrumBusiness_mso,received__timestamp
+SpectrumMobile,specmobile,specmobile,SpectrumMobile_mso,received__timestamp

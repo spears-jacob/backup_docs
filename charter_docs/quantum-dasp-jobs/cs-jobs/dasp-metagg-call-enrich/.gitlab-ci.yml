@@ -1,0 +1,60 @@
+.dasp_metagg_call_enrich_variables: &dasp_metagg_call_enrich_variables
+  JOB_NAME: "dasp-metagg-call-enrich"
+  dasp_metagg_call_enrich_DIR: "cs-jobs/dasp-metagg-call-enrich"
+  ARTIFACTS_DIR: "cs-jobs/dasp-metagg-call-enrich/artifacts"
+  TERRAFORM_DIR: "cs-jobs/dasp-metagg-call-enrich/terraform"
+  SCRIPTS_DIR: "cs-jobs/dasp-metagg-call-enrich/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/dasp-metagg-call-enrich"
+
+dasp_metagg_call_enrich_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$dasp_metagg_call_enrich_DIR/ddl"
+    HQL_DIR: "$dasp_metagg_call_enrich_DIR/hql"
+    <<: *dasp_metagg_call_enrich_variables
+
+#STG
+dasp_metagg_call_enrich_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *dasp_metagg_call_enrich_variables
+  dependencies:
+    - dasp_metagg_call_enrich_build
+
+dasp_metagg_call_enrich_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *dasp_metagg_call_enrich_variables
+  dependencies:
+    - dasp_metagg_call_enrich_build
+    - dasp_metagg_call_enrich_plan_stg
+
+dasp_metagg_call_enrich_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *dasp_metagg_call_enrich_variables
+  dependencies:
+    - dasp_metagg_call_enrich_build
+
+#PROD
+dasp_metagg_call_enrich_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *dasp_metagg_call_enrich_variables
+  dependencies:
+    - dasp_metagg_call_enrich_build
+
+dasp_metagg_call_enrich_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *dasp_metagg_call_enrich_variables
+  dependencies:
+    - dasp_metagg_call_enrich_build
+    - dasp_metagg_call_enrich_plan_prod
+
+dasp_metagg_call_enrich_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *dasp_metagg_call_enrich_variables
+  dependencies:
+    - dasp_metagg_call_enrich_build

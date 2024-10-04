@@ -1,0 +1,18 @@
+-- QUERY DEFINITIONS FOR Click: Manage Bill Delivery Options
+-- LAST UPDATED 03/29/2018 BY Jake McCune
+
+USE {env:ENVIRONMENT};
+
+-- NOTE - All queries set to calculate for most recent day (Denver Time)
+
+-- ***** RESIDENTIAL PORTAL QUERIES *****
+-- L-CHTR Query
+SELECT
+  'RES' as portal_platform,
+  'L-CHTR' as legacy_footprint,
+  SUM(IF(message__category = 'Custom Link'
+    AND message__name = 'pay-bill.manage-paperless-billing'
+    AND visit__settings['post_prop25'] = 'bill-delivery-settings',1,0)) as click_manage_bill_del_opt
+FROM asp_v_net_events
+WHERE partition_date >= DATE_SUB(current_date,2)
+;

@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _
+PIDeliveryPipeline {
+    azkabanProjectName = "cs_cid_cmp_aggregate"
+    azkabanEnv = 'prod'
+    azkabanProjectDesc = "This project contains the ETL code to aggregate CID, CMP, and buttonclick details"
+    azkabanProjectOwner = 'Sarah Kalin'
+    azkabanPlatform = 'ASP'
+    azkabanEscalation = 'Marjorie Truitt'
+    azkabanSLA = 'Important - Within 12 hrs'
+    azkabanFlowRun = []
+    azkabanProdFlowSchedule = [flowName:'cid_cmp_aggregate', cronExpression: '0 0 13 * * ?']
+    gitDir = 'page_view_aggregates/cid_cmp_aggregate'
+}

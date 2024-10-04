@@ -1,0 +1,6 @@
+type=command
+
+command=/bin/bash -c '/data/opt/spark/spark-2.3.1-bin-Spectrum-Spark/bin/spark-shell --executor-memory=28G --num-executors=64 --driver-memory=8G -i cs_call_care_derivations.scala'
+
+failure.emails=C-Amanda.Ramsay@charter.com
+success.emails=C-Amanda.Ramsay@charter.com

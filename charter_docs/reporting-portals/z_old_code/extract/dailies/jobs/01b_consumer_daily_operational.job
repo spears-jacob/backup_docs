@@ -1,0 +1,5 @@
+# net_monthly_agg_totals job
+type=command
+dependencies=00_data_check_and_wait
+command=whoami
+command.1=/bin/bash -c 'hive -f ../src/01b_consumer_daily_operational.hql'

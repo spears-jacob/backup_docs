@@ -1,0 +1,9 @@
+# App Aggregation Azkaban Job for My Spectrum App
+type=command
+dependencies=01_param_init
+
+command=whoami
+
+#command.1=/bin/bash -c 'export ymd=${YMD}; export ap="${AP}"; export ape="${APE}"; export CADENCE=${CADENCE}; export fm_lkp=${fm_lkp};  export TZ="${TZ}"; export END_DATE_TZ=${END_DATE_TZ}; export START_DATE_TZ=${START_DATE_TZ}; echo $START_DATE_TZ; echo $END_DATE_TZ;  echo $ymd; echo "$ap"; echo "$ape"; echo $CADENCE; echo $fm_lkp; hive -f src/asp_app_agg_02d_my_spc.hql'
+
+command.1=/bin/bash -c 'if [ ${CADENCE} == 'fiscal_monthly' ]; then export ymd=${YMD}; export CADENCE=${CADENCE}; export END_DATE_TZ=${END_DATE_TZ}; export START_DATE_TZ=${START_DATE_TZ}; echo $START_DATE_TZ; echo $END_DATE_TZ;  echo $ymd; echo $CADENCE; hive -f src/asp_app_agg_02d_my_spc.hql  ; fi' 

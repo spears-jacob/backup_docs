@@ -1,0 +1,7 @@
+# Endcap Azkaban job
+type=noop
+dependencies=03_portals_selfservice_metric_agg_reprocess_fiscal_monthly_loop
+
+###########################################
+## PLEASE KEEP THIS JOB LAST IN THE FLOW ##
+###########################################

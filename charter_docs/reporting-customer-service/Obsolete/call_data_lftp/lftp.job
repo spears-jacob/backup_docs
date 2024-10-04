@@ -1,0 +1,3 @@
+type=command
+
+command= /bin/bash ./bin/copy_CALL_DATA_files.sh

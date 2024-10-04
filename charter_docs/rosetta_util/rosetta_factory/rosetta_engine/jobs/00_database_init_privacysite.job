@@ -1,0 +1,4 @@
+# database selfservice init job
+type=command
+command=whoami
+command.1=/bin/bash -c 'export project_title="privacysite"; hive -f ../init/definitions_init_tables.hql'

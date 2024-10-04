@@ -1,0 +1,54 @@
+.dasp_monthly_variables: &dasp_monthly_variables
+  JOB_TYPE: "monthly"
+  S3_ARTIFACTS_DIR: "dasp-jobs-coordinator/monthly"
+  PROJECT_DIR: "dasp"
+  COORDINATOR_TEMPLATE: "monthly"
+
+dasp_monthly_build:
+  extends: .build
+
+#STG
+stg_dasp_monthly_plan:
+  extends: .plan_stg
+  variables:
+    <<: *dasp_monthly_variables
+  dependencies:
+    - dasp_monthly_build
+
+stg_dasp_monthly_deploy:
+  extends: .deploy_stg
+  variables:
+    <<: *dasp_monthly_variables
+  dependencies:
+    - dasp_monthly_build
+    - stg_dasp_monthly_plan
+
+stg_dasp_monthly_destroy:
+  extends: .destroy_stg
+  variables:
+    <<: *dasp_monthly_variables
+  dependencies:
+    - dasp_monthly_build
+
+#PROD
+prod_dasp_monthly_plan:
+  extends: .plan_prod
+  variables:
+    <<: *dasp_monthly_variables
+  dependencies:
+    - dasp_monthly_build
+
+prod_dasp_monthly_deploy:
+  extends: .deploy_prod
+  variables:
+    <<: *dasp_monthly_variables
+  dependencies:
+    - dasp_monthly_build
+    - prod_dasp_monthly_plan
+
+prod_dasp_monthly_destroy:
+  extends: .destroy_prod
+  variables:
+    <<: *dasp_monthly_variables
+  dependencies:
+    - dasp_monthly_build

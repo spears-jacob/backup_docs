@@ -1,0 +1,34 @@
+# load manual files
+type=command
+dependencies=init_01_run_all
+
+command=whoami
+
+command.1=hdfs dfs -mkdir -p ${HDFS_ARCHIVE_DIR}/sbnet_product_monthly/manual_data_uploads
+command.2=hdfs dfs -chmod -R 777  ${HDFS_ARCHIVE_DIR}/sbnet_product_monthly
+command.3=/bin/bash hive -f ../../src/adj/adj_02_sb_tmp_truncate.hql
+
+# Monthly Sub Counts
+command.4=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_subscriber_counts_manual/
+command.5=hadoop fs -mkdir -p /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_subscriber_counts_manual/
+command.6=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/sbnet_product_monthly/manual_data_uploads/smb_sub_counts.csv /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_subscriber_counts_manual/"
+
+# Monthly BHN SSO Metrics
+command.7=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_bhn_sso_metrics_manual/
+command.8=hadoop fs -mkdir -p /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_bhn_sso_metrics_manual/
+command.9=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/sbnet_product_monthly/manual_data_uploads/bhn_sso_metrics.csv /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_bhn_sso_metrics_manual/"
+
+# Monthly BHN Account Data
+command.10=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_bhn_accounts_manual/
+command.11=hadoop fs -mkdir -p /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_bhn_accounts_manual/
+command.12=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/sbnet_product_monthly/manual_data_uploads/bhn_accounts.tsv /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_bhn_accounts_manual/"
+
+# Monthly Manual Adjustment Data
+command.13=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_adjustment_init/
+command.14=hadoop fs -mkdir -p /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_adjustment_init/
+command.15=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/sbnet_product_monthly/manual_data_uploads/sbnet_monthly_adjustments.csv /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_monthly_adjustment_init/"
+
+# SBNET Tableau Metric Display Crosswalk
+command.16=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_tableau_metric_lkp/
+command.17=hadoop fs -mkdir -p /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_tableau_metric_lkp/
+command.18=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/sbnet_product_monthly/manual_data_uploads/sbnet_tableau_metric_lookup.csv /apps/hive/warehouse/${TMP_db}.db/sbnet_exec_tableau_metric_lkp/"

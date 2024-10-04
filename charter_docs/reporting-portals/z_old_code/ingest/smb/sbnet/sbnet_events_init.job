@@ -1,0 +1,9 @@
+# SB.NET Events Init azkaban job
+type=command
+dependencies=lookup_load
+
+command=whoami
+
+command.1=hive -f src/sbnet_truncate.hql
+command.2=hive -f nifi/load_raw_from_nifi.hql
+command.3=hive -f src/sbnet_raw_history.hql

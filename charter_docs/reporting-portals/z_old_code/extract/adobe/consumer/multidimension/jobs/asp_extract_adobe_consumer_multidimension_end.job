@@ -1,0 +1,5 @@
+# asp adobe consumer counts end
+type=noop
+dependencies=01h_asp_adobe_consumer_ss_counts,01d_asp_adobe_consumer_ss_counts,01d_asp_adobe_consumer_equipment_flow
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

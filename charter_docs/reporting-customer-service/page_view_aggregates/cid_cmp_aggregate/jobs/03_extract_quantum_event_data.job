@@ -1,0 +1,4 @@
+type=command
+
+dependencies=02_parameter_init
+command=/bin/bash -c 'export START_DATE=${START_DATE};hive -f ../src/extract_quantum_event_data.hql'

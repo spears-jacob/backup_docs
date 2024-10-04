@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4044e105-e2e1-42a0-8eaa-6fa704064376" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../extract/parameterized/portals_idm_set_aggs/src/portals_idm_set_agg_accounts.hql" beforeDir="false" afterPath="$PROJECT_DIR$/../extract/parameterized/portals_idm_set_aggs/src/portals_idm_set_agg_accounts.hql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../extract/parameterized/portals_idm_set_aggs/src/portals_idm_set_agg_devices.hql" beforeDir="false" afterPath="$PROJECT_DIR$/../extract/parameterized/portals_idm_set_aggs/src/portals_idm_set_agg_devices.hql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../extract/parameterized/portals_idm_set_aggs/src/portals_idm_set_agg_instances.hql" beforeDir="false" afterPath="$PROJECT_DIR$/../extract/parameterized/portals_idm_set_aggs/src/portals_idm_set_agg_instances.hql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../extract/parameterized/portals_idm_set_aggs/src/portals_idm_set_agg_visits.hql" beforeDir="false" afterPath="$PROJECT_DIR$/../extract/parameterized/portals_idm_set_aggs/src/portals_idm_set_agg_visits.hql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rosetta_engine/bin/idm/hql_templates/sets_set_agg_04.hql" beforeDir="false" afterPath="$PROJECT_DIR$/rosetta_engine/bin/idm/hql_templates/sets_set_agg_04.hql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rosetta_engine/bin/idm/hql_templates/sets_set_agg_instances_03.hql" beforeDir="false" afterPath="$PROJECT_DIR$/rosetta_engine/bin/idm/hql_templates/sets_set_agg_instances_03.hql" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/rosetta_engine/bin/build_combined_definitions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="461">
+              <caret line="493" column="40" selection-start-line="493" selection-start-column="40" selection-end-line="493" selection-end-column="40" />
+              <caret line="535" column="57" selection-start-line="535" selection-start-column="57" selection-end-line="535" selection-end-column="57" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Setup Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>add_table</find>
+      <find>input_params</find>
+      <find>runs</find>
+      <find>definitions</find>
+      <find>melt</find>
+      <find>it_lst_j</find>
+      <find>application_</find>
+      <find>os</find>
+      <find># print</find>
+      <find>true</find>
+      <find>combined_definitions</find>
+      <find>compose_block</find>
+      <find>bin/</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/query_builder/antiques/build_query_met_agg.py" />
+        <option value="$PROJECT_DIR$/query_builder/antiques/fileHandling.py" />
+        <option value="$PROJECT_DIR$/query_builder/bin/test_read_csv.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/ide/ide-scripting.groovy" />
+        <option value="$PROJECT_DIR$/query_builder/bin/qb_file_handling.py" />
+        <option value="$PROJECT_DIR$/query_builder/bin/file_handling.py" />
+        <option value="$PROJECT_DIR$/query_builder/bin/build_queries.py" />
+        <option value="$PROJECT_DIR$/query_builder/bin/build_combined_definitions.py" />
+        <option value="$PROJECT_DIR$/query_builder/bin/python_components/build_combined_definitions.py" />
+        <option value="$PROJECT_DIR$/rosetta_engine/bin/python_components/build_combined_definitions.py" />
+        <option value="$PROJECT_DIR$/rosetta_engine/bin/build_combined_definitions.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="210" />
+    <option name="y" value="145" />
+    <option name="width" value="1260" />
+    <option name="height" value="738" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="rosetta_factory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosetta_factory" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rosetta_factory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosetta_factory" type="462c0819:PsiDirectoryNode" />
+              <item name="rosetta_engine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rosetta_factory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosetta_factory" type="462c0819:PsiDirectoryNode" />
+              <item name="rosetta_engine" type="462c0819:PsiDirectoryNode" />
+              <item name="bin" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/query_builder/bin" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="rosetta_factory" is-module-sdk="true" working-directory="$PROJECT_DIR$/query_builder">
+        <option name="useSoftWraps" value="true" />
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="rosetta_factory" />
+        <option name="myWorkingDirectory" value="$PROJECT_DIR$/query_builder" />
+      </console-settings>
+    </option>
+    <option name="myShowDebugConsoleByDefault" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/query_builder/bin" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.build_combined_definitions">
+    <configuration name="build_combined_definitions" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="rosetta_factory" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/query_builder/bin" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/query_builder/bin/build_combined_definitions.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="qb_file_handling" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="rosetta_factory" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/query_builder/bin" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/query_builder/bin/qb_file_handling.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.build_combined_definitions" />
+        <item itemvalue="Python.build_combined_definitions" />
+        <item itemvalue="Python.qb_file_handling" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4044e105-e2e1-42a0-8eaa-6fa704064376" name="Default Changelist" comment="" />
+      <created>1560374578628</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1560374578628</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="210" y="145" width="1260" height="738" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.498366" visible="true" weight="0.15714286" />
+      <window_info id="Structure" order="1" sideWeight="0.501634" side_tool="true" weight="0.14616658" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.54884744" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.33793837" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39956093" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.329718" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.15986395" side_tool="true" weight="0.21568628" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.84013605" visible="true" weight="0.1934033" />
+      <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.2911796" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/query_builder/rosetta_build.sh" />
+    <entry file="file://$PROJECT_DIR$/query_builder/bin/build_definitions.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/antiques/fileHandling.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/bin/granular_definitions.tsv" />
+    <entry file="file://$PROJECT_DIR$/query_builder/antiques/build_query.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/antiques/buildQuery_HYBRID.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/antiques/buildQuery.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/antiques/build_run_met_agg_queries.sh" />
+    <entry file="file://$PROJECT_DIR$/query_builder/antiques/build_query_test.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/antiques/build_query_met_agg.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/bin/test_read_csv.py" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/ide/ide-scripting.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="58" selection-start-line="58" selection-end-line="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/bin/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/bin/qb_file_handling.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/bin/build_combined_definitions.py.bak" />
+    <entry file="file://$PROJECT_DIR$/query_builder/bin/build_queries.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/bin/file_handling.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/bin/build_combined_definitions.py" />
+    <entry file="file://$PROJECT_DIR$/query_builder/bin/python_components/build_combined_definitions.py" />
+    <entry file="file://$PROJECT_DIR$/rosetta_engine/bin/qb_file_handling.py" />
+    <entry file="file://$PROJECT_DIR$/rosetta_engine/bin/python_components/build_combined_definitions.py" />
+    <entry file="file://$PROJECT_DIR$/rosetta_engine/bin/build_combined_definitions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="461">
+          <caret line="493" column="40" selection-start-line="493" selection-start-column="40" selection-end-line="493" selection-end-column="40" />
+          <caret line="535" column="57" selection-start-line="535" selection-start-column="57" selection-end-line="535" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

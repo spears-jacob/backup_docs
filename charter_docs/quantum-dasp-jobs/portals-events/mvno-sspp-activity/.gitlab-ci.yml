@@ -1,0 +1,62 @@
+.mvno_sspp_activity_variables: &mvno_sspp_activity_variables
+  JOB_NAME: "mvno-sspp-activity"
+  MVNO_SSPP_ACTIVITY_DIR: "portals-events/mvno-sspp-activity"
+  ARTIFACTS_DIR: "portals-events/mvno-sspp-activity/artifacts"
+  TERRAFORM_DIR: "portals-events/mvno-sspp-activity/terraform"
+  SCRIPTS_DIR: "portals-events/mvno-sspp-activity/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/mvno-sspp-activity"
+
+mvno_sspp_activity_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$MVNO_SSPP_ACTIVITY_DIR/ddl"
+    HQL_DIR: "$MVNO_SSPP_ACTIVITY_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *mvno_sspp_activity_variables
+
+#STG
+mvno_sspp_activity_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *mvno_sspp_activity_variables
+  dependencies:
+    - mvno_sspp_activity_build
+
+mvno_sspp_activity_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *mvno_sspp_activity_variables
+  dependencies:
+    - mvno_sspp_activity_build
+    - mvno_sspp_activity_plan_stg
+
+mvno_sspp_activity_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *mvno_sspp_activity_variables
+  dependencies:
+    - mvno_sspp_activity_build
+
+#PROD
+mvno_sspp_activity_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *mvno_sspp_activity_variables
+  dependencies:
+    - mvno_sspp_activity_build
+
+mvno_sspp_activity_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *mvno_sspp_activity_variables
+  dependencies:
+    - mvno_sspp_activity_build
+    - mvno_sspp_activity_plan_prod
+
+mvno_sspp_activity_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *mvno_sspp_activity_variables
+  dependencies:
+    - mvno_sspp_activity_build

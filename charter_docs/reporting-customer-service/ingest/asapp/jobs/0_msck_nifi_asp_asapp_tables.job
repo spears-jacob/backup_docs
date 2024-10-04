@@ -1,0 +1,4 @@
+#database_initial_load job
+type=command
+
+command=/bin/bash -c ' export DB_NIFI="${DB_NIFI}"; echo $DB_NIFI; hive -f ../src/0_msck_nifi_asp_asapp_tables.hql'

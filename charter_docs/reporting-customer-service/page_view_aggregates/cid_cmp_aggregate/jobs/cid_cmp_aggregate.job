@@ -1,0 +1,4 @@
+type=command
+
+dependencies=04_cid_cmp_daily,04_cid_cmp_weekly,04_cid_cmp_fiscal_monthly,04_cid_cmp_calendar_monthly
+command=hive -f ../src/pageview_cid_cmp_aggregates_all.hql

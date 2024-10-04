@@ -1,0 +1,5 @@
+# FHR BPSS Monthly Aggregate Job
+type=command
+dependencies=fhr_bpss_monthly_load
+command=whoami
+command.1=/bin/sh bin/fhr_bpss_monthly_src_agg.sh

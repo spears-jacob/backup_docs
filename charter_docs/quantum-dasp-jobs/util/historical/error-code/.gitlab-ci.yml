@@ -1,0 +1,62 @@
+.error_code_variables: &error_code_variables
+  JOB_NAME: "error-code"
+  PAGE_RENDER_TIMES_DIR: "portals-events/error-code"
+  ARTIFACTS_DIR: "portals-events/error-code/artifacts"
+  TERRAFORM_DIR: "portals-events/error-code/terraform"
+  SCRIPTS_DIR: "portals-events/error-code/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/error-code"
+
+error_code_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$PAGE_RENDER_TIMES_DIR/ddl"
+    HQL_DIR: "$PAGE_RENDER_TIMES_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *error_code_variables
+
+# PROD
+error_code_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *error_code_variables
+  dependencies:
+    - error_code_build
+
+error_code_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *error_code_variables
+  dependencies:
+    - error_code_build
+    - error_code_plan_prod
+
+error_code_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *error_code_variables
+  dependencies:
+    - error_code_build
+
+#STG
+error_code_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *error_code_variables
+  dependencies:
+    - error_code_build
+
+error_code_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *error_code_variables
+  dependencies:
+    - error_code_build
+    - error_code_plan_stg
+
+error_code_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *error_code_variables
+  dependencies:
+    - error_code_build

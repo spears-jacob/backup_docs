@@ -1,0 +1,201 @@
+image:
+  name: hashicorp/terraform:0.12.19
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+variables:
+  ARTIFACTS_BUCKET_DEV: "pi-qtm-global-dev-artifacts"
+  ARTIFACTS_BUCKET_STG: "pi-qtm-global-stg-artifacts"
+  ARTIFACTS_BUCKET_PROD: "cdl-datalake-artifacts-ue1-pi-prod"
+  JOB_TYPE: "must_be_specified_in_child_job"
+  S3_ARTIFACTS_DIR: "must_be_specified_in_child_job"
+  PROJECT_DIR: "must_be_specified_in_child_job"
+  DEV_REGION: "us-west-2"
+  PROD_REGION: "us-east-1"
+  STG_REGION: "us-east-1"
+  TERRAFORM_DIR: "terraform"
+  COORDINATOR_TEMPLATE_DIR: "coordinator-template"
+  BASH_DIR: "bash-scripts"
+  DEV_ACCOUNT: "213705006773"
+  STG_ACCOUNT: "213705006773"
+  PROD_ACCOUNT: "387455165365"
+  DEV_ENV_NAME: "dev"
+  STG_ENV_NAME: "stg"
+  PROD_ENV_NAME: "prod"
+  CICD_ROLE_NAME: "cicd_worker_role"
+  DEV_CICD_ROLE: "arn:aws:iam::${DEV_ACCOUNT}:role/${DEV_ENV_NAME}-temp_${CICD_ROLE_NAME}"
+  STG_CICD_ROLE: "arn:aws:iam::${STG_ACCOUNT}:role/dev-temp_${CICD_ROLE_NAME}"
+  PROD_CICD_ROLE: "arn:aws:iam::${PROD_ACCOUNT}:role/${PROD_ENV_NAME}_${CICD_ROLE_NAME}"
+  SSH_KNOWN_HOSTS: "gitlab.spectrumflow.net,35.193.245.239 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIzzqlSQDT/9ClFTk0zDoCojGohJs3NLQmiicc5RG3mX68AOwseMW9gu79Xl5PteXTaF06qaS0bUvHPQX12u3gY="
+
+before_script:
+  - terraform --version
+  - apk add --no-cache --update zip bash curl py-pip py3-setuptools openssh-client
+  - pip3 install --upgrade awscli
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - touch ~/.ssh/known_hosts
+  # These SSH commands will be needed once the runners are moved to docker
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+  - chmod 700 -R $COORDINATOR_TEMPLATE_DIR/$BASH_DIR
+
+stages:
+  - build
+  - plan-dev
+  - deploy-dev
+  - plan-stg
+  - deploy-stg
+  - plan-prod
+  - deploy-prod
+  - destroy-dev
+  - destroy-stg
+  - destroy-prod
+
+.build:
+  stage: build
+  tags:
+    - awspilot
+  script:
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/build-lambdas.sh $COORDINATOR_TEMPLATE_DIR
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - $COORDINATOR_TEMPLATE_DIR/lambda/pkg/
+
+# DEV
+.plan_dev:
+  stage: plan-dev
+  tags:
+    - awspilot
+  script:
+    - . $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/plan.sh $PROJECT_DIR/$JOB_TYPE/$TERRAFORM_DIR/$DEV_ENV_NAME
+  dependencies:
+    - build
+  when: manual
+  artifacts:
+    expire_in: 5 days
+    paths:
+      - $COORDINATOR_TEMPLATE_DIR/lambda/pkg/
+  allow_failure: true
+
+.deploy_dev:
+  stage: deploy-dev
+  tags:
+    - awspilot
+  script:
+    - . $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/apply.sh $PROJECT_DIR/$JOB_TYPE/$TERRAFORM_DIR/$DEV_ENV_NAME
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/deploy.sh $ARTIFACTS_BUCKET_DEV $S3_ARTIFACTS_DIR
+  dependencies:
+    - build
+    - plan_dev
+  when: manual
+  allow_failure: true
+
+.destroy_dev:
+  stage: destroy-dev
+  tags:
+    - awspilot
+  script:
+    - . $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/assumerole.sh "${DEV_REGION}" "${DEV_ENV_NAME}" "${DEV_CICD_ROLE}" "${DEV_ROLE_EXTERNAL_ID}"
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/destroy.sh $PROJECT_DIR/$JOB_TYPE/$TERRAFORM_DIR/$DEV_ENV_NAME
+  dependencies:
+    - build
+  when: manual
+  artifacts:
+    expire_in: 5 days
+  allow_failure: true
+
+# STG
+.plan_stg:
+  stage: plan-stg
+  tags:
+    - awspilot
+  script:
+    - . $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/plan.sh $PROJECT_DIR/$JOB_TYPE/$TERRAFORM_DIR/$STG_ENV_NAME
+  dependencies:
+    - build
+  when: manual
+  artifacts:
+    expire_in: 5 days
+    paths:
+      - $COORDINATOR_TEMPLATE_DIR/lambda/pkg/
+  allow_failure: true
+
+.deploy_stg:
+  stage: deploy-stg
+  tags:
+    - awspilot
+  script:
+    - . $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/apply.sh $PROJECT_DIR/$JOB_TYPE/$TERRAFORM_DIR/$STG_ENV_NAME
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/deploy.sh $ARTIFACTS_BUCKET_STG $S3_ARTIFACTS_DIR
+  dependencies:
+    - build
+    - plan_stg
+  when: manual
+  allow_failure: true
+
+.destroy_stg:
+  stage: destroy-stg
+  tags:
+    - awspilot
+  script:
+    - . $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/assumerole.sh "${STG_REGION}" "${STG_ENV_NAME}" "${STG_CICD_ROLE}" "${STG_ROLE_EXTERNAL_ID}"
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/destroy.sh $PROJECT_DIR/$JOB_TYPE/$TERRAFORM_DIR/$STG_ENV_NAME
+  dependencies:
+    - build
+  when: manual
+  artifacts:
+    expire_in: 5 days
+  allow_failure: true
+
+# PROD
+.plan_prod:
+  stage: plan-prod
+  tags:
+    - awspilot
+  script:
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/plan.sh $PROJECT_DIR/$JOB_TYPE/$TERRAFORM_DIR/$PROD_ENV_NAME
+  dependencies:
+    - build
+  when: manual
+  artifacts:
+    expire_in: 5 days
+    paths:
+      - $COORDINATOR_TEMPLATE_DIR/lambda/pkg/
+  allow_failure: true
+
+.deploy_prod:
+  stage: deploy-prod
+  tags:
+    - awspilot
+  script:
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/apply.sh $PROJECT_DIR/$JOB_TYPE/$TERRAFORM_DIR/$PROD_ENV_NAME
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/deploy.sh $ARTIFACTS_BUCKET_PROD $S3_ARTIFACTS_DIR
+  dependencies:
+    - build
+    - plan_prod
+  when: manual
+  allow_failure: true
+
+.destroy_prod:
+  stage: destroy-prod
+  tags:
+    - awspilot
+  script:
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/assumerole.sh "${PROD_REGION}" "${PROD_ENV_NAME}" "${PROD_CICD_ROLE}" "${PROD_ROLE_EXTERNAL_ID}"
+    - $COORDINATOR_TEMPLATE_DIR/$BASH_DIR/destroy.sh $PROJECT_DIR/$JOB_TYPE/$TERRAFORM_DIR/$PROD_ENV_NAME
+  dependencies:
+    - build
+  when: manual
+  artifacts:
+    expire_in: 5 days
+  allow_failure: true

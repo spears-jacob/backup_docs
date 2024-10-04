@@ -1,0 +1,6 @@
+# App Aggregation Endcap Azkaban job
+type=noop
+dependencies=04a_fiscal_trending
+
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

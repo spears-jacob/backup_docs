@@ -1,0 +1,6 @@
+#  refresh tableau
+type=command
+dependencies=01a_asp_page_render_times,01b_page_load_time_grouping_sets,01c_hourly_page_load_tenths
+command=whoami
+
+command.1=/bin/bash -c "if [ ${tableau_post_load_refresh} -eq 1 ] && [ $ENVIRONMENT == 'prod' ];  then /usr/local/bin/tabcmd refreshextracts --url ${tableau_workbook} ; fi"

@@ -1,0 +1,66 @@
+.cipher_util_variables: &cipher_util_variables
+  JOB_NAME: "cipher-util"
+  cipher_util_DIR: "util/cipher-util"
+  ARTIFACTS_DIR: "util/cipher-util/artifacts"
+  TERRAFORM_DIR: "util/cipher-util/terraform"
+  SCRIPTS_DIR: "util/cipher-util/scripts"
+  S3_ARTIFACTS_DIR: "util/cipher-util"
+
+cipher_util_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$cipher_util_DIR/ddl"
+    HQL_DIR: "$cipher_util_DIR/hql"
+    PI_DL_USER_UTILS: >
+      spark/pyspark_sql_wrapper.py
+      spark/spark_run.sh
+      emr/emr_utils.sh
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *cipher_util_variables
+
+#STG
+cipher_util_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *cipher_util_variables
+  dependencies:
+    - cipher_util_build
+
+cipher_util_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *cipher_util_variables
+  dependencies:
+    - cipher_util_build
+    - cipher_util_plan_stg
+
+cipher_util_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *cipher_util_variables
+  dependencies:
+    - cipher_util_build
+
+#PROD
+cipher_util_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *cipher_util_variables
+  dependencies:
+    - cipher_util_build
+
+cipher_util_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *cipher_util_variables
+  dependencies:
+    - cipher_util_build
+    - cipher_util_plan_prod
+
+cipher_util_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *cipher_util_variables
+  dependencies:
+    - cipher_util_build

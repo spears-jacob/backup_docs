@@ -1,0 +1,5 @@
+# insert definitions job
+type=command
+dependencies=01_insert_definitions_selfservice,01_insert_definitions_privacysite
+command=whoami
+command.1=/bin/bash -c "hive -f ../src/display_layer_views.hql"

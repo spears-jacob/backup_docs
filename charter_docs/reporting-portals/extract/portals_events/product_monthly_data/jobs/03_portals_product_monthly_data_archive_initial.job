@@ -1,0 +1,5 @@
+#  Azkaban job
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'hive -f ../src/03_data_archive_initial.hql'

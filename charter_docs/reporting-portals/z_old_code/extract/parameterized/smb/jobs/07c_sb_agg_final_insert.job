@@ -1,0 +1,7 @@
+# sb agg final inserts
+# this pushes all processed data into final tables, including month over month and 3-month percent change calcs
+type=command
+dependencies=init_07b_param
+command=whoami
+
+command.1=/bin/bash -c 'export CADENCE=${CADENCE}; echo $CADENCE; export pf=${PF}; export current_batch=1; echo $current_batch; export total_batches=${TOTALBATCHES}; echo $total_batches; for (( c=1; c<=$total_batches; c++ )) do export current_batch=$c; hive -f ../src/07c_sb_agg_final_insert_batches.hql; done '

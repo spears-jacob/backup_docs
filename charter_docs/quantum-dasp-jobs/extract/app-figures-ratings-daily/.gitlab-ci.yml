@@ -1,0 +1,60 @@
+.app_figures_ratings_daily_variables: &app_figures_ratings_daily_variables
+  JOB_NAME: "app-figures-ratings-daily"
+  APP_FIGURES_RATINGS_DAILY_DIR: "extract/app-figures-ratings-daily"
+  ARTIFACTS_DIR: "extract/app-figures-ratings-daily/artifacts"
+  TERRAFORM_DIR: "extract/app-figures-ratings-daily/terraform"
+  SCRIPTS_DIR: "extract/app-figures-ratings-daily/scripts"
+  S3_ARTIFACTS_DIR: "extract/app-figures-ratings-daily"
+
+app_figures_ratings_daily_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$APP_FIGURES_RATINGS_DAILY_DIR/ddl"
+    HQL_DIR: "$APP_FIGURES_RATINGS_DAILY_DIR/hql"
+    <<: *app_figures_ratings_daily_variables
+
+# STG
+app_figures_ratings_daily_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *app_figures_ratings_daily_variables
+  dependencies:
+    - app_figures_ratings_daily_build
+
+app_figures_ratings_daily_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *app_figures_ratings_daily_variables
+  dependencies:
+    - app_figures_ratings_daily_build
+    - app_figures_ratings_daily_plan_stg
+
+app_figures_ratings_daily_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *app_figures_ratings_daily_variables
+  dependencies:
+    - app_figures_ratings_daily_build
+
+# PROD
+app_figures_ratings_daily_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *app_figures_ratings_daily_variables
+  dependencies:
+    - app_figures_ratings_daily_build
+
+app_figures_ratings_daily_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *app_figures_ratings_daily_variables
+  dependencies:
+    - app_figures_ratings_daily_build
+    - app_figures_ratings_daily_plan_prod
+
+app_figures_ratings_daily_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *app_figures_ratings_daily_variables
+  dependencies:
+    - app_figures_ratings_daily_build

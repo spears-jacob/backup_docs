@@ -1,0 +1,14 @@
+.DS_Store
+
+*.pyc
+*.zip
+
+##########################
+## IntelliJ
+##########################
+*.iml
+.idea/
+*.ipr
+*.iws
+out/
+.idea_modules/

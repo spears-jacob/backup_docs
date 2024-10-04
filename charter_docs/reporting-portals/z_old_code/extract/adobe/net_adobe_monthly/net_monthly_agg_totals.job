@@ -1,0 +1,5 @@
+# net_monthly_agg_totals job
+type=command
+dependencies=net_adjustments_combined_monthly,net_products_agg_monthly_pivot
+command=whoami
+command.1=/bin/sh bin/net_monthly_agg_totals.sh

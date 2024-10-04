@@ -1,0 +1,59 @@
+.pmai_feed_export_variables: &pmai_feed_export_variables
+  JOB_NAME: "pii-export-pmai-feed-export"
+  PMAI_FEED_EXPORT_DIR: "pii-export/pmai-feed-export"
+  ARTIFACTS_DIR: "pii-export/pmai-feed-export/artifacts"
+  TERRAFORM_DIR: "pii-export/pmai-feed-export/terraform"
+  SCRIPTS_DIR: "pii-export/pmai-feed-export/scripts"
+  S3_ARTIFACTS_DIR: "pii-export/pmai-feed-export"
+
+pmai_feed_export_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$PMAI_FEED_EXPORT_DIR/ddl"
+    HQL_DIR: "$PMAI_FEED_EXPORT_DIR/hql"
+    <<: *pmai_feed_export_variables
+
+#STG
+pmai_feed_export_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *pmai_feed_export_variables
+  dependencies:
+    - pmai_feed_export_build
+
+pmai_feed_export_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *pmai_feed_export_variables
+  dependencies:
+    - pmai_feed_export_build
+    - pmai_feed_export_plan_stg
+
+pmai_feed_export_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *pmai_feed_export_variables
+  dependencies:
+    - pmai_feed_export_build
+#PROD
+pmai_feed_export_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *pmai_feed_export_variables
+  dependencies:
+    - pmai_feed_export_build
+
+pmai_feed_export_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *pmai_feed_export_variables
+  dependencies:
+    - pmai_feed_export_build
+    - pmai_feed_export_plan_prod
+
+pmai_feed_export_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *pmai_feed_export_variables
+  dependencies:
+    - pmai_feed_export_build
