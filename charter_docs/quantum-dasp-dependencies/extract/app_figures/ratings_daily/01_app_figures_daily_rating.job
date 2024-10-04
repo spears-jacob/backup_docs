@@ -1,0 +1,5 @@
+# app figures daily rating agg job
+type=command
+
+command=whoami
+command.1=hive -f src/01_app_figures_daily_rating.hql

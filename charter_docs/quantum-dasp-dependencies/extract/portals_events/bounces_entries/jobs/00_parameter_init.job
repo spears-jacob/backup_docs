@@ -1,0 +1,3 @@
+# Parameter Init job
+type=command
+command=/bin/bash -c 'export CADENCE=daily; bash ../bin/process_dates.sh 0 \"${TZ}\" '

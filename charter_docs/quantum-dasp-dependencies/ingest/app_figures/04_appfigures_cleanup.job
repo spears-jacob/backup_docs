@@ -1,0 +1,4 @@
+type=command
+dependencies=03_appfigures_insert
+command=/bin/bash bin/appfigures_cleanup.sh
+command.1=/bin/bash -c "if [ ${run_sentiment} == 1 ];  then ssh ${destination_node} \'rm -rf ${base_dir}/${azkaban.flow.execid}\' ; fi "

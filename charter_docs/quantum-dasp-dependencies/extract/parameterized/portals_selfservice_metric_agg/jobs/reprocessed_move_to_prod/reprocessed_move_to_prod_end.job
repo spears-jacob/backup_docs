@@ -1,0 +1,7 @@
+# Endcap Azkaban job
+type=noop
+dependencies=01_reprocessed_move_to_prod
+
+###########################################
+## PLEASE KEEP THIS JOB LAST IN THE FLOW ##
+###########################################

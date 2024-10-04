@@ -1,0 +1,47 @@
+# This file is appended to the conf that lives here:  /usr/lib/spark/conf/spark-defaults.conf
+# and is used to load configurations for spark
+#
+# all available configuration options are found here:
+# https://spark.apache.org/docs/latest/configuration.html#available-properties
+#
+# To review all the current configs:
+# PySpark:          >>>   set([print(c) for c in (sc.getConf().getAll())])
+# Scala:         scala>   for (cf <- (spark.sparkContext.getConf.getAll).sorted) println(cf._1 +", "+ cf._2)
+# Spark-SQL: spark-sql>   set;
+#
+
+## below are the properties we have intentionally set
+
+spark.dynamicAllocation.enabled                False
+spark.hadoop.hive.exec.dynamic.partition       True
+spark.hadoop.hive.exec.dynamic.partition.mode  nonstrict
+spark.port.maxRetries                          30
+spark.sql.hive.convertMetastoreOrc             True
+spark.sql.hive.metastorePartitionPruning       True
+spark.sql.legacy.createHiveTableByDefault      True
+spark.sql.orc.cache.stripe.details.size        10000
+spark.sql.orc.char.enabled                     True
+spark.sql.orc.enabled                          True
+spark.sql.orc.filterPushdown                   True
+spark.sql.orc.impl                             native
+spark.sql.orc.splits.include.file.footer       True
+spark.sql.statistics.size.autoUpdate.enabled   True
+
+spark.sql.session.timeZone                     UTC
+spark.driver.extraJavaOptions                  -Duser.timezone=GMT
+spark.executor.extraJavaOptions                -Duser.timezone=GMT
+
+spark.ui.showConsoleProgress                   True
+spark.hadoop.fs.s3a.experimental.input.fadvice random
+spark.hadoop.fs.s3a.fast.output.enabled        True
+spark.hadoop.fs.s3a.readahead.range            256K
+spark.hadoop.fs.s3a.multiobjectdelete.enable   False
+spark.yarn.heterogeneousExecutors.enabled      False
+spark.sql.debug.maxToStringFields              10000
+spark.task.maxFailures                         33
+spark.sql.broadcastTimeout                     333
+spark.sql.shuffle.partitions                   333
+spark.driver.memory                            16g
+spark.executor.cores                           1
+spark.executor.instances                       33
+spark.executor.memory                          8g

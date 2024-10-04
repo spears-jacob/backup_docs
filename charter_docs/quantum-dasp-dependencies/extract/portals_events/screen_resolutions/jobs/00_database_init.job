@@ -1,0 +1,5 @@
+# database object initialization job
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export ReprocessDateTable=${ReprocessDateTable}; hive -f ../src/init/screen_resolutions_init_tables.hql '

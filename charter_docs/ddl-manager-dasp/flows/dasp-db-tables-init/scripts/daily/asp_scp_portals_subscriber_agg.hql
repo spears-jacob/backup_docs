@@ -1,0 +1,40 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS ${db_name}.asp_scp_portals_subscriber_agg (
+  grouping_id int,
+  grouping_set string,
+  legacy_company string,
+  customer_type string,
+  scp_flag boolean,
+  wifi_flag boolean,
+  internet_flag boolean,
+  future_connect_flag boolean,
+  account_type string,
+  login_hhs int,
+  equipment_page_view_hhs int,
+  pause_event_hhs int,
+  unpause_event_hhs int,
+  ssid_change_hhs int,
+  remove_device_hhs int,
+  edit_device_nickname_hhs int,
+  connected_device_hhs int,
+  equipment_page_view_events int,
+  pause_events int,
+  unpause_events int,
+  ssid_change_events int,
+  remove_device_events int,
+  edit_device_nickname_events int,
+  connected_device_events int,
+  total_hhs int,
+  session_rate double,
+  equipment_page_view_hhs_per_hhs_rate double,
+  equipment_page_view_hhs_per_total_hhs_rate double,
+  pause_event_hhs_per_hhs_rate double,
+  pause_event_hhs_per_total_hhs_rate double,
+  unpause_event_hhs_per_hhs_rate double,
+  unpause_event_hhs_per_total_hhs_rate double,
+  wifi_customer_type string,
+  grain string)
+PARTITIONED BY
+  (partition_date string)
+STORED AS ORC
+LOCATION '${s3_location}'
+TBLPROPERTIES ("orc.compress"="SNAPPY");

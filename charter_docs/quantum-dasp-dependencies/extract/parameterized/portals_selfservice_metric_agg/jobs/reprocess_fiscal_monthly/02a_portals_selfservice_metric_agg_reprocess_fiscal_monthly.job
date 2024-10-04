@@ -1,0 +1,7 @@
+#  Azkaban job
+type=command
+dependencies=01_param_init_rfm
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ; export FLOW_BACKFILL=backfill; echo $FLOW_BACKFILL; hive -f ../../src/portals_selfservice_metric_agg.hql '

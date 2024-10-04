@@ -1,0 +1,3 @@
+# Parameter Init job
+type=command
+command=/bin/bash -c 'export FLOW_BACKFILL=backfill; export CADENCE=weekly; bash ../../../bin/process_dates.sh 1 \"${TZ}\" ${ReprocessDateTable_weekly} ${ReprocessingEarliestDateLabel}'

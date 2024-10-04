@@ -1,0 +1,3 @@
+type=command
+dependencies=02_appfigures_sentiment
+command=/bin/bash bin/appfigures_insert.sh ${run_sentiment}

@@ -1,0 +1,17 @@
+# Groovy
+type=Groovy
+
+groovy.command.01=println 'This job runs each Portals extract job outside of the metric factory'
+groovy.command.02=import azkaban.executor.*; def paramsToPass = ["env.RUN_DATE": "${env.RUN_DATE}", "env.job_started_by_exec": "${azkaban.link.execution.url}", "env.job_started_by_project_flow": "${azkaban.link.workflow.url}" ]
+groovy.command.03=azkaban.execute("asp_extract_idm_paths","asp_extract_idm_paths_end", paramsToPass);
+groovy.command.04=azkaban.execute("asp_extract_bounces_entries", "asp_extract_bounces_entries_end", paramsToPass); sleep(54321);
+groovy.command.05=azkaban.execute("asp_extract_login_data", "asp_extract_login_data_daily_end", paramsToPass); sleep(54321);
+groovy.command.06=azkaban.execute("asp_extract_parameterized_portals_api_agg", "portals_api_agg_process_daily_end", paramsToPass); sleep(54321);
+groovy.command.07=azkaban.execute("asp_extract_parameterized_portals_ss_metric_agg", "portals_selfservice_metric_agg_process_daily_end", paramsToPass); sleep(54321);
+groovy.command.08=azkaban.execute("asp_extract_parameterized_portals_page_agg", "portals_page_agg_process_daily_end", paramsToPass); sleep(54321);
+groovy.command.09=azkaban.execute("asp_extract_screen_resolutions", "asp_extract_screen_resolutions", paramsToPass); sleep(54321);
+groovy.command.10=azkaban.execute("asp_extract_parameterized_portals_ps_metric_agg", "portals_ps_metric_agg_process_daily_end", paramsToPass); sleep(54321);
+groovy.command.11=azkaban.execute("asp_extract_page_render_times", "asp_extract_page_render_times_end", paramsToPass); sleep(54321);
+groovy.command.12=azkaban.execute("asp_extract_api_responses", "asp_extract_api_responses_end", paramsToPass); sleep(54321);
+groovy.command.13=azkaban.execute("asp_data_alert_cs_call_data", "data_alert_cs_call_data_end", paramsToPass); sleep(54321);
+groovy.command.14=azkaban.execute("asp_extract_dasp_quality", "asp_extract_dasp_quality_end", paramsToPass); sleep(54321);

@@ -1,0 +1,5 @@
+# Parameter Init job
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export CADENCE=daily; bash ../../bin/process_dates.sh ${IsReprocess} \"${TZ}\" ${ReprocessDateTable} ${ReprocessingEarliestDateLabel} ${DaysToLag}'

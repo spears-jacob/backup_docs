@@ -1,0 +1,5 @@
+#  Azkaban job
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export execid=${azkaban.flow.execid}; echo $execid; echo $ProcessUser;  export FLOW_BACKFILL=backfill; echo $FLOW_BACKFILL; hive -f ../../../src/portals_selfservice_set_agg_tableset.hql '

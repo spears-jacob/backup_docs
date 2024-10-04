@@ -1,0 +1,44 @@
+TO: ∞∞∞TO∞∞∞
+CC: ∞∞∞CC∞∞∞
+BCC: ∞∞∞BCC∞∞∞
+FROM: ∞∞∞FROM∞∞∞
+SUBJECT: ∞∞∞SUBJECT∞∞∞
+MIME-Version: 1.0
+Content-type: multipart/mixed;
+  boundary=B_10001110101_12152017133
+
+> This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
+
+--B_10001110101_12152017133
+Content-type: multipart/alternative;
+  boundary=B_10001110101_13794634622
+--B_10001110101_13794634622
+Content-type: text/plain;
+  charset="UTF-8"
+Content-transfer-encoding: 7bit
+
+
+
+--B_10001110101_13794634622
+Content-type: text/html;
+  charset="UTF-8"
+Content-transfer-encoding: quoted-printable
+
+<html>
+<head><meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"></head>
+<body>
+
+∞∞∞BODY_IMG∞∞∞
+
+
+∞∞∞FOLLOWUP_NOTE∞∞∞
+
+<p>
+Live report located on the Product Intelligence Tableau server here: https://∞∞∞SERVER∞∞∞/#/workbooks/∞∞∞WORKBOOK_NO∞∞∞/views
+
+</body>
+</html>
+
+
+--B_10001110101_13794634622--

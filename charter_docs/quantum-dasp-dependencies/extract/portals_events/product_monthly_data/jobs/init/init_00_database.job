@@ -1,0 +1,7 @@
+# Azkaban job that creates required tables and views
+
+type=command
+
+command=whoami
+
+command.1=/bin/bash -c 'export ReprocessDateTable="${ReprocessDateTable}"; echo $ReprocessDateTable; hive -f ../../src/init/product_monthly_init_tables.hql '

@@ -1,0 +1,7 @@
+#  Azkaban job
+type=command
+dependencies=03_portals_privacysite_set_agg_process_daily_instances,03_portals_privacysite_set_agg_process_daily_devices,03_portals_privacysite_set_agg_process_daily_accounts,03_portals_privacysite_set_agg_process_daily_visits
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export execid=${azkaban.flow.execid}; echo $execid; export domain=${domain}; echo $domain; export project=${project}; echo $project; export ProcessUser="${azkaban.flow.submituser}"; echo $ProcessUser; hive -f ../../../src/portals_privacysite_set_agg_final.hql'

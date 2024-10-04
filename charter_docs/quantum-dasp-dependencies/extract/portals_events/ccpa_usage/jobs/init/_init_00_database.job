@@ -1,0 +1,4 @@
+# database object initialization job
+type=command
+
+command=/bin/bash -c 'export ReprocessDateTable_daily="${ReprocessDateTable_daily}"; echo $ReprocessDateTable_daily; hive -f ../../src/init/ccpa_usage_init_tables.hql'

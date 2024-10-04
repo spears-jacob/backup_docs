@@ -1,0 +1,7 @@
+type=command
+command=/bin/bash -c "if [ ${run_sentiment} == 1 ];  then ssh ${destination_node} \'mkdir -p ${base_dir}/${azkaban.flow.execid}/bin\' ; fi "
+command.1=/bin/bash -c "if [ ${run_sentiment} == 1 ];  then ssh ${destination_node} \'mkdir -p ${base_dir}/${azkaban.flow.execid}/src\' ; fi "
+command.2=/bin/bash -c "if [ ${run_sentiment} == 1 ];  then /bin/bash -c \'ls -lA ${working.dir}/bin/*\' ; fi "
+command.3=/bin/bash -c "if [ ${run_sentiment} == 1 ];  then /bin/bash -c \'scp -r bin/*  ${destination_node}:${base_dir}/${azkaban.flow.execid}/bin\' ; fi "
+command.4=/bin/bash -c "if [ ${run_sentiment} == 1 ]; then /bin/bash -c \'scp -r src/* ${destination_node}:${base_dir}/${azkaban.flow.execid}/src\' ; fi "
+command.5=/bin/bash -c "if [ ${run_sentiment} == 1 ];  then ssh ${destination_node} \'chmod -R 777 ${base_dir}/${azkaban.flow.execid}\' ; fi "

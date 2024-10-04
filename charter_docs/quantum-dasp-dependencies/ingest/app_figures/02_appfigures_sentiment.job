@@ -1,0 +1,4 @@
+type=command
+dependencies=00_prepare_node,01_appfigures_parse
+command=whoami
+command.1=/bin/bash -c "if [ ${run_sentiment} == 1 ];  then ssh ${destination_node} \'/bin/bash ${base_dir}/${azkaban.flow.execid}/bin/appfigures_sentiment.sh ${base_dir} ${azkaban.flow.execid}\' ; fi "

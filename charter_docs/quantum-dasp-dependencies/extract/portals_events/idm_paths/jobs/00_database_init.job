@@ -1,0 +1,4 @@
+# database object initialization job
+type=command
+
+command=/bin/bash -c 'export ReprocessDateTable="${ReprocessDateTable}"; echo $ReprocessDateTable; hive -f ../src/init/1_idm_paths_init_tables.hql'

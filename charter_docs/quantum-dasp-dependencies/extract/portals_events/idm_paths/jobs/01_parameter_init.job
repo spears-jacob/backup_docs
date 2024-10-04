@@ -1,0 +1,4 @@
+# Parameter Init job
+type=command
+
+command=/bin/bash ../bin/process_dates.sh ${IsReprocess} \"${TZ}\" ${ReprocessDateTable}

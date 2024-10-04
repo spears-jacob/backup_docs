@@ -1,0 +1,11 @@
+#  Azkaban job
+type=Groovy
+dependencies=02a_portals_selfservice_metric_agg_reprocess_fiscal_monthly,02b_portals_selfservice_metric_agg_reprocess_fiscal_monthly_parameters
+
+groovy.command.1=println 'This job decides whether or not to continue reprocessing.'
+groovy.command.2=println 'The value of the ContinueReprocess variable is the following: ${ContinueReprocess} '
+groovy.command.3=import azkaban.executor.*
+groovy.command.4=def PropsString = props.toString()
+groovy.command.5=def project_name = (PropsString =~ "azkaban\\\\.flow\\\\.projectname: ([^,]*),")[0][1]; println project_name
+groovy.command.6=def flow_id = (PropsString =~ "azkaban\\\\.flow\\\\.flowid: ([^,]*),")[0][1]; println flow_id
+groovy.command.7=if ( ${ContinueReprocess} == 1 ) { println 'Reprocessing programmatically after a short nap.'; sleep(54321); azkaban.execute(project_name, flow_id) } else { println 'Reprocessing has programmatically ended.  Now starting portals_set_agg_reprocessing.'; azkaban.execute("asp_extract_parameterized_portals_set_aggs", "portals_set_agg_reprocess_daily_end"); azkaban.execute("asp_extract_parameterized_portals_set_aggs","portals_set_agg_reprocess_fiscal_monthly_end") ; azkaban.execute("asp_extract_parameterized_portals_set_aggs", "portals_set_agg_reprocess_monthly_end"); azkaban.execute("asp_extract_parameterized_portals_set_aggs", "portals_set_agg_reprocess_weekly_end") }

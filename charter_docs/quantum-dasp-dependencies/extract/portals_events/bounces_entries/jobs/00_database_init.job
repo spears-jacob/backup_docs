@@ -1,0 +1,4 @@
+#Database init
+type=command
+
+command=/bin/bash -c 'hive -f ../init/db_int.hql'

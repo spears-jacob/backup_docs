@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line
+PIDeliveryPipeline {
+    azkabanProjectName = "asp_extract_dasp_quality" // required
+    azkabanEnv = 'prod' // optional, default to dev
+    azkabanProjectDesc = "DASP Quality Score daily  - started by portals_selfservice_metric_agg_process_daily_end" // required
+    azkabanProjectOwner = 'kbudai' // required, put your AD login here
+    azkabanPlatform = 'ASP'  // required
+    azkabanEscalation = 'Marjorie Truitt' // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Optional - Next Day' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun=[] // not implemented, could have loop here too
+    azkabanProdFlowSchedule=[]
+    gitDir='extract/portals_events/dasp_quality'  // the sub dir where your project dir is
+}

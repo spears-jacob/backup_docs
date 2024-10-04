@@ -1,0 +1,8 @@
+# Endcap Azkaban job
+type=noop
+dependencies=02_portals_product_monthly_get_data_6months
+
+
+###########################################
+## PLEASE KEEP THIS JOB LAST IN THE FLOW ##
+###########################################

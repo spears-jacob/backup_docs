@@ -1,0 +1,9 @@
+# App Aggregation Azkaban Job - aggregations for report daily
+
+type=command
+dependencies=00_data_check_and_wait
+
+command=whoami
+
+command.1=/bin/bash hive -f ../src/01_daily_report_data.hql
+command.2=/bin/bash hive -f ../src/02_daily_data_summary.hql
