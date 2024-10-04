@@ -1,0 +1,7 @@
+# .NET Views Aggregate azkaban job
+type=command
+
+dependencies=10_net_visits_aggregate
+
+command=whoami
+command.1=sh bin/net_view_check.sh

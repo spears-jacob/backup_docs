@@ -1,0 +1,7 @@
+# Azkaban job that creates required tables and views
+
+type=command
+
+command=whoami
+
+command.1=/bin/bash -c ' export ReprocessDateTable_daily="${ReprocessDateTable_daily}"; echo $ReprocessDateTable_daily;  hive -f ../../src/init/portals_idm_create_tables_and_views.hql '

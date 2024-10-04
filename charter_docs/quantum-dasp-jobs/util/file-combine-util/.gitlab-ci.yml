@@ -1,0 +1,62 @@
+.file_combine_util_variables: &file_combine_util_variables
+  JOB_NAME: "file-combine-util"
+  file_combine_util_DIR: "util/file-combine-util"
+  ARTIFACTS_DIR: "util/file-combine-util/artifacts"
+  TERRAFORM_DIR: "util/file-combine-util/terraform"
+  SCRIPTS_DIR: "util/file-combine-util/scripts"
+  S3_ARTIFACTS_DIR: "util/file-combine-util"
+
+file_combine_util_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$file_combine_util_DIR/ddl"
+    HQL_DIR: "$file_combine_util_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *file_combine_util_variables
+
+# PROD
+file_combine_util_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *file_combine_util_variables
+  dependencies:
+    - file_combine_util_build
+
+file_combine_util_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *file_combine_util_variables
+  dependencies:
+    - file_combine_util_build
+    - file_combine_util_plan_prod
+
+file_combine_util_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *file_combine_util_variables
+  dependencies:
+    - file_combine_util_build
+
+#STG
+file_combine_util_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *file_combine_util_variables
+  dependencies:
+    - file_combine_util_build
+
+file_combine_util_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *file_combine_util_variables
+  dependencies:
+    - file_combine_util_build
+    - file_combine_util_plan_stg
+
+file_combine_util_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *file_combine_util_variables
+  dependencies:
+    - file_combine_util_build

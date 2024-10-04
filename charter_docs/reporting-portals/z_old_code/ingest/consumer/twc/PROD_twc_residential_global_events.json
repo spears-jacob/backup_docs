@@ -1,0 +1,16 @@
+{
+  "host": "ftp.omniture.com",
+  "username": "twc",
+  "password": "DM9RuJGp",
+  "ftp_directory": "/",
+  "filemask": "*tsg2resglobal*",
+  "local_directory":"/data/data_sources/twc_residential_global_adobe/prod/",
+  "display": "PROD_twc_residential_global_events",
+  "user": "twc",
+  "curl": "/prod_twc_residential_global_events",
+  "protocol": "sftp",
+  "processed_filemask": "",
+  "mode": "delete",
+  "ftp_archive_directory": "",
+  "removal_filemask": ""
+}

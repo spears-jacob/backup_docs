@@ -1,0 +1,62 @@
+.daily_digital_effectiveness_variables: &daily_digital_effectiveness_variables
+  JOB_NAME: "daily-digital-effectiveness"
+  daily_digital_effectiveness_DIR: "cs-jobs/daily-digital-effectiveness"
+  ARTIFACTS_DIR: "cs-jobs/daily-digital-effectiveness/artifacts"
+  TERRAFORM_DIR: "cs-jobs/daily-digital-effectiveness/terraform"
+  SCRIPTS_DIR: "cs-jobs/daily-digital-effectiveness/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/daily-digital-effectiveness"
+
+daily_digital_effectiveness_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$daily_digital_effectiveness_DIR/ddl"
+    HQL_DIR: "$daily_digital_effectiveness_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *daily_digital_effectiveness_variables
+
+# PROD
+daily_digital_effectiveness_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *daily_digital_effectiveness_variables
+  dependencies:
+    - daily_digital_effectiveness_build
+
+daily_digital_effectiveness_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *daily_digital_effectiveness_variables
+  dependencies:
+    - daily_digital_effectiveness_build
+    - daily_digital_effectiveness_plan_prod
+
+daily_digital_effectiveness_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *daily_digital_effectiveness_variables
+  dependencies:
+    - daily_digital_effectiveness_build
+
+#STG
+daily_digital_effectiveness_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *daily_digital_effectiveness_variables
+  dependencies:
+    - daily_digital_effectiveness_build
+
+daily_digital_effectiveness_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *daily_digital_effectiveness_variables
+  dependencies:
+    - daily_digital_effectiveness_build
+    - daily_digital_effectiveness_plan_stg
+
+daily_digital_effectiveness_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *daily_digital_effectiveness_variables
+  dependencies:
+    - daily_digital_effectiveness_build

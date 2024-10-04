@@ -1,0 +1,7 @@
+# Initialize parameters
+type=command
+
+command=whoami
+dependencies=07a_sb_agg_final_insert_prep,init_07a_param
+command.1=/bin/bash ../../bin/working_dates.sh \"${TZ}\" ${IsCurrent1_Prior2_Reprocess3_ToBeProcessed} ${Cadence_CalendarMonth1_FiscalMonth2_Daily3} ${ReprocessingStartDate} ${ReprocessingEndDate}
+command.2=/bin/bash ../../bin/get_total_batches.sh "${TMP_db}.asp_sb_${CADENCE}_agg_insert_partition_batch"

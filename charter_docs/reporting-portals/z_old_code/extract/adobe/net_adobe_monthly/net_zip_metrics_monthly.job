@@ -1,0 +1,5 @@
+# NET zip metrics monthly job
+type=command
+dependencies=net_auth_flow_page_visits
+command=whoami
+command.1=/bin/sh bin/net_zip_metrics_monthly.sh

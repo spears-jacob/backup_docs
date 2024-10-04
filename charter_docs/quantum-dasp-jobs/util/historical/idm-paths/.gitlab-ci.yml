@@ -1,0 +1,60 @@
+.idm_paths_variables: &idm_paths_variables
+  JOB_NAME: "idm-paths"
+  IDM_PATHS_DIR: "portals-events/idm-paths"
+  ARTIFACTS_DIR: "portals-events/idm-paths/artifacts"
+  TERRAFORM_DIR: "portals-events/idm-paths/terraform"
+  SCRIPTS_DIR: "portals-events/idm-paths/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/idm-paths"
+
+idm_paths_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$IDM_PATHS_DIR/ddl"
+    HQL_DIR: "$IDM_PATHS_DIR/hql"
+    <<: *idm_paths_variables
+
+# PROD
+idm_paths_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *idm_paths_variables
+  dependencies:
+    - idm_paths_build
+
+idm_paths_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *idm_paths_variables
+  dependencies:
+    - idm_paths_build
+    - idm_paths_plan_prod
+
+idm_paths_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *idm_paths_variables
+  dependencies:
+    - idm_paths_build
+
+#STG
+idm_paths_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *idm_paths_variables
+  dependencies:
+    - idm_paths_build
+
+idm_paths_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *idm_paths_variables
+  dependencies:
+    - idm_paths_build
+    - idm_paths_plan_stg
+
+idm_paths_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *idm_paths_variables
+  dependencies:
+    - idm_paths_build

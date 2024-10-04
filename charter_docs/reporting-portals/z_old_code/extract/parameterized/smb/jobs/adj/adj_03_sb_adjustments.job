@@ -1,0 +1,5 @@
+# net_adjustments_combined_monthly job
+type=command
+dependencies=adj_02_sb_load_manual_files,init_02_param
+command=whoami
+command.1=/bin/bash -c 'hive -f ../../src/adj/adj_03_sb_adjustments.hql'

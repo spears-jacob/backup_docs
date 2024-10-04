@@ -1,0 +1,4 @@
+#azkaban job to consolidate history of work orders
+dependencies=care_all_trbl_call_load_history_twc
+type=command
+command=/bin/bash bin/care_all_trbl_call_refresh_twc.sh

@@ -1,0 +1,15 @@
+# Global Events population file cleanup azkaban job
+# Step 1: put all files into a zipped tar ball
+# Step 2: make sure the archive folder has been made in hdfs
+# Step 3: delete existing archive if already in hdfs
+# Step 4: move archive file(s) to hdfs
+
+type=command
+dependencies=07_events_file_cleanup_prep
+
+command=whoami
+
+command.1=bash -c "cd ${localFSworking} ;  tar --force-local --warning=no-file-changed -czvf ${dbprefix}_events_${RD}.tgz * --remove-files || [[ $? -eq 1 ]]"
+command.2=bash -c "hdfs dfs -mkdir -p ${HDFS_ARCHIVE_DIR}${dbprefix}/"
+command.3=bash -c "f=${HDFS_ARCHIVE_DIR}${dbprefix}/${dbprefix}_events_${RD}.tgz; hadoop fs -test -e $f; if [ $? -eq 0 ]; then hadoop fs -rm -f $f; fi";
+command.4=bash -c 'cd ${localFSworking} ; for i in *:*; do mv "$i" "${i//:/_}"; done ; hadoop fs -moveFromLocal ${dbprefix}_events_*tgz  ${HDFS_ARCHIVE_DIR}${dbprefix}/'

@@ -1,0 +1,6 @@
+# Parameter Init job
+type=command
+dependencies=02_login_data_feed
+command=whoami
+
+command.1=/bin/bash ../bin/transfer_file.sh

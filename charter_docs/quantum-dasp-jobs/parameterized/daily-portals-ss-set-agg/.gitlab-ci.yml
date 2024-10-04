@@ -1,0 +1,62 @@
+.d_portals_selfservice_set_agg_variables: &d_portals_selfservice_set_agg_variables
+  JOB_NAME: "daily-parameterized-portals-selfservice-set-agg"
+  DAILY_PORTALS_SELFSERVICE_SET_AGG_DIR: "parameterized/daily-portals-ss-set-agg"
+  ARTIFACTS_DIR: "parameterized/daily-portals-ss-set-agg/artifacts"
+  TERRAFORM_DIR: "parameterized/daily-portals-ss-set-agg/terraform"
+  SCRIPTS_DIR: "parameterized/daily-portals-ss-set-agg/scripts"
+  S3_ARTIFACTS_DIR: "parameterized/daily-portals-ss-set-agg"
+
+d_portals_selfservice_set_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$DAILY_PORTALS_SELFSERVICE_SET_AGG_DIR/ddl"
+    HQL_DIR: "$DAILY_PORTALS_SELFSERVICE_SET_AGG_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *d_portals_selfservice_set_agg_variables
+
+#PROD
+d_portals_selfservice_set_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *d_portals_selfservice_set_agg_variables
+  dependencies:
+    - d_portals_selfservice_set_agg_build
+
+d_portals_selfservice_set_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *d_portals_selfservice_set_agg_variables
+  dependencies:
+    - d_portals_selfservice_set_agg_build
+    - d_portals_selfservice_set_agg_plan_prod
+
+d_portals_selfservice_set_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *d_portals_selfservice_set_agg_variables
+  dependencies:
+    - d_portals_selfservice_set_agg_build
+
+# STG
+d_portals_selfservice_set_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *d_portals_selfservice_set_agg_variables
+  dependencies:
+    - d_portals_selfservice_set_agg_build
+
+d_portals_selfservice_set_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *d_portals_selfservice_set_agg_variables
+  dependencies:
+    - d_portals_selfservice_set_agg_build
+    - d_portals_selfservice_set_agg_plan_stg
+
+d_portals_selfservice_set_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *d_portals_selfservice_set_agg_variables
+  dependencies:
+    - d_portals_selfservice_set_agg_build

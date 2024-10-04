@@ -1,0 +1,3 @@
+type=command
+command=whoami
+command.1=hive -f init/database_init.hql

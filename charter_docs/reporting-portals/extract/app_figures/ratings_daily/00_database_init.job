@@ -1,0 +1,7 @@
+# database init job
+type=command
+
+command=whoami
+
+command.1=hive -f init/app_fig_tables_init.hql
+command.2=hive -f init/app_fig_views_init.hql

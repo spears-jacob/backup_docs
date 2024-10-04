@@ -1,0 +1,60 @@
+.idm_quality_variables: &idm_quality_variables
+  JOB_NAME: "idm-quality"
+  idm_quality_DIR: "portals-events/idm-quality"
+  ARTIFACTS_DIR: "portals-events/idm-quality/artifacts"
+  TERRAFORM_DIR: "portals-events/idm-quality/terraform"
+  SCRIPTS_DIR: "portals-events/idm-quality/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/idm-quality"
+
+idm_quality_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$idm_quality_DIR/ddl"
+    HQL_DIR: "$idm_quality_DIR/hql"
+    <<: *idm_quality_variables
+
+# PROD
+idm_quality_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *idm_quality_variables
+  dependencies:
+    - idm_quality_build
+
+idm_quality_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *idm_quality_variables
+  dependencies:
+    - idm_quality_build
+    - idm_quality_plan_prod
+
+idm_quality_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *idm_quality_variables
+  dependencies:
+    - idm_quality_build
+
+#STG
+idm_quality_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *idm_quality_variables
+  dependencies:
+    - idm_quality_build
+
+idm_quality_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *idm_quality_variables
+  dependencies:
+    - idm_quality_build
+    - idm_quality_plan_stg
+
+idm_quality_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *idm_quality_variables
+  dependencies:
+    - idm_quality_build

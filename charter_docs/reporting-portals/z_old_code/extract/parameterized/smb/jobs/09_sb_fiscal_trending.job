@@ -1,0 +1,5 @@
+# sb chtr operational operational daily
+type=command
+dependencies=08b_sb_chtr_operational_daily,08a_sb_agg_MOM_3M,init_08_param
+command=whoami
+# command.1=/bin/bash -c 'export END_DATE=${END_DATE}; echo $END_DATE; export START_DATE=${START_DATE}; echo $START_DATE; echo $CADENCE; export fm_lkp=${fm_lkp}; echo $fm_lkp; if [ "${CADENCE}" == "fiscal_monthly" ]; then hive -f ../src/09_sb_fiscal_trending.hql; fi '

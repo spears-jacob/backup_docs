@@ -1,0 +1,5 @@
+# net_products_agg_monthly_combined job
+type=command
+dependencies=net_products_agg_monthly_L-CHTR,net_products_agg_monthly_L-BHN,net_products_agg_monthly_L-TWC,net_products_agg_monthly_billpay,net_products_agg_monthly_webmail,net_products_agg_monthly_fedid,net_products_agg_monthly_newids
+command=whoami
+command.1=/bin/sh bin/net_products_agg_monthly_combined.sh

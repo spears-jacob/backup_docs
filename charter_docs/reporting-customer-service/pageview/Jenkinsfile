@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _
+PIDeliveryPipeline {
+    azkabanProjectName = "cs_pageview_daily"
+    azkabanEnv = 'prod'
+    azkabanProjectDesc = "This project contains the ETL code to create the cs_page_view_call_in_rate and cs_site_section_call_in_rate tables"
+    azkabanProjectOwner = 'Amanda Ramsay'
+    azkabanPlatform = 'ASP'
+    azkabanEscalation = 'Marjorie Truitt'
+    azkabanSLA = 'Important - Within 12 hrs'
+    azkabanFlowRun = []
+    azkabanProdFlowSchedule = [flowName:'cs_pageview_daily', cronExpression: '0 0 23 ? * * *']
+    gitDir = 'pageview'
+}

@@ -1,0 +1,7 @@
+# Job for checking if new data exist in NiFi tables
+type=command
+dependencies=database_init
+
+command=whoami
+
+command.1=/bin/bash nifi/nifi_new_data_check.sh

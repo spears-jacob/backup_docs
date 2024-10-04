@@ -1,0 +1,6 @@
+# Initialize parameters
+type=command
+
+command=whoami
+dependencies=adj_01_hdfs_directory_init,init_01_run_all
+command.1=/bin/bash ../../bin/working_dates.sh \"${TZ}\" ${IsCurrent1_Prior2_Reprocess3_ToBeProcessed} ${Cadence_CalendarMonth1_FiscalMonth2_Daily3} ${ReprocessingStartDate} ${ReprocessingEndDate}

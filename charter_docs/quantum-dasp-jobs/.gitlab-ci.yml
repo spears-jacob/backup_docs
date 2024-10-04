@@ -1,0 +1,97 @@
+variables:
+  JOB_TEMPLATE_REF: "v2.4.6"
+  RUNNER_TAGS: quantum-dasp-jobs-k8s
+  IMAGE_NAME: panamax.spectrumxg.com/awspilot/docker/terraform:0.12.31
+  TF_VAR_omniture_old_for_testing_username: $omniture_old_for_testing_username
+  TF_VAR_omniture_old_for_testing_password: $omniture_old_for_testing_password
+
+include:
+  - project: 'awspilot/job-template'
+    ref: v2.4.6
+    file: 'dot_gitlab-ci-template.yml'
+
+  # PHASE 1
+  - local: 'parameterized/portals-ss-metric-agg/dot_gitlab-ci.yml'
+  - local: 'parameterized/portals-m2dot0-metric-agg/dot_gitlab-ci.yml'
+  # PHASE 2
+  - local: 'parameterized/daily-portals-ss-set-agg/dot_gitlab-ci.yml'
+  - local: 'parameterized/weekly-portals-ss-set-agg/dot_gitlab-ci.yml'
+  - local: 'parameterized/monthly-portals-ss-set-agg/dot_gitlab-ci.yml'
+  - local: 'parameterized/fiscal-monthly-portals-ss-set-agg/dot_gitlab-ci.yml'
+  - local: 'parameterized/portals-ps-metric-agg/dot_gitlab-ci.yml'
+  - local: 'parameterized/daily-portals-ps-set-agg/dot_gitlab-ci.yml'
+  - local: 'parameterized/portals-ytd-agg/dot_gitlab-ci.yml'
+  - local: 'parameterized/daily-portals-m2dot0-set-agg/dot_gitlab-ci.yml'
+  # PHASE 3
+  - local: 'portals-events/ccpa-usage/dot_gitlab-ci.yml'
+  - local: 'portals-events/dasp-quality/dot_gitlab-ci.yml'
+  - local: 'portals-events/idm-quality/dot_gitlab-ci.yml'
+  # PHASE 4
+  - local: 'extract/app-figures-ratings-daily/dot_gitlab-ci.yml'
+  - local: 'customer-service/daily-disposition-groupings/dot_gitlab-ci.yml'
+  # PHASE 5
+  - local: 'cs-portals-events/search-support-performance/dot_gitlab-ci.yml'
+  - local: 'cs-portals-events/support-article-call-disp/dot_gitlab-ci.yml'
+  # PHASE 6
+  - local: 'extract/product-monthly-data/dot_gitlab-ci.yml'
+  - local: 'extract/adhoc-weekly-job/dot_gitlab-ci.yml'
+  - local: 'portals-events/mvno-sspp-activity/dot_gitlab-ci.yml'
+  - local: 'portals-events/daily-digital-adoption/dot_gitlab-ci.yml'
+  - local: 'monitor/digital-adoption-monitor/dot_gitlab-ci.yml'
+  - local: 'extract/osc-dashboard/dot_gitlab-ci.yml'
+  - local: 'extract/mobile-2dot0-dashboard/dot_gitlab-ci.yml'
+  - local: 'outgoing/medallia-extract/dot_gitlab-ci.yml'
+  - local: 'extract/onlineform-errors-dashboard/dot_gitlab-ci.yml'
+
+  # Ingests
+  - local: 'ingest/app-figures/dot_gitlab-ci.yml'
+  - local: 'ingest/asapp/dot_gitlab-ci.yml'
+  - local: 'ingest/sent-msgs/dot_gitlab-ci.yml'
+
+  # CS JOBS
+  - local: 'cs-jobs/pageview-click-agg/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/cid-cmp-agg/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/prod-monthly-final/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/calls-with-prior-visits-agg/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/call-care-data-agg/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/call-care-derived-tables/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/pageview-daily/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/cs-quality-check/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/msa/dot_gitlab-ci.yml'
+  - local: 'call-care-validation/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/dasp-metagg-call-enrich/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/si-initiate-metric-agg/dot_gitlab-ci.yml'
+  - local: 'cs-jobs/daily-digital-effectiveness/dot_gitlab-ci.yml'
+
+  # PHASE 11
+  # ALERTS
+  - local: 'alerts/alerts-cs-call-data/dot_gitlab-ci.yml'
+  - local: 'alerts/alerts-portals-events/dot_gitlab-ci.yml'
+  - local: 'alerts/alerts-app-figures/dot_gitlab-ci.yml'
+  # Ad-hoc
+  - local: 'util/adhocutil/dot_gitlab-ci.yml'
+  - local: 'util/daily-adhoc/dot_gitlab-ci.yml'
+  - local: 'util/file-combine-util/dot_gitlab-ci.yml'
+  - local: 'extract/service-appts-dashboard/dot_gitlab-ci.yml'
+
+  # SI JOBS
+  - local: 'si-jobs/daily-summary-agg/dot_gitlab-ci.yml'
+  - local: 'si-jobs/weekly-summary-agg/dot_gitlab-ci.yml'
+  - local: 'si-jobs/monthly-summary-agg/dot_gitlab-ci.yml'
+  - local: 'si-jobs/daily-activationchannel-agg/dot_gitlab-ci.yml'
+  - local: 'si-jobs/weekly-activationchannel-agg/dot_gitlab-ci.yml'
+  - local: 'si-jobs/monthly-activationchannel-agg/dot_gitlab-ci.yml'
+  - local: 'si-jobs/daily-etos-collateral/dot_gitlab-ci.yml'
+
+ #decrypt export for PMAI
+  - local: 'pii-export/pmai-feed-export/dot_gitlab-ci.yml'
+
+ #outgoing feeds
+  - local: 'outgoing/asapp-visitid-data/dot_gitlab-ci.yml'
+  - local: 'outgoing/login-data/dot_gitlab-ci.yml'
+  - local: 'outgoing/pmai-devices-get-output/dot_gitlab-ci.yml'
+  - local: 'outgoing/pmai-devices/dot_gitlab-ci.yml'
+  - local: 'outgoing/voice-of-customer/dot_gitlab-ci.yml'
+
+#SCP Portals
+  - local: 'scp/scp_portals_daily/dot_gitlab-ci.yml'

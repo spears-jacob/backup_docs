@@ -1,0 +1,60 @@
+.d_disposition_groupings_variables: &d_disposition_groupings_variables
+  JOB_NAME: "customer-service-daily-disposition-groupings"
+  DAILY_DISPOSITION_GROUPINGS_DIR: "customer-service/daily-disposition-groupings"
+  ARTIFACTS_DIR: "customer-service/daily-disposition-groupings/artifacts"
+  TERRAFORM_DIR: "customer-service/daily-disposition-groupings/terraform"
+  SCRIPTS_DIR: "customer-service/daily-disposition-groupings/scripts"
+  S3_ARTIFACTS_DIR: "customer-service/daily-disposition-groupings"
+
+d_disposition_groupings_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$DAILY_DISPOSITION_GROUPINGS_DIR/ddl"
+    HQL_DIR: "$DAILY_DISPOSITION_GROUPINGS_DIR/hql"
+    <<: *d_disposition_groupings_variables
+
+#PROD
+d_disposition_groupings_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *d_disposition_groupings_variables
+  dependencies:
+    - d_disposition_groupings_build
+
+d_disposition_groupings_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *d_disposition_groupings_variables
+  dependencies:
+    - d_disposition_groupings_build
+    - d_disposition_groupings_plan_prod
+
+d_disposition_groupings_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *d_disposition_groupings_variables
+  dependencies:
+    - d_disposition_groupings_build
+
+#STG
+d_disposition_groupings_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *d_disposition_groupings_variables
+  dependencies:
+    - d_disposition_groupings_build
+
+d_disposition_groupings_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *d_disposition_groupings_variables
+  dependencies:
+    - d_disposition_groupings_build
+    - d_disposition_groupings_plan_stg
+
+d_disposition_groupings_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *d_disposition_groupings_variables
+  dependencies:
+    - d_disposition_groupings_build

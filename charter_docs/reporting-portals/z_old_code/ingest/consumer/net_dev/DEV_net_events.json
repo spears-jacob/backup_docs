@@ -1,0 +1,16 @@
+{
+  "host": "ftp.omniture.com",
+  "username": "charter3",
+  "password": "KpvkNTJX",
+  "ftp_directory": "/",
+  "filemask": "*charterdotnetdev*",
+  "display": "DEV_Net_Events",
+  "local_directory": "/data/data_sources/net_events/dev/",
+  "user": "charter3",
+  "curl": "/DEV_Net_Events",
+  "protocol": "sftp",
+  "processed_filemask": "",
+  "mode": "delete",
+  "ftp_archive_directory": "",
+  "removal_filemask": ""
+}

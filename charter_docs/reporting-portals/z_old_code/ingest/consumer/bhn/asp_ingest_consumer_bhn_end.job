@@ -1,0 +1,6 @@
+# BHN Residential Adobe Events Azkaban job
+type=noop
+dependencies=06_bhn_residential_events_partition
+
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

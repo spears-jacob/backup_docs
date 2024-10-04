@@ -1,0 +1,7 @@
+# sb param init job
+type=command
+dependencies=06a_sb_agg_null_placeholders
+command=whoami
+# prepares parameters for subsequent job
+command.1=/bin/bash ../../bin/working_dates.sh \"${TZ}\" ${IsCurrent1_Prior2_Reprocess3_ToBeProcessed} ${Cadence_CalendarMonth1_FiscalMonth2_Daily3} ${ReprocessingStartDate} ${ReprocessingEndDate}
+command.2=/bin/bash ../../bin/get_max_dyn_partitions_per_node.sh

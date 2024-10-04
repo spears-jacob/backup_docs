@@ -1,0 +1,5 @@
+# os metrics detailed daily
+type=command
+command=whoami
+
+command.1=/bin/bash ../bin/osd_daily_etl.sh

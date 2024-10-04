@@ -1,0 +1,61 @@
+.onlineform_errors_dashboard_variables: &onlineform_errors_dashboard_variables
+  JOB_NAME: "onlineform-errors-dashboard"
+  ONLINEFORM_ERRORS_DASHBOARD: "extract/onlineform-errors-dashboard"
+  ARTIFACTS_DIR: "extract/onlineform-errors-dashboard/artifacts"
+  TERRAFORM_DIR: "extract/onlineform-errors-dashboard/terraform"
+  SCRIPTS_DIR: "extract/onlineform-errors-dashboard/scripts"
+  S3_ARTIFACTS_DIR: "extract/onlineform-errors-dashboard"
+
+onlineform_errors_dashboard_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$ONLINEFORM_ERRORS_DASHBOARD/ddl"
+    HQL_DIR: "$ONLINEFORM_ERRORS_DASHBOARD/hql"
+    <<: *onlineform_errors_dashboard_variables
+
+#STG
+onlineform_errors_dashboard_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *onlineform_errors_dashboard_variables
+  dependencies:
+    - onlineform_errors_dashboard_build
+
+onlineform_errors_dashboard_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *onlineform_errors_dashboard_variables
+  dependencies:
+    - onlineform_errors_dashboard_build
+    - onlineform_errors_dashboard_plan_stg
+
+onlineform_errors_dashboard_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *onlineform_errors_dashboard_variables
+  dependencies:
+    - onlineform_errors_dashboard_build
+
+
+#PROD
+onlineform_errors_dashboard_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *onlineform_errors_dashboard_variables
+  dependencies:
+    - onlineform_errors_dashboard_build
+
+onlineform_errors_dashboard_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *onlineform_errors_dashboard_variables
+  dependencies:
+    - onlineform_errors_dashboard_build
+    - onlineform_errors_dashboard_plan_prod
+
+onlineform_errors_dashboard_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *onlineform_errors_dashboard_variables
+  dependencies:
+    - onlineform_errors_dashboard_build

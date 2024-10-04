@@ -1,0 +1,5 @@
+type=command
+command=whoami
+### specguide Worldbox DAILY Reporting
+command.1= sh bin/specguide_worldbox_daily_range.sh
+ 

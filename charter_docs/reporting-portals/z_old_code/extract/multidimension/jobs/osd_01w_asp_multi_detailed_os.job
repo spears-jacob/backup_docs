@@ -1,0 +1,5 @@
+# os metrics detailed monthly
+type=command
+command=whoami
+
+command.1=/bin/bash ../bin/osd_weekly_etl.sh

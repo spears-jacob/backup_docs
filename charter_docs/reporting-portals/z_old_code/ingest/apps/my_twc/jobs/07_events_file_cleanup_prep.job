@@ -1,0 +1,7 @@
+# Global Events population file cleanup azkaban job
+type=command
+dependencies=06_events
+
+command=whoami
+
+command.1=/bin/bash ../bin/rd.sh ${localFSworking}

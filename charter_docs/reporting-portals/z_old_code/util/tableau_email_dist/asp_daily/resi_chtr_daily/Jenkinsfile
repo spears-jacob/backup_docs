@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line, this is the magical library that does the, uh, 'magic'
+PIDeliveryPipeline {
+    azkabanProjectName = "asp_daily_operational_email_resi_chtr" // required
+    azkabanEnv = 'prod' // optional, default to dev
+    azkabanProjectDesc = "Downloads daily Spectrum.net tableau report and emails to a distribution list" // required
+    azkabanProjectOwner = 'eeasterly' // required, put your AD login here
+    azkabanPlatform = 'ASP'  // required
+    azkabanEscalation = 'Andrew Ngeow' // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Critical - Immediate Response' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun=[] // not implemented, could have loop here too
+    azkabanProdFlowSchedule=[]     // optional, a groovy map, leave it out or empty ([]) if you don't want to override production schedule
+    gitDir='util/tableau_email_dist/asp_daily/resi_chtr_daily'  // the sub dir where your project dir is
+}

@@ -1,0 +1,5 @@
+# sb chtr operational operational daily
+type=command
+dependencies=07c_sb_agg_final_insert,init_07c_param
+command=whoami
+command.1=/bin/bash -c 'export ape="${APE}"; echo "$ape"; hive -f ../src/08b_sb_chtr_operational_daily.hql'

@@ -1,0 +1,5 @@
+# .NET Auth Flow Page Visits Monthly Azkaban job
+type=command
+dependencies=net_reset_user_monthly
+command=whoami
+command.1=/bin/bash bin/net_auth_flow_page_visits.sh

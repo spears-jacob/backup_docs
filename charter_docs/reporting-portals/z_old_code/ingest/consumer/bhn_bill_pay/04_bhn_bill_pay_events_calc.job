@@ -1,0 +1,8 @@
+# BHN Bill Pay Global Events Denormalization and Calculation azkaban job
+type=command
+dependencies=03_bhn_bill_pay_events_init
+
+command=whoami
+
+command.1=pig -f -useHCatalog src/bhn_bill_pay_denormalize.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}
+command.2=pig -f -useHCatalog src/bhn_bill_pay_calc.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}

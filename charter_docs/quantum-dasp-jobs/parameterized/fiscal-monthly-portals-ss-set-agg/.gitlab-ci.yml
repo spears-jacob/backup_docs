@@ -1,0 +1,62 @@
+.fm_portals_selfservice_set_agg_variables: &fm_portals_selfservice_set_agg_variables
+  JOB_NAME: "fiscal-monthly-parameterized-portals-selfservice-set-agg"
+  FISCAL_MONTHLY_PORTALS_SELFSERVICE_SET_AGG_DIR: "parameterized/fiscal-monthly-portals-ss-set-agg"
+  ARTIFACTS_DIR: "parameterized/fiscal-monthly-portals-ss-set-agg/artifacts"
+  TERRAFORM_DIR: "parameterized/fiscal-monthly-portals-ss-set-agg/terraform"
+  SCRIPTS_DIR: "parameterized/fiscal-monthly-portals-ss-set-agg/scripts"
+  S3_ARTIFACTS_DIR: "parameterized/fiscal-monthly-portals-ss-set-agg"
+
+fm_portals_selfservice_set_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$FISCAL_MONTHLY_PORTALS_SELFSERVICE_SET_AGG_DIR/ddl"
+    HQL_DIR: "$FISCAL_MONTHLY_PORTALS_SELFSERVICE_SET_AGG_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *fm_portals_selfservice_set_agg_variables
+
+#PROD
+fm_portals_selfservice_set_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *fm_portals_selfservice_set_agg_variables
+  dependencies:
+    - fm_portals_selfservice_set_agg_build
+
+fm_portals_selfservice_set_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *fm_portals_selfservice_set_agg_variables
+  dependencies:
+    - fm_portals_selfservice_set_agg_build
+    - fm_portals_selfservice_set_agg_plan_prod
+
+fm_portals_selfservice_set_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *fm_portals_selfservice_set_agg_variables
+  dependencies:
+    - fm_portals_selfservice_set_agg_build
+
+# STG
+fm_portals_selfservice_set_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *fm_portals_selfservice_set_agg_variables
+  dependencies:
+    - fm_portals_selfservice_set_agg_build
+
+fm_portals_selfservice_set_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *fm_portals_selfservice_set_agg_variables
+  dependencies:
+    - fm_portals_selfservice_set_agg_build
+    - fm_portals_selfservice_set_agg_plan_stg
+
+fm_portals_selfservice_set_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *fm_portals_selfservice_set_agg_variables
+  dependencies:
+    - fm_portals_selfservice_set_agg_build

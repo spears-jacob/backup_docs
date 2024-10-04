@@ -1,0 +1,11 @@
+# TWC Residential Global Events population azkaban job
+type=command
+dependencies=twc_residential_global_events_calc
+
+command=whoami
+
+command.1=pig -M -f -useHCatalog src/twc_residential_global_events.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}
+command.2=/bin/sh -c "rm -rf ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/denorm_process"
+command.3=bash -c "cd ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/ ;tar --force-local --warning=no-file-changed -czvf twc_residential_global_events_${azkaban.flow.start.timestamp}.tgz * --remove-files || [[ $? -eq 1 ]]"
+command.4=hadoop fs -mkdir -p /archive/twc_residential_global_adobe/${ENVIRONMENT}/
+command.5=bash -c "cd ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/ ; for i in *:*; do mv "$i" "${i//:/_}"; done ; hadoop fs -moveFromLocal twc_residential_global_events_*tgz  /archive/twc_residential_global_adobe/${ENVIRONMENT}/"

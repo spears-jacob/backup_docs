@@ -1,0 +1,6 @@
+# SB.NET TWC Events Azkaban job
+type=noop
+dependencies=sbnet_twc_events_partition
+
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

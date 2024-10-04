@@ -1,0 +1,8 @@
+# Endcap Azkaban job
+type=noop
+dependencies=04_portals_selfservice_set_agg_process_monthly_final
+
+
+###########################################
+## PLEASE KEEP THIS JOB LAST IN THE FLOW ##
+###########################################

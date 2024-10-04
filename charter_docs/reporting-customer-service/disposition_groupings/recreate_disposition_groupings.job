@@ -1,0 +1,3 @@
+type=command
+dependencies=update_dispositions
+command=hive -f src/recreate_disposition_groupings.hql

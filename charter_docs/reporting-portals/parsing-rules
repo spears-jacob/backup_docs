@@ -1,0 +1,7 @@
+warning /\[WARN\]/
+info /\[INFO\]/
+error /\[ERROR\]/
+start /\[Pipeline\] \{ \(RunTest\)/
+start /\[Pipeline\] \{ \(PromoteToProd\)/
+start /\[Pipeline\] \{ \(DeployToDev\)/
+start /\[Pipeline\] \{ \(Build\)/

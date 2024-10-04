@@ -1,0 +1,7 @@
+# .NET Events partition population azkaban job
+type=command
+
+dependencies=07_net_events_partition
+
+command=whoami
+command.1=hive -f src/net_truncate.hql

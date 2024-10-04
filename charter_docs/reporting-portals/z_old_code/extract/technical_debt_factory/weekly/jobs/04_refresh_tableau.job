@@ -1,0 +1,7 @@
+#  refresh tableau
+type=command
+dependencies=03_prod_weekly_resi_combined,03_prod_weekly_app_combined,03_prod_weekly_smb_combined
+command=whoami
+
+command.1=/bin/bash -c "if [ ${tableau_post_load_refresh} -eq 1 ] && [ $ENVIRONMENT == 'prod' ];  then /usr/local/bin/tabcmd refreshextracts --url ${tableau_workbook1} ; fi"
+command.2=/bin/bash -c "if [ ${tableau_post_load_refresh} -eq 1 ] && [ $ENVIRONMENT == 'prod' ];  then /usr/local/bin/tabcmd refreshextracts --url ${tableau_workbook2} ; fi"

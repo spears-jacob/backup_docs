@@ -1,0 +1,9 @@
+# pv_durations job
+
+dependencies=00_parameter_init
+type=command
+command=whoami
+
+command.1=/bin/bash -c ' echo "Now running quantum"; export start="${START_DATE_TZ}"; echo $start; export end="${END_DATE_TZ}"; echo $end; export source=asp_v_venona_events_portals; echo $source; export date_field=partition_date_hour_utc; echo $date_field; export page=state__view__current_page__page_name; echo $page; hive -f ../src/01_pv_durations_quantum.hql'
+
+command.2=/bin/bash -c ' export start="${START_DATE_TZ}"; echo $start; export end="${END_DATE_TZ}"; echo $end;  export source=asp_v_venona_events_portals; echo $source; export date_field=partition_date_hour_utc; echo $date_field; hive -f ../src/site_visit_durations_quantum.hql'

@@ -1,0 +1,5 @@
+# net_network_status job (monthly)
+type=command
+dependencies=net_reset_password
+command=whoami
+command.1=/bin/sh bin/net_network_status_monthly.sh

@@ -1,0 +1,4 @@
+type=command
+
+dependencies=spark_call_in_rate_queries,call_in_rate_etl_queries
+command=hive -f ../init/call_in_rate_views.hql

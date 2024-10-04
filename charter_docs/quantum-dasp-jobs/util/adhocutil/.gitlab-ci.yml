@@ -1,0 +1,62 @@
+.adhocutil_variables: &adhocutil_variables
+  JOB_NAME: "adhocutil"
+  JOB_DIR: "util/adhocutil"
+  ARTIFACTS_DIR: "util/adhocutil/artifacts"
+  TERRAFORM_DIR: "util/adhocutil/terraform"
+  SCRIPTS_DIR: "util/adhocutil/scripts"
+  S3_ARTIFACTS_DIR: "util/adhocutil"
+
+adhocutil_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$JOB_DIR/ddl"
+    HQL_DIR: "$JOB_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *adhocutil_variables
+
+# PROD
+adhocutil_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *adhocutil_variables
+  dependencies:
+    - adhocutil_build
+
+adhocutil_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *adhocutil_variables
+  dependencies:
+    - adhocutil_build
+    - adhocutil_plan_prod
+
+adhocutil_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *adhocutil_variables
+  dependencies:
+    - adhocutil_build
+
+#STG
+adhocutil_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *adhocutil_variables
+  dependencies:
+    - adhocutil_build
+
+adhocutil_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *adhocutil_variables
+  dependencies:
+    - adhocutil_build
+    - adhocutil_plan_stg
+
+adhocutil_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *adhocutil_variables
+  dependencies:
+    - adhocutil_build

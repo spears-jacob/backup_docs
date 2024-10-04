@@ -1,0 +1,5 @@
+# 03_operational_daily_resi_combined job
+type=command
+dependencies=02_operational_daily_resi_adobe,02_operational_daily_resi_quantum
+command=whoami
+command.1=/bin/bash -c 'hive -f ../src/03_operational_daily_resi_combined.hql'

@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line
+PIDeliveryPipeline {
+    azkabanProjectName = "Call_in_rate_Legacy_Views" // required
+    azkabanEnv = 'prod' // optional, default to dev
+    azkabanProjectDesc = "To load legacy call-in-rate data for TWC and BHN accounts" // required
+    azkabanProjectOwner = 'sfields' // required, put your AD login here
+    azkabanPlatform = 'ASP'  // required, one of ['ASP', 'Authentication', 'Core', 'DAI', 'DynExp', 'HSD', 'Mobile', 'MVNO', 'ODN', 'Platform Ops', 'SGR', 'SpecGuide', 'Venona', 'VOD', 'Voice', 'WIFI']
+    azkabanEscalation = 'Marjorie Truitt' // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Optional - Next Day' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun=[] // not implemented, could have loop here too
+    azkabanProdFlowSchedule=[flowName:'cs_legacy_cir', cronExpression:'0 0 11 ? * *']
+    gitDir='call_in_rate_views_legacy'  // the sub dir where your project dir is
+}

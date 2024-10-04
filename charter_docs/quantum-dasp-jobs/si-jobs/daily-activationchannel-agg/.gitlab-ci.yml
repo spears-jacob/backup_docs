@@ -1,0 +1,62 @@
+.d_activationchannel_agg_variables: &d_activationchannel_agg_variables
+  JOB_NAME: "d-activationchannel-agg"
+  D_ACTIVATIONCHANNEL_AGG_DIR: "si-jobs/daily-activationchannel-agg"
+  ARTIFACTS_DIR: "si-jobs/daily-activationchannel-agg/artifacts"
+  TERRAFORM_DIR: "si-jobs/daily-activationchannel-agg/terraform"
+  SCRIPTS_DIR: "si-jobs/daily-activationchannel-agg/scripts"
+  S3_ARTIFACTS_DIR: "si-jobs/daily-activationchannel-agg"
+
+d_activationchannel_agg_build:
+  extends: .build
+  variables:
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    DDL_DIR: "$D_ACTIVATIONCHANNEL_AGG_DIR/ddl"
+    HQL_DIR: "$D_ACTIVATIONCHANNEL_AGG_DIR/hql"
+    <<: *d_activationchannel_agg_variables
+
+#STG
+d_activationchannel_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *d_activationchannel_agg_variables
+  dependencies:
+    - d_activationchannel_agg_build
+
+d_activationchannel_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *d_activationchannel_agg_variables
+  dependencies:
+    - d_activationchannel_agg_build
+    - d_activationchannel_agg_plan_stg
+
+d_activationchannel_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *d_activationchannel_agg_variables
+  dependencies:
+    - d_activationchannel_agg_build
+
+#PROD
+d_activationchannel_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *d_activationchannel_agg_variables
+  dependencies:
+    - d_activationchannel_agg_build
+
+d_activationchannel_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *d_activationchannel_agg_variables
+  dependencies:
+    - d_activationchannel_agg_build
+    - d_activationchannel_agg_plan_prod
+
+d_activationchannel_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *d_activationchannel_agg_variables
+  dependencies:
+    - d_activationchannel_agg_build

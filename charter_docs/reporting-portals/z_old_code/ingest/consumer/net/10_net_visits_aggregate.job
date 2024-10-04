@@ -1,0 +1,7 @@
+# .NET Visits Aggregate azkaban job
+type=command
+
+dependencies=09_net_cp_dev_into_prod
+
+command=whoami
+command.1=sh bin/net_visit_check.sh

@@ -1,0 +1,6 @@
+# TWC/BHN Webmail Metric Calc azkaban job
+type=command
+dependencies=webmail_twc_bhn_init
+command=whoami
+
+command.1=hive -f src/webmail_twc_bhn_metrics.hql

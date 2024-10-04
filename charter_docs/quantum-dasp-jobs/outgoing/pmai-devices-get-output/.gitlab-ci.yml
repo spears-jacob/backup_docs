@@ -1,0 +1,62 @@
+.pmai_devices_get_output_variables: &pmai_devices_get_output_variables
+  JOB_NAME: "outgoing-pmai-devices-get-output"
+  pmai_devices_get_output_DIR: "outgoing/pmai-devices-get-output"
+  ARTIFACTS_DIR: "outgoing/pmai-devices-get-output/artifacts"
+  TERRAFORM_DIR: "outgoing/pmai-devices-get-output/terraform"
+  SCRIPTS_DIR: "outgoing/pmai-devices-get-output/scripts"
+  S3_ARTIFACTS_DIR: "outgoing/pmai-devices-get-output"
+
+pmai_devices_get_output_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$pmai_devices_get_output_DIR/ddl"
+    HQL_DIR: "$pmai_devices_get_output_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *pmai_devices_get_output_variables
+
+#stg
+pmai_devices_get_output_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *pmai_devices_get_output_variables
+  dependencies:
+    - pmai_devices_get_output_build
+
+pmai_devices_get_output_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *pmai_devices_get_output_variables
+  dependencies:
+    - pmai_devices_get_output_build
+    - pmai_devices_get_output_plan_stg
+
+pmai_devices_get_output_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *pmai_devices_get_output_variables
+  dependencies:
+    - pmai_devices_get_output_build
+
+#PROD
+pmai_devices_get_output_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *pmai_devices_get_output_variables
+  dependencies:
+    - pmai_devices_get_output_build
+
+pmai_devices_get_output_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *pmai_devices_get_output_variables
+  dependencies:
+    - pmai_devices_get_output_build
+    - pmai_devices_get_output_plan_prod
+
+pmai_devices_get_output_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *pmai_devices_get_output_variables
+  dependencies:
+    - pmai_devices_get_output_build

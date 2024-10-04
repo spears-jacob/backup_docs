@@ -1,0 +1,60 @@
+.bounces_entries_variables: &bounces_entries_variables
+  JOB_NAME: "bounces-entries"
+  BOUNCES_ENTRIES_DIR: "portals-events/bounces-entries"
+  ARTIFACTS_DIR: "portals-events/bounces-entries/artifacts"
+  TERRAFORM_DIR: "portals-events/bounces-entries/terraform"
+  SCRIPTS_DIR: "portals-events/bounces-entries/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/bounces-entries"
+
+bounces_entries_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$BOUNCES_ENTRIES_DIR/ddl"
+    HQL_DIR: "$BOUNCES_ENTRIES_DIR/hql"
+    <<: *bounces_entries_variables
+
+# PROD
+bounces_entries_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *bounces_entries_variables
+  dependencies:
+    - bounces_entries_build
+
+bounces_entries_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *bounces_entries_variables
+  dependencies:
+    - bounces_entries_build
+    - bounces_entries_plan_prod
+
+bounces_entries_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *bounces_entries_variables
+  dependencies:
+    - bounces_entries_build
+
+#STG
+bounces_entries_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *bounces_entries_variables
+  dependencies:
+    - bounces_entries_build
+
+bounces_entries_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *bounces_entries_variables
+  dependencies:
+    - bounces_entries_build
+    - bounces_entries_plan_stg
+
+bounces_entries_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *bounces_entries_variables
+  dependencies:
+    - bounces_entries_build

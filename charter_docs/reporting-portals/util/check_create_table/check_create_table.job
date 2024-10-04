@@ -1,0 +1,5 @@
+# Check Retention job
+type=command
+
+command=whoami
+command.1=/bin/bash check_create_table.sh ${table_prefix} ${grep_search}

@@ -1,0 +1,5 @@
+# net_products_agg_monthly_webmail job
+type=command
+dependencies=net_products_agg_monthly_stage
+command=whoami
+command.1=/bin/sh bin/net_products_agg_monthly_webmail.sh

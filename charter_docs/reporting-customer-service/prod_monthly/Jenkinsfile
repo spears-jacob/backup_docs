@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _
+PIDeliveryPipeline {
+    azkabanProjectName = "cs_prod_monthly"
+    azkabanEnv = 'prod'
+    azkabanProjectDesc = "This project updates the call-in rates by fiscal month, for use in DASP's product monthly report"
+    azkabanProjectOwner = 'Amanda Ramsay'
+    azkabanPlatform = 'ASP'
+    azkabanEscalation = 'Marjorie Truitt'
+    azkabanSLA = 'Important - Within 12 hrs'
+    azkabanFlowRun = []
+    azkabanProdFlowSchedule = [flowName:'cs_prod_monthly_final', cronExpression: '0 0 23 ? * * *']
+    gitDir = 'prod_monthly'
+}

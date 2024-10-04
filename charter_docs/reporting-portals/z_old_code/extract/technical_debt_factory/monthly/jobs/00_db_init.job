@@ -1,0 +1,3 @@
+type=command
+command=whoami
+command.1=/bin/bash -c 'hive -f ../init/00_db_init.hql'

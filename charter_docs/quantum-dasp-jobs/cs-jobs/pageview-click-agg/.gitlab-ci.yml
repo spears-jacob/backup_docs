@@ -1,0 +1,60 @@
+.pageview_click_agg_variables: &pageview_click_agg_variables
+  JOB_NAME: "pageview-click-agg"
+  pageview_click_agg_DIR: "cs-jobs/pageview-click-agg"
+  ARTIFACTS_DIR: "cs-jobs/pageview-click-agg/artifacts"
+  TERRAFORM_DIR: "cs-jobs/pageview-click-agg/terraform"
+  SCRIPTS_DIR: "cs-jobs/pageview-click-agg/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/pageview-click-agg"
+
+pageview_click_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$pageview_click_agg_DIR/ddl"
+    HQL_DIR: "$pageview_click_agg_DIR/hql"
+    <<: *pageview_click_agg_variables
+
+# PROD
+pageview_click_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *pageview_click_agg_variables
+  dependencies:
+    - pageview_click_agg_build
+
+pageview_click_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *pageview_click_agg_variables
+  dependencies:
+    - pageview_click_agg_build
+    - pageview_click_agg_plan_prod
+
+pageview_click_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *pageview_click_agg_variables
+  dependencies:
+    - pageview_click_agg_build
+
+#STG
+pageview_click_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *pageview_click_agg_variables
+  dependencies:
+    - pageview_click_agg_build
+
+pageview_click_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *pageview_click_agg_variables
+  dependencies:
+    - pageview_click_agg_build
+    - pageview_click_agg_plan_stg
+
+pageview_click_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *pageview_click_agg_variables
+  dependencies:
+    - pageview_click_agg_build

@@ -1,0 +1,5 @@
+# sb L-BHN Bill Pay job
+type=command
+dependencies=init_02_param
+command=whoami
+command.1=/bin/bash -c 'export CADENCE=${CADENCE}; echo $CADENCE; export END_DATE_TZ=${END_DATE_TZ}; echo $END_DATE_TZ; export END_DATE=${END_DATE}; echo $END_DATE; export START_DATE_TZ=${START_DATE_TZ}; echo $START_DATE_TZ; export START_DATE=${START_DATE}; echo $START_DATE; export ap="${AP}"; echo "$ap"; export ape="${APE}"; echo "$ape"; export fm_lkp=${fm_lkp}; echo $fm_lkp; export pf=${PF}; echo $pf;  hive -f ../../src/main/main_03d_sb_L-BHN_bill_pay_agg.hql '

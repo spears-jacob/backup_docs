@@ -1,0 +1,8 @@
+# Azkaban job that creates required tables and views
+
+type=command
+
+command=whoami
+
+command.1=/bin/bash hive -f ../../src/init/net_extract_monthly_reporting_init_tables.hql
+command.2=/bin/bash hive -f ../../src/init/asp_agg_db_init.hql

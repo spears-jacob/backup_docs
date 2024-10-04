@@ -1,0 +1,8 @@
+# net_monthly_agg_totals job
+type=command
+dependencies=05a_percent_auto_pay_success,05b_percent_hhs_logged_in,05f_percent_one_time_payment_success,05l_percent_total_create_id_count_all,05m_percent_total_password_reset_success,05n_percent_total_success_recover_reset_username_password,05o_percent_total_username_recovery_success,05p_percent_login_success,init_05_param,05q_bounce_rate_home-unauth,05r_exit_rate_auth,05s_exit_rate_unauth
+command=whoami
+command.1=/bin/bash -c 'export CADENCE=${CADENCE}; echo $CADENCE; export pf=${PF}; hive -f ../src/06_net_agg_null_placeholders.hql'
+
+# prepares parameters for subsequent job
+command.2=/bin/bash ../bin/working_dates.sh \"${TZ}\" ${IsCurrent1_Prior2_Reprocess3_ToBeProcessed} ${Cadence_CalendarMonth1_FiscalMonth2_Daily3} ${ReprocessingStartDate} ${ReprocessingEndDate}

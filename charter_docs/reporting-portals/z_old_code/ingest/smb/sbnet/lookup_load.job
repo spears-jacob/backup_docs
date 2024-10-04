@@ -1,0 +1,9 @@
+# SB.NET Events Lookup Table Load azkaban job
+type=command
+dependencies=nifi_new_data_check
+
+command=whoami
+
+command.1=hive -f src/lookup_truncate.hql
+command.2=hive -f nifi/load_lkp_from_nifi.hql
+command.3=hive -f nifi/clean_nifi_lkp_tbl.hql

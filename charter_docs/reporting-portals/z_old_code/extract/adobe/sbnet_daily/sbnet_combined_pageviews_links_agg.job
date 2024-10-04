@@ -1,0 +1,7 @@
+# SB.NET Combined PageViews/Links Daily Aggregate Azkaban job
+type=command
+dependencies=database_init
+
+command=whoami
+
+command.1=/bin/bash bin/sbnet_combined_pageviews_links_agg.sh

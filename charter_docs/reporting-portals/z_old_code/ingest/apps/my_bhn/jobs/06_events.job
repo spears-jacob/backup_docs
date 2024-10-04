@@ -1,0 +1,7 @@
+# Global Events population azkaban job
+type=command
+dependencies=05_events_calc
+
+command=whoami
+
+command.1=pig -f -useHCatalog ../src/events.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT} -param dbprefix_calc=${dbprefix_calc} -param dbprefix_denorm=${dbprefix_denorm} -param domain=${domain} -param customer=${customer} -param dbprefix_events_no_part=${dbprefix_events_no_part}

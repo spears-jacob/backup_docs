@@ -1,0 +1,60 @@
+.d_digital_adoption_variables: &d_digital_adoption_variables
+  JOB_NAME: "portals-events-daily-digital-adoption"
+  d_digital_adoption_DIR: "portals-events/daily-digital-adoption"
+  ARTIFACTS_DIR: "portals-events/daily-digital-adoption/artifacts"
+  TERRAFORM_DIR: "portals-events/daily-digital-adoption/terraform"
+  SCRIPTS_DIR: "portals-events/daily-digital-adoption/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/daily-digital-adoption"
+
+d_digital_adoption_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$d_digital_adoption_DIR/ddl"
+    HQL_DIR: "$d_digital_adoption_DIR/hql"
+    <<: *d_digital_adoption_variables
+
+#STG
+d_digital_adoption_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *d_digital_adoption_variables
+  dependencies:
+    - d_digital_adoption_build
+
+d_digital_adoption_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *d_digital_adoption_variables
+  dependencies:
+    - d_digital_adoption_build
+    - d_digital_adoption_plan_stg
+
+d_digital_adoption_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *d_digital_adoption_variables
+  dependencies:
+    - d_digital_adoption_build
+
+#PROD
+d_digital_adoption_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *d_digital_adoption_variables
+  dependencies:
+    - d_digital_adoption_build
+
+d_digital_adoption_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *d_digital_adoption_variables
+  dependencies:
+    - d_digital_adoption_build
+    - d_digital_adoption_plan_prod
+
+d_digital_adoption_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *d_digital_adoption_variables
+  dependencies:
+    - d_digital_adoption_build

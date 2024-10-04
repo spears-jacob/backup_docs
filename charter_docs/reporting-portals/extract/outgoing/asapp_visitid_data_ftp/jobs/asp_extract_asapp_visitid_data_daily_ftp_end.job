@@ -1,0 +1,5 @@
+# end cap Azkaban job
+type=noop
+dependencies=01_transfer_daily_file
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

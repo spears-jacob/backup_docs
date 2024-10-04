@@ -1,0 +1,66 @@
+run	comment	label1	label2	label3	label4	label5	condition1	condition2	condition3	condition4	condition5
+TRUE	1a1	CL-55	EQUIPMENT	From Homepage Banner	Internet		message__category = 'Custom Link'	LOWER(message__name) IN ('upgrade-internet-banner')			
+TRUE	1a2	CL-55	EQUIPMENT	From Homepage Banner	TV		message__category = 'Custom Link'	LOWER(message__name) IN ('upgrade-tv-banner')			
+TRUE	1a3	CL-55	EQUIPMENT	From Homepage Banner	Voice		message__category = 'Custom Link'	LOWER(message__name) IN ('upgrade-voice-banner')			
+TRUE	1b1	CL-55	EQUIPMENT	From Local Nav	Internet		message__category = 'Custom Link'	LOWER(message__name) IN ('localnav-internet')			
+TRUE	1b2	CL-55	EQUIPMENT	From Local Nav	TV		message__category = 'Custom Link'	LOWER(message__name) IN ('localnav-tv')			
+TRUE	1b3	CL-55	EQUIPMENT	From Local Nav	Voice		message__category = 'Custom Link'	LOWER(message__name) IN ('localnav-voice')			
+TRUE	1c	CL-55	EQUIPMENT	From Support	Internet		message__category = 'Page View'	LOWER(state__view__current_page__name) IN ('my-internet-services')	LOWER(state__view__previous_page__section) RLIKE '.*support.*'		
+TRUE	1c	CL-55	EQUIPMENT	From Support	TV		message__category = 'Page View'	LOWER(state__view__current_page__name) IN ('my-tv-services')	LOWER(state__view__previous_page__section) RLIKE '.*support.*'		
+TRUE	1c	CL-55	EQUIPMENT	From Support	Voice		message__category = 'Page View'	LOWER(state__view__current_page__name) IN ('my-voice-services')	LOWER(state__view__previous_page__section) RLIKE '.*support.*'		
+TRUE	2a1	CL-55	EQUIPMENT	Reset Start	TV	Pre	message__category <> 'Page View'	LOWER(message__name) = 'refresh'			
+TRUE	2a2	CL-55	EQUIPMENT	Reset Start	TV	Post	message__category = 'Custom Link'	LOWER(message__name) = 'equip.tv.troubleshoot.reset-equip.start'			
+TRUE	2b1	CL-55	EQUIPMENT	Reset Complete	TV	Pre	message__category = 'Custom Link'	LOWER(message__name) = 'refresh-status'	LOWER(operation__type) = 'success'		
+TRUE	2b2	CL-55	EQUIPMENT	Reset Complete	TV	Post	message__category = 'Page View'	LOWER(state__view__current_page__name) = 'reset-equipment-tv-success'			
+TRUE	2c1	CL-55	EQUIPMENT	Reset Start	Internet	Pre	message__category = 'Page View'	"LOWER(state__view__current_page__name) IN ('reset-equipment-wifi','reset-modem-internetvoice')"			
+TRUE	2c2	CL-55	EQUIPMENT	Reset Start	Internet	Post	message__category = 'Custom Link'	LOWER(message__name) = 'equip.internet.troubleshoot.reset-equip.start'			
+TRUE	2d1 reset	CL-55	EQUIPMENT	Reset Complete	Internet	Pre	message__category = 'Page View'	"LOWER(state__view__current_page__name) IN ('test-connection-wifi','test-connection-internetvoice','test-connection-internet')"			
+TRUE	2d2 reset	CL-55	EQUIPMENT	Reset Complete	Internet	Post	message__category = 'Page View'	LOWER(state__view__current_page__name) = 'reset-equipment-internet-success'			
+TRUE	2e1 reset	CL-55	EQUIPMENT	Reset Start	Voice	Pre	message__category = 'Page View'	LOWER(state__view__current_page__name) IN ('reset-modem-voice')			
+TRUE	2e2 reset	CL-55	EQUIPMENT	Reset Start	Voice	Post	message__category = 'Custom Link'	LOWER(message__name) = 'equip.voice.troubleshoot.reset-equip.start'			
+TRUE	2f1 reset	CL-55	EQUIPMENT	Reset Complete	Voice	Pre	message__category = 'Page View'	"LOWER(state__view__current_page__name) IN ('test-connection-voice', 'test-connection-internetvoice')"			
+TRUE	2f2 reset	CL-55	EQUIPMENT	Reset Complete	Voice	Post	message__category = 'Page View'	LOWER(state__view__current_page__name) IN ('reset-equipment-voice-success')			
+TRUE	3a	CL-55	EQUIPMENT	Ask Spectrum	from My Tv Services		message__category = 'Custom Link'	"LOWER(message__name) IN ('open-ask-spectrum','ask-spectrum')"	state__view__current_page__name = 'my-tv-services'		
+TRUE	3b	CL-55	EQUIPMENT	Ask Spectrum	from My Internet Services		message__category = 'Custom Link'	"LOWER(message__name) IN ('open-ask-spectrum','ask-spectrum')"	state__view__current_page__name = 'my-internet-services'		
+TRUE	3c	CL-55	EQUIPMENT	Ask Spectrum	from My Voice Services		message__category = 'Custom Link'	"LOWER(message__name) IN ('open-ask-spectrum','ask-spectrum')"	state__view__current_page__name = 'my-voice-services'		
+TRUE	5a	CL-55	EQUIPMENT	Upgrade Service	TV		message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.tv.upgrade-service')			
+TRUE	5a	CL-55	EQUIPMENT	Upgrade Service	Internet		message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.internet.upgrade-service')			
+TRUE	5a	CL-55	EQUIPMENT	Upgrade Service	Voice		message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.voice.upgrade-service')			
+TRUE	5b	CL-55	EQUIPMENT	View Support Video	TV	view-troubleshooting-video	message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.tv.view-troubleshooting-video')			
+TRUE	5b	CL-55	EQUIPMENT	View Support Video	TV	view-more-videos	message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.tv.view-more-videos')			
+TRUE	5b	CL-55	EQUIPMENT	View Support Video	Internet	view-troubleshooting-video	message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.internet.view-troubleshooting-video')			
+TRUE	5b	CL-55	EQUIPMENT	View Support Video	Internet	view-more-videos	message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.internet.view-more-videos')			
+TRUE	5b	CL-55	EQUIPMENT	View Support Video	Voice	view-troubleshooting-video	message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.voice.view-troubleshooting-video')			
+TRUE	5b	CL-55	EQUIPMENT	View Support Video	Voice	view-more-videos	message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.voice.view-more-videos')			
+TRUE	5c	CL-55	EQUIPMENT	View Equipment Details	TV		message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.tv.expand-device')			
+TRUE	5c	CL-55	EQUIPMENT	View Equipment Details	Internet		message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.internet.expand-device')			
+TRUE	5c	CL-55	EQUIPMENT	View Equipment Details	Voice		message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.voice.expand-device')			
+TRUE	5d	CL-55	EQUIPMENT	View Equipment Image	TV		message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.tv.expand-device')			
+TRUE	5d	CL-55	EQUIPMENT	View Equipment Image	Internet		message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.internet.expand-device')			
+TRUE	5d	CL-55	EQUIPMENT	View Equipment Image	Voice		message__category = 'Custom Link'	LOWER(message__name) IN ('equipment.voice.expand-device')			
+TRUE	OneTime pre step1	CL-55	BILLING	One Time Payment	step1	Pre	message__category = 'Page View'	"LOWER(message__name) IN ('onetime-noautopay', 'onetime-wautopay')"			
+TRUE	OneTime pre step2	CL-55	BILLING	One Time Payment	step2	Pre	message__category = 'Page View'	"LOWER(message__name) IN ('onetime-noautopay-credit-review', 'onetime-noautopay-checking-review', 'onetime-noautopay-savings-review', 'onetime-wautopay-credit-review  ', 'onetime-wautopay-checking-review', 'onetime-wautopay-savings-review')"			
+TRUE	OneTime pre confirmation	CL-55	BILLING	One Time Payment	confirmation	Pre	message__category = 'Page View'	"LOWER(message__name) IN ('onetime-noautopay-credit-confirm', 'onetime-noautopay-checking-confirm', 'onetime-noautopay-savings-confirm', 'onetime-wautopay-credit-confirm', 'onetime-wautopay-checking-confirm', 'onetime-wautopay-savings-confirm')"			
+TRUE	OneTime post step1	CL-55	BILLING	One Time Payment	step1	Post	message__category = 'Page View'	(LOWER(message__name) IN ('pay-bill.onetime') or (LOWER(visit__referrer_link) = 'pay-bill.make-a-payment-hp' and LOWER(state__view__current_page__name) = 'billing-and-transactions'))			
+TRUE	OneTime post step2	CL-55	BILLING	One Time Payment	step2	Post	message__category = 'Page View'	LOWER(message__name) IN ('pay-bill.onetime-payment-date')			
+TRUE	OneTime post step3	CL-55	BILLING	One Time Payment	step3	Post	message__category = 'Page View'	LOWER(message__name) IN ('pay-bill.onetime-payment-method')			
+TRUE	OneTime post step4	CL-55	BILLING	One Time Payment	step4	Post	message__category = 'Page View'	"LOWER(message__name) IN ('pay-bill.onetime-review-autopay-option', 'pay-bill.onetime-review-no-autopay-option')"			
+TRUE	OneTime post confirmation	CL-55	BILLING	One Time Payment	confirmation	Post	message__category = 'Page View'	"LOWER(message__name) IN ('pay-bill.onetime-confirmation', 'pay-bill.onetime-confirmation-with-autopay-enrollment')"			
+TRUE	AutoPay pre step1	CL-55	BILLING	AutoPay	step1	Pre	message__category = 'Page View'	"LOWER(message__name) IN ('autopay-wbalance','autopay-nobalance')"			
+TRUE	AutoPay pre step2	CL-55	BILLING	AutoPay	step2	Pre	message__category = 'Page View'	"LOWER(message__name) IN ('autopay-wbalance-credit-review','autopay-nobalance-credit-review','autopay-wbalance-checking-review','autopay-nobalance-checking-review','autopay-wbalance-savings-review','autopay-nobalance-savings-review')"			
+TRUE	AutoPay pre confirmation	CL-55	BILLING	AutoPay	confirmation	Pre	message__category = 'Page View'	"LOWER(message__name) IN ('autopay-nobalance-savings-confirm','autopay-wbalance-savings-confirm','autopay-nobalance-checking-confirm','autopay-nobalance-credit-confirm','autopay-wbalance-checking-confirm','autopay-wbalance-credit-confirm')"			
+TRUE	AutoPay post step1	CL-55	BILLING	AutoPay	step1	Post	message__category = 'Page View'	"(LOWER(message__name) IN ('pay-bill.autopay-enrollment') or (LOWER(visit__settings[""post_prop11""]) = 'pay-bill.enroll-in-autopay-hp' and LOWER(state__view__current_page__name) = 'billing-and-transactions')) "			
+TRUE	AutoPay post confirmation	CL-55	BILLING	AutoPay	confirmation	Post	message__category = 'Page View'	LOWER(message__name) IN ('pay-bill.autopay-enrollment-confirmation')			
+TRUE	2a1 IVA from Billing	CL-55	BILLING	Ask Spectrum	from Billing	Pre	message__category = 'Custom Link'	LOWER(message__name) IN ('open-ask-spectrum')	(state__view__current_page__page_id RLIKE ('\.net\/payment\/') or state__view__current_page__page_id RLIKE ('\.net\/billing-and-transactions\/'))		
+TRUE	2a2 IVA from Billing	CL-55	BILLING	Ask Spectrum	from Billing	Post	message__category = 'Custom Link'	LOWER(message__name) IN ('open-ask-spectrum')	"(visit__settings[""post_prop23""] = 'billing')"		
+TRUE	pre unauth hp pv	CL-53	HomePage Release	Home	Unauth	Pre	message__category = 'Page View'	LOWER(state__view__current_page__name) = 'home'	visit__isp__status='Logged Out'		
+TRUE	post unauth hp pv	CL-53	HomePage Release	Home	Unauth	Post	message__category = 'Page View'	LOWER(state__view__current_page__name) = 'home-unauth'			
+TRUE	pre login event	CL-53	HomePage Release	Sign In	Unauth	Pre	message__category = 'Custom Link'	LOWER(state__view__current_page__name) = 'login'	message__name RLIKE 'Sign-| In'		
+TRUE	post login event	CL-53	HomePage Release	Sign In	Unauth	Post	message__category = 'Custom Link'	LOWER(state__view__current_page__name) = 'home-unauth'	message__name RLIKE 'Sign-| In'		
+FALSE	3a Feature Usage One Time Payment	CL-53	HomePage Release	One Time Payment	confirmation	Pre	message__category = 'Page View'	"state__view__current_page__name IN ('OneTime-noAutoPay-Credit-Confirm','OneTime-noAutoPay-Checking-Confirm','OneTime-wAutoPay-Credit-Confirm','OneTime-wAutoPay-Checking-Confirm','OneTime-noAutoPay-Savings-Confirm','OneTime-wAutoPay-Savings-Confirm') "			
+FALSE	3a Feature Usage One Time Payment	CL-53	HomePage Release	One Time Payment	confirmation	Post	message__category = 'Page View'	"state__view__current_page__name IN ('pay-bill.onetime-confirmation','pay-bill.onetime-confirmation-with-autopay-enrollment')"			
+FALSE	3b Feature Usage AutoPay Setup	CL-53	HomePage Release	AutoPay	confirmation	Pre	message__category = 'Page View'	"state__view__current_page__name IN ('AutoPay-wBalance-Credit-Confirm','AutoPay-wBalance-Checking-Confirm','AutoPay-noBalance-Credit-Confirm','AutoPay-noBalance-Checking-Confirm','AutoPay-wBalance-Savings-Confirm','AutoPay-noBalance-Savings-Confirm')"			
+TRUE	3b Feature Usage AutoPay Setup	CL-53	HomePage Release	AutoPay	confirmation	Post	message__category = 'Page View'	"state__view__current_page__name IN ('pay-bill.enroll-in-autopay-no-balance.credit','pay-bill.enroll-in-autopay-no-balance.checking','pay-bill.enroll-in-autopay-no-balance.savings','pay-bill.enroll-in-autopay-with-balance.credit','pay-bill.enroll-in-autopay-with-balance.checking','pay-bill.enroll-in-autopay-with-balance.savings')"			
+TRUE	4 Upgrade Link Clicks (overview only; other clicks captured in CL-55 metrics)	CL-53	HomePage Release	Upgrade Links	Overview		message__category = 'Custom Link'	LOWER(message__name) IN ('upgrade-overview-banner')			
+TRUE	8a Bill Pay from Local Nav	CL-53	HomePage Release	Bill Pay Clicks	From Local Nav		message__category = 'Custom Link'	"state__view__current_page__name = ""home-authenticated"""	"message__name =  ""localNav-billing"""		
+TRUE	8b Bill Pay from Bill Pay Card	CL-53	HomePage Release	Bill Pay Clicks	From Bill Pay Card on HP		message__category = 'Custom Link'	"message__name in (""pay-bill.make-a-payment-hp"",""pay-bill.enroll-in-autopay-hp"",""pay-bill.view-bill-details-hp"")"			

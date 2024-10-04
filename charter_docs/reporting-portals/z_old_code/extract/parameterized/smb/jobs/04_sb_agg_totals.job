@@ -1,0 +1,8 @@
+# sb agg totals job
+type=command
+dependencies=adj_03_sb_manual_files_insert,adj_03_sb_adjustments,main_03a_sb_L-CHTR_agg, main_03b_sb_L-TWC_agg, main_03c_sb_L-BHN_my_services_agg, main_03d_sb_L-BHN_bill_pay_agg, main_03e_sb_fed_id_agg, main_03f_sb_L-CHTR_bounces, main_03g_sb_L-CHTR_exits_auth,main_03h_sb_L-CHTR_exits_unauth,init_03_param
+command=whoami
+command.1=/bin/bash -c 'export CADENCE=${CADENCE}; echo $CADENCE; export END_DATE=${END_DATE}; echo $END_DATE; export START_DATE=${START_DATE}; echo $START_DATE; export pf=${PF}; echo $pf; export adj=${ADJ}; echo $adj; export ym=${YM}; echo $ym; export IsReprocess=${IsReprocess}; echo $IsReprocess; hive -f ../src/04_sb_agg_totals.hql '
+
+# prepares parameters for subsequent job
+command.2=/bin/bash ../bin/working_dates.sh \"${TZ}\" ${IsCurrent1_Prior2_Reprocess3_ToBeProcessed} ${Cadence_CalendarMonth1_FiscalMonth2_Daily3} ${ReprocessingStartDate} ${ReprocessingEndDate}

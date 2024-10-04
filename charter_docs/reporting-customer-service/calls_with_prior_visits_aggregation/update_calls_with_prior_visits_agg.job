@@ -1,0 +1,2 @@
+type=command
+command=bash bin/update_cwpv_agg.sh

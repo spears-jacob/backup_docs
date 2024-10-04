@@ -1,0 +1,5 @@
+# /net_message_names_monthly job
+type=command
+dependencies=net_network_status_monthly
+command=whoami
+command.1=/bin/sh bin/net_message_names_monthly.sh

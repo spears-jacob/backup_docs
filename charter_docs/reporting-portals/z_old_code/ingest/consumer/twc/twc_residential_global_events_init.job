@@ -1,0 +1,10 @@
+# TWC Residential Global Residential Events Init azkaban job
+type=command
+dependencies=lookup_load
+
+command=whoami
+
+command.1=hive -f src/twc_residential_global_truncate.hql
+command.2=/bin/sh -c "gunzip ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/*tsg2resglobal*.tsv.gz"
+command.3=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/*tsg2resglobal*.tsv /apps/hive/warehouse/${TMP_db}.db/twc_residential_global_raw/"
+command.4=hive -f src/twc_residential_global_raw_history.hql

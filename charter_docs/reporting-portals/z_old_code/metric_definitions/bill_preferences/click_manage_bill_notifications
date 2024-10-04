@@ -1,0 +1,18 @@
+-- QUERY DEFINITIONS FOR Click: Manage Billing Notifications
+-- LAST UPDATED 03/29/2018 BY Jake McCune
+
+USE {env:ENVIRONMENT};
+
+-- NOTE - All queries set to calculate for most recent day (Denver Time)
+
+-- ***** SMB PORTAL QUERIES *****
+-- L-CHTR Query
+SELECT
+  'SB' as portal_platform,
+  'L-CHTR' as legacy_footprint,
+  SUM(IF(message__category = 'Custom Link'
+    AND message__name = 'pay-bill.manage-billing-notifications'
+    AND visit__settings['post_prop75'] = 'https://www.spectrumbusiness.net/billing/pay-bill',1,0)) as click_manage_bill_notifications
+FROM asp_v_net_events
+WHERE partition_date >= DATE_SUB(current_date,2)
+;

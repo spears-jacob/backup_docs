@@ -1,0 +1,5 @@
+# net_agg_calculations job
+type=command
+dependencies=05_sb_agg_calc_prep
+command=whoami
+command.1=/bin/bash -c 'export letter=k ; echo $letter; export percentage_metric_name=percent_total_account_creation_success ; echo $percentage_metric_name; export numerator_1=total_new_accounts_created ; echo $numerator_1; export numerator_2='' ; echo $numerator_2; export denominator_1=total_account_creation_attempts ; echo $denominator_1; export denominator_2='' ; echo $denominator_2; export CADENCE=${CADENCE} ; echo $CADENCE; export pf=${PF} ; echo $pf; hive -f ../../src/05x_sb_agg_calc_param_div.hql '

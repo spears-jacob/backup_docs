@@ -1,0 +1,5 @@
+# Run NET monthly adjustments branch
+type=command
+dependencies=database_init
+command=whoami
+

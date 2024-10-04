@@ -1,0 +1,4 @@
+#database_daily_load job
+type=command
+command=whoami
+dependencies=1_load_asp_asapp_nopii_tables,2c_load_asp_asapp_pii_tables

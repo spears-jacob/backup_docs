@@ -1,0 +1,4 @@
+type=command
+
+dependencies=spark_daily_call_care_atom_etl
+command=hive -f ../init/build_tables.hql

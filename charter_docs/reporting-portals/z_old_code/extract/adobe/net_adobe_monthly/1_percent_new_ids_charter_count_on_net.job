@@ -1,0 +1,5 @@
+# percent_new_ids_charter_count_on_net job
+type=command
+dependencies=1_percent_calcs_stage
+command=whoami
+command.1=/bin/sh bin/1_percent_new_ids_charter_count_on_net.sh

@@ -1,0 +1,18 @@
+# NET Events Lookup Table Load azkaban job
+type=command
+dependencies=azkaban-ftp
+
+command=whoami
+
+command.1=/bin/bash hive -f src/lookup_truncate.hql
+command.2=/bin/sh -c "tar -zxvf ${data_sources_path}/net_events/${env.property}/*lookup*.tar.gz -C ${data_sources_path}/net_events/${env.property}/"
+command.3=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/net_events/${env.property}/event.tsv /apps/hive/warehouse/${LKP_db}.db/net_dev_event/"
+command.4=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/net_events/${env.property}/browser.tsv /apps/hive/warehouse/${LKP_db}.db/net_dev_browser/"
+command.5=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/net_events/${env.property}/country.tsv /apps/hive/warehouse/${LKP_db}.db/net_dev_country/"
+command.6=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/net_events/${env.property}/connection_type.tsv /apps/hive/warehouse/${LKP_db}.db/net_dev_connection_type/"
+command.7=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/net_events/${env.property}/javascript_version.tsv /apps/hive/warehouse/${LKP_db}.db/net_dev_javascript/"
+command.8=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/net_events/${env.property}/languages.tsv /apps/hive/warehouse/${LKP_db}.db/net_dev_language/"
+command.9=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/net_events/${env.property}/operating_systems.tsv /apps/hive/warehouse/${LKP_db}.db/net_dev_os/"
+command.10=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/net_events/${env.property}/resolution.tsv /apps/hive/warehouse/${LKP_db}.db/net_dev_resolution/"
+command.11=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/net_events/${env.property}/search_engines.tsv /apps/hive/warehouse/${LKP_db}.db/net_dev_search_engine/"
+command.12=/bin/sh -c "rm -rf ${data_sources_path}/net_events/${env.property}/*lookup*tar.gz"

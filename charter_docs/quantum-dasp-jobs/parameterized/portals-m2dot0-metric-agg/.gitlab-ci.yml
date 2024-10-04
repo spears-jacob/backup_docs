@@ -1,0 +1,59 @@
+.portals_m2dot0_metric_agg_variables: &portals_m2dot0_metric_agg_variables
+  JOB_NAME: "parameterized-portals-m2dot0-metric-agg"
+  PORTALS_M2DOT0_METRIC_AGG_DIR: "parameterized/portals-m2dot0-metric-agg"
+  ARTIFACTS_DIR: "parameterized/portals-m2dot0-metric-agg/artifacts"
+  TERRAFORM_DIR: "parameterized/portals-m2dot0-metric-agg/terraform"
+  SCRIPTS_DIR: "parameterized/portals-m2dot0-metric-agg/scripts"
+  S3_ARTIFACTS_DIR: "parameterized/portals-m2dot0-metric-agg"
+
+portals_m2dot0_metric_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$PORTALS_M2DOT0_METRIC_AGG_DIR/ddl"
+    HQL_DIR: "$PORTALS_M2DOT0_METRIC_AGG_DIR/hql"
+    <<: *portals_m2dot0_metric_agg_variables
+
+#STG
+portals_m2dot0_metric_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *portals_m2dot0_metric_agg_variables
+  dependencies:
+    - portals_m2dot0_metric_agg_build
+
+portals_m2dot0_metric_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *portals_m2dot0_metric_agg_variables
+  dependencies:
+    - portals_m2dot0_metric_agg_build
+    - portals_m2dot0_metric_agg_plan_stg
+
+portals_m2dot0_metric_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *portals_m2dot0_metric_agg_variables
+  dependencies:
+    - portals_m2dot0_metric_agg_build
+#PROD
+portals_m2dot0_metric_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *portals_m2dot0_metric_agg_variables
+  dependencies:
+    - portals_m2dot0_metric_agg_build
+
+portals_m2dot0_metric_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *portals_m2dot0_metric_agg_variables
+  dependencies:
+    - portals_m2dot0_metric_agg_build
+    - portals_m2dot0_metric_agg_plan_prod
+
+portals_m2dot0_metric_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *portals_m2dot0_metric_agg_variables
+  dependencies:
+    - portals_m2dot0_metric_agg_build

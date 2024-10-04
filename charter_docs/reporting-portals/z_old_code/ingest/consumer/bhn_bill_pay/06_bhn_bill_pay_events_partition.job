@@ -1,0 +1,6 @@
+# BHN Bill Pay Events partition population azkaban job
+type=command
+dependencies=05_bhn_bill_pay_events
+command=whoami
+
+command.1=hive -f src/bhn_bill_pay_events_partition.hql

@@ -1,0 +1,2 @@
+type=command
+command=hive -f init/create_disposition_research.hql

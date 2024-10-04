@@ -1,0 +1,6 @@
+# FHR Monthly Load Init azkaban job
+type=command
+command=whoami
+
+command.1=hive -f src/fhr_api_search_errors_insert.hql
+

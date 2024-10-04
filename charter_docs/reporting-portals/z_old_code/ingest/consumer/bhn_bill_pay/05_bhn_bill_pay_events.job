@@ -1,0 +1,7 @@
+# BHN Bill Pay Global Events population azkaban job
+type=command
+dependencies=04_bhn_bill_pay_events_calc
+
+command=whoami
+
+command.1=pig -f -useHCatalog src/bhn_bill_pay_events.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}

@@ -1,0 +1,18 @@
+-- QUERY DEFINITIONS FOR View Bill Delivery Page
+-- LAST UPDATED 03/29/2018 BY Jake McCune
+
+USE {env:ENVIRONMENT};
+
+-- NOTE - All queries set to calculate for most recent day (Denver Time)
+
+-- ***** RESIDENTIAL PORTAL QUERIES *****
+-- L-CHTR Query
+SELECT
+  'RES' as portal_platform,
+  'L-CHTR' as legacy_footprint,
+  SUM(IF(message__category = 'Page View'
+      AND visit__settings['post_prop48'] = 'https://www.spectrum.net/billing-and-transactions/bill-delivery/',1,0)) as view_bill_delivery
+FROM asp_v_net_events
+WHERE partition_date_utc >= DATE_SUB(current_date,2)
+  AND epoch_converter(message__timestamp*1000, 'America/Denver') = DATE_SUB(current_date,1)
+;

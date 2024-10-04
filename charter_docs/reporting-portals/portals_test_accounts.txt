@@ -1,0 +1,29 @@
+Test accounts to use across the Portals
+NOTE - All of these are Admin accounts connected to another team's email. To do any sort of testing, you should login using these credentials and create a sub-account using your own email.
+
+Domain	Legacy   Username				  Password		Notes
+
+Resi    CHTR    Mapped7           prod.aes_decrypt256('X61xjjSE15rsub5zbpfMng==')
+
+Bus		  CHTR		VoiceTeamTest			prod.aes_decrypt256('X61xjjSE15rsub5zbpfMng==')
+
+Resi		CHTR		test.dalt1				prod.aes_decrypt256('ELCsTaTbFGBqro8qELMJdg==')		Zip Code: 30720
+
+Resi		TWC			netforecast_sandiego	prod.aes_decrypt256('fIbLZ+yRXZz0TVfjPDYVCw==')
+
+Resi		BHN			PI_TEST					  prod.aes_decrypt256('KS4HjOUe0N/p2hCYLKTbeA==')
+
+SMB			CHTR		anand_fax				  prod.aes_decrypt256('X61xjjSE15rsub5zbpfMng==')
+						    snet_appt_1				prod.aes_decrypt256('zG2QicWaN1pt7KC3YrtOZA==')		Acct to use for Rescheduling/Cancelling service appts
+
+SMB			TWC			tier3biz				  prod.aes_decrypt256('yhbVaBmbMv9clmr60sSeaA==')
+
+SMB			BHN			detbus001				  prod.aes_decrypt256('sEsQLNjrIzLAjDlbp6PHvQ==')
+
+Resi	Spectrum.net	https://www.engnew-spectrum.net/	https://www.engprod-spectrum.net
+                    charternet	prod.aes_decrypt256('e28wHzQq5DL7sXVMcYFq9w==')
+                    mapped7	prod.aes_decrypt256('X61xjjSE15rsub5zbpfMng==')
+
+========================
+Hockey App https://rink.hockeyapp.net/ for download Apps and testing them:
+user: DL-DPI-CoreServices-Reporting@charter.com  pass: SELECT prod.aes_decrypt256('xFFJTCvtPlFwWpamK7PHuiwM9ZjpRD/a9xej54zITW+RiU157gL3BIk4twEewKci');

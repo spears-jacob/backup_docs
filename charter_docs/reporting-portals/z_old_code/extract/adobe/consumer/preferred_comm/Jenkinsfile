@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line, this is the magical library that does the, uh, 'magic'
+PIDeliveryPipeline {
+    azkabanProjectName = "asp_extract_adobe_consumer_preferred_comm" // required
+    azkabanEnv = 'prod' // optional, default to dev
+    azkabanProjectDesc = "L-CHTR residential portals preferred communications. This was formerly tacked on but unrelated to the residential monthly reporting flow." // required
+    azkabanProjectOwner = 'eeasterly' // required, put your AD login here
+    azkabanPlatform = 'ASP'  // required
+    azkabanEscalation = 'Andrew Ngeow' // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Critical - Immediate Response' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun=[] // not implemented, could have loop here too
+    azkabanProdFlowSchedule=[flowName:'asp_extract_adobe_consumer_preferred_comm_end', cronExpression:'0 0 21 1 * ?']
+    gitDir='extract/adobe/consumer/preferred_comm'  // the sub dir where your project dir is
+}

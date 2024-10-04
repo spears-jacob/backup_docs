@@ -1,0 +1,7 @@
+# SB.NET Executive Monthly Aggregate Azkaban job
+type=command
+dependencies=sbnet_exec_monthly_agg_preprocess
+
+command=whoami
+
+command.1=/bin/bash bin/sbnet_exec_monthly_agg.sh

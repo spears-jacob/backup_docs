@@ -1,0 +1,7 @@
+# TWC/BHN Webmail Archive azkaban job
+type=command
+dependencies=webmail_twc_bhn_metrics
+command=whoami
+
+command.1=hadoop fs -mkdir -p /archive/net_webmail_twc_bhn/${ENVIRONMENT}/
+command.2=bash -c "cd ${data_sources_path}/net_webmail_twc_bhn/${ENVIRONMENT}/ ; for i in *:*; do mv "$i" "${i//:/_}"; done ; hadoop fs -moveFromLocal *.csv  /archive/net_webmail_twc_bhn/${ENVIRONMENT}/"

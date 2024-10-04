@@ -1,0 +1,5 @@
+#  Azkaban job
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export execid=${azkaban.flow.execid}; echo $execid; hive -f ../../../src/cs_techmobile_set_agg_tableset.hql'

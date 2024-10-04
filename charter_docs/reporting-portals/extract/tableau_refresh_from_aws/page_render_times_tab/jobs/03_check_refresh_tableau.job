@@ -1,0 +1,6 @@
+#  check refresh tableau
+type=command
+dependencies=02_refresh_tableau
+command=whoami
+
+command.1=/bin/bash -c "if [ ${tableau_post_load_refresh} -eq 1 ] && [ ${tableau_refresh_check} -eq 1 ] && [ $ENVIRONMENT == 'prod' ];  then /bin/bash /data/git_repos/platform-ops/azkaban-scripts/is_wb_refreshed.sh ${tableau_workbook} ${sleep_for_this_many_seconds} ${bail_out_after_this_many_loops}; fi"

@@ -1,0 +1,7 @@
+# sb agg final inserts
+# this pushes all processed data into final tables, including month over month and 3-month percent change calcs
+type=command
+dependencies=init_06b_param
+command=whoami
+#finds number of dynamic partitions practically allowed and uses this for a query that uses this to make insert batches
+command.1=/bin/bash -c 'export CADENCE=${CADENCE}; echo $CADENCE; export pf=${PF}; export numDynPartitions=${NUMDYNPARTITIONS}; echo "the number of dynamic partitions per node is the following: $numDynPartitions" ; hive -f ../src/07a_sb_agg_final_insert_prepare_insert_batches.hql'

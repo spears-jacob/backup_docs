@@ -1,0 +1,60 @@
+.ccpa_usage_variables: &ccpa_usage_variables
+  JOB_NAME: "ccpa-usage"
+  CCPA_USAGE_DIR: "portals-events/ccpa-usage"
+  ARTIFACTS_DIR: "portals-events/ccpa-usage/artifacts"
+  TERRAFORM_DIR: "portals-events/ccpa-usage/terraform"
+  SCRIPTS_DIR: "portals-events/ccpa-usage/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/ccpa-usage"
+
+ccpa_usage_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$CCPA_USAGE_DIR/ddl"
+    HQL_DIR: "$CCPA_USAGE_DIR/hql"
+    <<: *ccpa_usage_variables
+
+# PROD
+ccpa_usage_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *ccpa_usage_variables
+  dependencies:
+    - ccpa_usage_build
+
+ccpa_usage_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *ccpa_usage_variables
+  dependencies:
+    - ccpa_usage_build
+    - ccpa_usage_plan_prod
+
+ccpa_usage_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *ccpa_usage_variables
+  dependencies:
+    - ccpa_usage_build
+
+#STG
+ccpa_usage_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *ccpa_usage_variables
+  dependencies:
+    - ccpa_usage_build
+
+ccpa_usage_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *ccpa_usage_variables
+  dependencies:
+    - ccpa_usage_build
+    - ccpa_usage_plan_stg
+
+ccpa_usage_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *ccpa_usage_variables
+  dependencies:
+    - ccpa_usage_build

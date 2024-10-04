@@ -1,0 +1,62 @@
+.cs_call_care_derived_tables_variables: &cs_call_care_derived_tables_variables
+  JOB_NAME: "cs-call-care-derived"
+  CS_CALL_CARE_DERIVED_TABLES_DIR: "cs-jobs/call-care-derived-tables"
+  ARTIFACTS_DIR: "cs-jobs/call-care-derived-tables/artifacts"
+  TERRAFORM_DIR: "cs-jobs/call-care-derived-tables/terraform"
+  SCRIPTS_DIR: "cs-jobs/call-care-derived-tables/scripts"
+  S3_ARTIFACTS_DIR: "cs-jobs/call-care-derived-tables"
+#  PATH_TO_SCALA_CODE: "cs/call-care-derived-tables/spark-code/cs-call-care-derivations"
+
+cs_call_care_derived_tables_build:
+  extends: .build
+  variables:
+#    PATH_TO_SCALA_CODE: "$PATH_TO_SCALA_CODE"
+    DDL_DIR: "$CS_CALL_CARE_DERIVED_TABLES_DIR/ddl"
+    HQL_DIR: "$CS_CALL_CARE_DERIVED_TABLES_DIR/hql"
+    <<: *cs_call_care_derived_tables_variables
+
+#PROD
+cs_call_care_derived_tables_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *cs_call_care_derived_tables_variables
+  dependencies:
+    - cs_call_care_derived_tables_build
+
+cs_call_care_derived_tables_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *cs_call_care_derived_tables_variables
+  dependencies:
+    - cs_call_care_derived_tables_build
+    - cs_call_care_derived_tables_plan_prod
+
+cs_call_care_derived_tablesdestroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *cs_call_care_derived_tables_variables
+  dependencies:
+    - cs_call_care_derived_tables_build
+
+#STG
+cs_call_care_derived_tables_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *cs_call_care_derived_tables_variables
+  dependencies:
+    - cs_call_care_derived_tables_build
+
+cs_call_care_derived_tables_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *cs_call_care_derived_tables_variables
+  dependencies:
+    - cs_call_care_derived_tables_build
+    - cs_call_care_derived_tables_plan_stg
+
+cs_call_care_derived_tablesdestroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *cs_call_care_derived_tables_variables
+  dependencies:
+    - cs_call_care_derived_tables_build

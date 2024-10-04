@@ -1,0 +1,4 @@
+type=command
+
+command=hive -f ../init/build_tables.hql
+command.1=hive -f ../src/copy_view_to_table.hql

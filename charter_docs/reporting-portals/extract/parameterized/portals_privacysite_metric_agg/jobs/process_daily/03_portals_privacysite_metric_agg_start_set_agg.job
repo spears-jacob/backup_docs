@@ -1,0 +1,8 @@
+# Daily Metric Agg Portals - kick off subsequent aggs with Groovy
+# this allows the set aggs to be as fresh as possible
+type=Groovy
+dependencies=02_portals_privacysite_metric_agg_process_daily
+groovy.command.1=println '#### This job starts the set of Portals set agg jobs (daily, fiscal monthly, monthly, and weekly) ####'
+groovy.command.2=import azkaban.executor.*
+groovy.command.3=def paramsToPass = ["env.RUN_DATE": "${env.RUN_DATE}", "env.job_started_by_exec": "${azkaban.link.execution.url}", "env.job_started_by_project_flow": "${azkaban.link.workflow.url}" ]
+groovy.command.4=if ( '${ENVIRONMENT}' == 'prod' || '${isReprocessing}' == '1') { println 'Processing the privacysite set aggs for today.'; sleep(54321); azkaban.execute("asp_extract_parameterized_portals_ps_set_aggs", "portals_privacysite_set_agg_process_daily_end", paramsToPass) } else { println 'Not in the production ENVIRONMENT and not Reprocessing, so exiting without starting set agg jobs.' }

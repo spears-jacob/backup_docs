@@ -1,0 +1,61 @@
+.support_article_call_disp_variables: &support_article_call_disp_variables
+  JOB_NAME: "cs-portals-events-support-article"
+  SUPPORT_ARTICLE_CALL_DISP: "cs-portals-events/support-article-call-disp"
+  ARTIFACTS_DIR: "cs-portals-events/support-article-call-disp/artifacts"
+  TERRAFORM_DIR: "cs-portals-events/support-article-call-disp/terraform"
+  SCRIPTS_DIR: "cs-portals-events/support-article-call-disp/scripts"
+  S3_ARTIFACTS_DIR: "cs-portals-events/support-article-call-disp"
+
+support_article_call_disp_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$SUPPORT_ARTICLE_CALL_DISP/ddl"
+    HQL_DIR: "$SUPPORT_ARTICLE_CALL_DISP/hql"
+    <<: *support_article_call_disp_variables
+
+#STG
+support_article_call_disp_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *support_article_call_disp_variables
+  dependencies:
+    - support_article_call_disp_build
+
+support_article_call_disp_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *support_article_call_disp_variables
+  dependencies:
+    - support_article_call_disp_build
+    - support_article_call_disp_plan_stg
+
+support_article_call_disp_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *support_article_call_disp_variables
+  dependencies:
+    - support_article_call_disp_build
+
+
+#PROD
+support_article_call_disp_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *support_article_call_disp_variables
+  dependencies:
+    - support_article_call_disp_build
+
+support_article_call_disp_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *support_article_call_disp_variables
+  dependencies:
+    - support_article_call_disp_build
+    - support_article_call_disp_plan_prod
+
+support_article_call_disp_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *support_article_call_disp_variables
+  dependencies:
+    - support_article_call_disp_build

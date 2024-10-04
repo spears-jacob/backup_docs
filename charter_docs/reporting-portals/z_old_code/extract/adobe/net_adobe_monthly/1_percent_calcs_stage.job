@@ -1,0 +1,5 @@
+# percent_calcs_stage job
+type=command
+dependencies=net_monthly_agg_totals
+command=whoami
+command.1=/bin/sh bin/1_percent_calcs_stage.sh

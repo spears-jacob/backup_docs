@@ -1,0 +1,7 @@
+# azkaban-ftp azkaban job
+type=command
+dependencies=database_init
+command=whoami
+
+command.1=/bin/sh -c "mkdir -p ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}"
+command.2=/bin/bash lftp.sh PROD_twc_residential_global_events

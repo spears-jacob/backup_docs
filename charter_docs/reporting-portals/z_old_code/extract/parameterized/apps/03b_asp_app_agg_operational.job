@@ -1,0 +1,8 @@
+# App Aggregation Azkaban Job - aggregations for operational daily
+
+type=command
+dependencies=02a_asp_app_agg_app_figures,02b_asp_app_agg_my_bhn,02c_asp_app_agg_my_twc,02d_asp_app_agg_my_spc,02e_pass_parameters
+
+command=whoami
+
+command.1=/bin/bash hive -f src/asp_app_agg_03b_my_spc_operational.hql

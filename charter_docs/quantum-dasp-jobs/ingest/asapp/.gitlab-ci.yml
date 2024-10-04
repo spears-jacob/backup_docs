@@ -1,0 +1,61 @@
+.asapp_variables: &asapp_variables
+  JOB_NAME: "ingest-asapp"
+  asapp_DIR: "ingest/asapp"
+  ARTIFACTS_DIR: "ingest/asapp/artifacts"
+  TERRAFORM_DIR: "ingest/asapp/terraform"
+  SCRIPTS_DIR: "ingest/asapp/scripts"
+  S3_ARTIFACTS_DIR: "ingest/asapp"
+
+asapp_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$asapp_DIR/ddl"
+    HQL_DIR: "$asapp_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *asapp_variables
+
+#STG
+asapp_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *asapp_variables
+  dependencies:
+    - asapp_build
+
+asapp_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *asapp_variables
+  dependencies:
+    - asapp_build
+    - asapp_plan_stg
+
+asapp_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *asapp_variables
+  dependencies:
+    - asapp_build
+#PROD
+asapp_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *asapp_variables
+  dependencies:
+    - asapp_build
+
+asapp_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *asapp_variables
+  dependencies:
+    - asapp_build
+    - asapp_plan_prod
+
+asapp_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *asapp_variables
+  dependencies:
+    - asapp_build

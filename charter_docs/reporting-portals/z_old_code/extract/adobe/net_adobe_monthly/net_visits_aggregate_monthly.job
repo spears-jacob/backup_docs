@@ -1,0 +1,5 @@
+# .NET Visits Aggregate Monthly azkaban job
+type=command
+dependencies=net_zip_metrics_monthly
+command=whoami
+command.1=sh bin/net_visit_check_monthly.sh

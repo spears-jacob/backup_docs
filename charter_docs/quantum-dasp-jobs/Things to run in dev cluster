@@ -1,0 +1,44 @@
+export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\] <-> \[\033[44m\D{%a %d %b %Y %Z} - \@ \] \]\n\[\e[1;33m\]→\[\e[0m\] "
+export CLICOLOR=1
+export LSCOLORS=GxFxBxDxCxegedabagacad
+sudo -s -u hadoop
+export ENVIRONMENT=stg
+export TMP_db=tmp_stg
+cd `mktemp -d`
+export cwd=`pwd`
+
+alias s3ls='aws s3 ls '
+alias s3cp='aws s3 cp '
+alias yal='yarn application -list'
+alias yak='yarn application -kill'
+export RUN_DATE=2020-04-29
+export SCRIPT_VERSION=30db4bf4
+
+
+aws s3 cp s3://pi-qtm-dasp-stg-aggregates-nopii/data/stg/csCallScript.txt .
+aws s3 sync s3://pi-qtm-global-stg-artifacts/cs-jobs/call-care-derived-tables ./daspnopii
+
+set hive.cli.print.header=true;
+
+
+set hive.cli.print.current.db=true;
+set hive.async.log.enabled=false;
+set hive.execution.engine=tez;
+set hive.server2.in.place.progress=true;
+set hive.optimize.sort.dynamic.partition=false;
+set hive.exec.dynamic.partition.mode=nonstrict;
+set orc.force.positional.evolution=true;
+SET hive.merge.tezfiles=true;
+SET hive.exec.max.dynamic.partitions=1000;
+SET hive.exec.max.dynamic.partitions.pernode=1000;
+USE ${env:ENVIRONMENT};
+
+ADD JAR file:///${env:cwd}/jars/brickhouse-0.7.1.jar ;
+ADD JAR file:///${env:cwd}/jars/charter-hive-udf-0.1-SNAPSHOT.jar ;
+ADD JAR file:///${env:cwd}/jars/epoch-1.0-SNAPSHOT.jar ;
+ADD JAR file:///${env:cwd}/jars/epochtotimestamp-1.0-SNAPSHOT.jar ;
+ADD JAR file:///${env:cwd}/jars/jdatehour-1.0-SNAPSHOT.jar;
+
+CREATE TEMPORARY FUNCTION epoch_converter AS 'Epoch_To_Denver';
+CREATE TEMPORARY FUNCTION epoch_timestamp AS 'Epoch_Timestamp';
+CREATE TEMPORARY FUNCTION epoch_datehour AS 'Epoch_Datehour';

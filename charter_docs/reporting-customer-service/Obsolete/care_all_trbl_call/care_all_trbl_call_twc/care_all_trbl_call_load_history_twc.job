@@ -1,0 +1,4 @@
+#azkaban job to load history table
+dependencies=care_all_trbl_call_repair_twc
+type=command
+command=hive -f src/hv_load_care_all_trbl_call_history_twc.hql

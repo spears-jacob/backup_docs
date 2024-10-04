@@ -1,0 +1,60 @@
+.visitid_data_variables: &visitid_data_variables
+  JOB_NAME: "outgoing-asapp-visitid-data"
+  visitid_data_DIR: "outgoing/asapp-visitid-data"
+  ARTIFACTS_DIR: "outgoing/asapp-visitid-data/artifacts"
+  TERRAFORM_DIR: "outgoing/asapp-visitid-data/terraform"
+  SCRIPTS_DIR: "outgoing/asapp-visitid-data/scripts"
+  S3_ARTIFACTS_DIR: "outgoing/asapp-visitid-data"
+
+visitid_data_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$visitid_data_DIR/ddl"
+    HQL_DIR: "$visitid_data_DIR/hql"
+    <<: *visitid_data_variables
+
+#stg
+visitid_data_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *visitid_data_variables
+  dependencies:
+    - visitid_data_build
+
+visitid_data_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *visitid_data_variables
+  dependencies:
+    - visitid_data_build
+    - visitid_data_plan_stg
+
+visitid_data_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *visitid_data_variables
+  dependencies:
+    - visitid_data_build
+
+#PROD
+visitid_data_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *visitid_data_variables
+  dependencies:
+    - visitid_data_build
+
+visitid_data_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *visitid_data_variables
+  dependencies:
+    - visitid_data_build
+    - visitid_data_plan_prod
+
+visitid_data_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *visitid_data_variables
+  dependencies:
+    - visitid_data_build

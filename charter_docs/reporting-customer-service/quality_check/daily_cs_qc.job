@@ -1,0 +1,2 @@
+type=command
+command=bash bin/daily_cs_qc.sh

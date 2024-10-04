@@ -1,0 +1,8 @@
+# BHN Bill Pay Events Lookup Table Load azkaban job
+type=command
+dependencies=01_nifi_new_data_check
+
+command=whoami
+
+command.1=hive -f src/lookup_truncate.hql
+command.2=/bin/bash -c 'export MX_PD="${MX_PD}"; echo $MX_PD; hive -f nifi/load_lkp_from_nifi.hql '

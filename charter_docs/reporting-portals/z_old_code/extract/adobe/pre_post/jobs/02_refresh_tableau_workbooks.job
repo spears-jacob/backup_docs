@@ -1,0 +1,4 @@
+# refresh Tableau workbook JOB
+dependencies=01a_CL53,01b_payment_duration, 01b_service_calls, 01c_new_visitor, 01c_7_asp_counts_hourly_instances_consumer, 01d_8_asp_counts_hourly_households_consumer, 01e_9_asp_counts_hourly_visits_consumer,  01f_page_load_time_grouping_sets, 01g_hourly_page_load_tenths
+type=command
+command=whoami

@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line, this is the magical library that does the, uh, 'magic'
+PIDeliveryPipeline {
+    azkabanProjectName = "asp_daily_operational_email_kickoff_all" // required
+    azkabanEnv = 'prod' // optional, default to dev
+    azkabanProjectDesc = "Starts all daily operational Email jobs" // required
+    azkabanProjectOwner = 'eeasterly' // required, put your AD login here
+    azkabanPlatform = 'ASP'  // required
+    azkabanEscalation = 'Marjorie Truitt' // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Critical - Immediate Response' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun=[] // not implemented, could have loop here too
+    azkabanProdFlowSchedule=[flowName:'groovin_send_all_emails_end', cronExpression:'0 57 14 ? * *']
+    gitDir='util/tableau_email_dist/asp_daily/start_all_email_jobs'  // the sub dir where your project dir is
+}

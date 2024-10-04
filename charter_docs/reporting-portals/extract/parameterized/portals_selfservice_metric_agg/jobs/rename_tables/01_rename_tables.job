@@ -1,0 +1,3 @@
+# Parameter Init job
+type=command
+command=/bin/bash -c 'export azurl=${azkaban.url}; echo $azurl; bash ../../bin/rename_tables.sh '

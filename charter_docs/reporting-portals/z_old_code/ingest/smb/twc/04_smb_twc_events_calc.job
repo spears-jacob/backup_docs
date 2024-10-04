@@ -1,0 +1,7 @@
+# SB.NET TWC Global Events Denormalization and Calculation azkaban job
+type=command
+dependencies=03_smb_twc_events_init
+command=whoami
+
+command.1=pig -f -useHCatalog src/sbnet_twc_global_denormalize.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}
+command.2=pig -f -useHCatalog src/sbnet_twc_global_calc.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}

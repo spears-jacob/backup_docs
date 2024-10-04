@@ -1,0 +1,7 @@
+# Endcap Azkaban job
+type=noop
+dependencies=02_msa_process_daily
+
+###########################################
+## PLEASE KEEP THIS JOB LAST IN THE FLOW ##
+###########################################

@@ -1,0 +1,4 @@
+type=command
+
+dependencies=00_init_tables
+command=bash update_table.sh

@@ -1,0 +1,7 @@
+# App Aggregation Azkaban job that creates required tables and views
+
+type=command
+
+command=whoami
+
+command.1=/bin/bash hive -f init/asp_app_agg_init.hql

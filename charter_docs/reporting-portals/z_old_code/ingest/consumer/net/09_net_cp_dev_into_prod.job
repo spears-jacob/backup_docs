@@ -1,0 +1,7 @@
+# .NET Events - copy dev into prod for VOM
+type=command
+dependencies=08_truncate
+
+command=whoami
+
+command.1=/bin/bash hive -f src/net_cp_dev_to_prod.hql

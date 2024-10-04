@@ -1,0 +1,18 @@
+# Lookup Table Load azkaban job
+# This approach works for a single file set at a time.  Multiple file sets will choke tar.
+type=command
+dependencies=02_azkaban-ftp
+
+command=whoami
+
+command.1=bash -c "export dbprefix_event=${dbprefix_event};export dbprefix_browser=${dbprefix_browser}; export dbprefix_country=${dbprefix_country}; export dbprefix_connection_type=${dbprefix_connection_type}; export dbprefix_os=${dbprefix_os}; export dbprefix_resolution=${dbprefix_resolution}; export dbprefix_search_engine=${dbprefix_search_engine}; export dbprefix_javascript=${dbprefix_javascript}; export dbprefix_language=${dbprefix_language};  hive -f ../src/truncate_lkp.hql"
+command.2=/bin/sh -c "tar -zxvf ${localFSworking}*lookup*.tar.gz -C ${localFSworking}"
+command.3=/bin/sh -c "hadoop fs -copyFromLocal -f ${localFSworking}event.tsv /apps/hive/warehouse/${LKP_db}.db/${dbprefix}_event/"
+command.4=/bin/sh -c "hadoop fs -copyFromLocal -f ${localFSworking}browser.tsv /apps/hive/warehouse/${LKP_db}.db/${dbprefix}_browser/"
+command.5=/bin/sh -c "hadoop fs -copyFromLocal -f ${localFSworking}country.tsv /apps/hive/warehouse/${LKP_db}.db/${dbprefix}_country/"
+command.6=/bin/sh -c "hadoop fs -copyFromLocal -f ${localFSworking}connection_type.tsv /apps/hive/warehouse/${LKP_db}.db/${dbprefix}_connection_type/"
+command.7=/bin/sh -c "hadoop fs -copyFromLocal -f ${localFSworking}javascript_version.tsv /apps/hive/warehouse/${LKP_db}.db/${dbprefix}_javascript/"
+command.8=/bin/sh -c "hadoop fs -copyFromLocal -f ${localFSworking}operating_systems.tsv /apps/hive/warehouse/${LKP_db}.db/${dbprefix}_os/"
+command.9=/bin/sh -c "hadoop fs -copyFromLocal -f ${localFSworking}resolution.tsv /apps/hive/warehouse/${LKP_db}.db/${dbprefix}_resolution/"
+command.10=/bin/sh -c "hadoop fs -copyFromLocal -f ${localFSworking}search_engines.tsv /apps/hive/warehouse/${LKP_db}.db/${dbprefix}_search_engine/"
+command.11=/bin/sh -c "rm -rf ${localFSworking}*lookup*tar.gz"

@@ -1,0 +1,5 @@
+#  Azkaban job
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'hive -f ../src/02_get_data_6months.hql'

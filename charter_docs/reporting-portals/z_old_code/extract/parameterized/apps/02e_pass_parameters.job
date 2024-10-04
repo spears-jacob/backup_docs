@@ -1,0 +1,7 @@
+# App Aggregation Azkaban Job that passes parameters to final job
+type=command
+dependencies=01_param_init
+
+command=whoami
+
+command.1=/bin/bash bin/pass_parameters.sh ${YM} ${IsReprocess} ${CADENCE} ${YMD} ${ADJ} ${START_DATE} ${END_DATE}

@@ -1,0 +1,33 @@
+# NET Executive Monthly Aggregate Azkaban Data Load Job
+type=command
+dependencies=adj_01_hdfs_directory_init
+command=whoami
+command.1=hive -f ../../src/adj/adj_02_net_monthly_tmp_truncate.hql
+
+## Log in to Ambari:  https://pi-datamart-proxy.corp.chartercom.com/ambari/#/main/view/FILES/auto_files_instance
+## Then go to: https://pi-datamart-proxy.corp.chartercom.com/views/FILES/1.0.0/AUTO_FILES_INSTANCE/#/files?path=%2Fdev_archive%2Fnet_product_monthly
+
+# Monthly Sub Counts
+command.2=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/net_monthly_subscriber_counts_manual/
+command.3=hadoop fs -mkdir -p /apps/hive/warehouse/${TMP_db}.db/net_monthly_subscriber_counts_manual/
+command.4=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/net_product_monthly/manual_data_uploads/resi_sub_counts.csv /apps/hive/warehouse/${TMP_db}.db/net_monthly_subscriber_counts_manual/"
+
+# Monthly BHN SSO Metrics
+command.5=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/net_monthly_bhn_sso_metrics_manual/
+command.6=hadoop fs -mkdir -p /apps/hive/warehouse/${TMP_db}.db/net_monthly_bhn_sso_metrics_manual/
+command.7=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/net_product_monthly/manual_data_uploads/bhn_sso_metrics.csv /apps/hive/warehouse/${TMP_db}.db/net_monthly_bhn_sso_metrics_manual/"
+
+# Monthly BHN Account Data
+command.8=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/net_monthly_bhn_accounts_manual/
+command.9=hadoop fs -mkdir -p /apps/hive/warehouse/${TMP_db}.db/net_monthly_bhn_accounts_manual/
+command.10=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/net_product_monthly/manual_data_uploads/bhn_accounts.tsv /apps/hive/warehouse/${TMP_db}.db/net_monthly_bhn_accounts_manual/"
+
+# Monthly Manual Adjustment Data
+command.11=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/net_products_agg_monthly_adjustment_init/
+command.12=hadoop fs -mkdir -p /apps/hive/warehouse/${TMP_db}.db/net_products_agg_monthly_adjustment_init/
+command.13=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/net_product_monthly/manual_data_uploads/net_monthly_adjustments.csv /apps/hive/warehouse/${TMP_db}.db/net_products_agg_monthly_adjustment_init/"
+
+# Resi Tableau Metric Display Crosswalk
+command.14=hadoop fs -rm -r /apps/hive/warehouse/${TMP_db}.db/net_products_monthly_tableau_metric_lkp/
+command.15=hadoop fs -mkdir -p /apps/hive/warehouse/${TMP_db}.db/net_products_monthly_tableau_metric_lkp/
+command.16=/bin/sh -c "hadoop fs -cp ${HDFS_ARCHIVE_DIR}/net_product_monthly/manual_data_uploads/tableau_metric_lookup.csv /apps/hive/warehouse/${TMP_db}.db/net_products_monthly_tableau_metric_lkp/"

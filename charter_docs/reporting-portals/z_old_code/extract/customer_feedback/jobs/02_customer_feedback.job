@@ -1,0 +1,7 @@
+# screen resolutions daily processing job
+type=command
+dependencies=01_parameter_init
+command=whoami
+
+# use this approach if dates are needed in the HQL, such as for a daily process.
+command.1=/bin/bash -c 'export START_DATE=${START_DATE}; echo $START_DATE; export END_DATE=${END_DATE}; echo $END_DATE; export START_DATE_TZ=${START_DATE_TZ}; echo $START_DATE_TZ; export END_DATE_TZ=${END_DATE_TZ}; echo $END_DATE_TZ;  hive -f ../src/customer_feedback.hql '

@@ -1,0 +1,6 @@
+# 01_metric_lookup job
+type=command
+dependencies=00_db_init
+command=whoami
+command.1=/bin/bash -c 'bash ../bin/process_dates.sh'
+command.2=/bin/bash -c 'hive -f ../src/01_metric_lookup.hql'

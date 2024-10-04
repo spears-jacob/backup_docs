@@ -1,0 +1,33 @@
+select
+visit__visit_id,
+message__timestamp,
+message__name,
+message__sequence_number,
+visit__device__device_type,
+visit__device__model,
+visit__device__operating_system,
+visit__device__uuid,
+application__api__service_result,
+application__api__response_text,
+application__api__response_time_ms,
+application__api__host,
+application__api__path,
+application__api__api_name,
+application__api__api_category,
+application__api__http_verb,
+application__api__api_cached,
+application__api__query_parameters,
+application__api__trace_id,
+application__error__error_type,
+application__error__error_code,
+application__error__error_message,
+application__error__error_extras,
+state__content__stream__cdn,
+state__content__stream__content_uri,
+state__content__stream__playback_type,
+state__content__stream__streaming_format,
+state__content__identifiers__tms_program_id,
+state__content__identifiers__tms_guide_id
+from prod.venona_events
+where partition_date_hour_utc >= '2017-05-10_12' 
+and visit__device__uuid = '8d1f8a6e05265d90'

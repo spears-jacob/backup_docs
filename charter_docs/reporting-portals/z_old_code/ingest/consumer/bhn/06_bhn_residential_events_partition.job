@@ -1,0 +1,6 @@
+# BHN Residential partition population azkaban job
+type=command
+dependencies=05_bhn_residential_events
+command=whoami
+
+command.1=hive -f src/bhn_residential_events_partition.hql

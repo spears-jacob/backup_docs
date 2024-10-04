@@ -1,0 +1,6 @@
+# asp counts my spectrum prod daily - page and modal views by name
+dependencies=00_parameter_init
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../src/01d_asp_adobe_app_new_visitor_counts.hql'

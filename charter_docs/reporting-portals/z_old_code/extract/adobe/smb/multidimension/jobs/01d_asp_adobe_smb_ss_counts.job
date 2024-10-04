@@ -1,0 +1,14 @@
+# asp adobe smb support_section (ss) counts hourly
+dependencies=00_parameter_init
+type=command
+command=whoami
+
+command.1=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../src/01d_asp_adobe_smb_ss_referring_domain_counts.hql'
+
+command.2=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../src/01d_asp_adobe_smb_ss_referring_section_counts.hql'
+
+command.3=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../src/01d_asp_adobe_smb_ss_support_articles_auth_counts.hql'
+
+command.4=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../src/01d_asp_adobe_smb_ss_support_articles_unauth_counts.hql'
+
+command.5=/bin/bash -c 'export START_DATE_TZ="${START_DATE_TZ}"; echo $START_DATE_TZ; export END_DATE_TZ="${END_DATE_TZ}"; echo $END_DATE_TZ;  hive -f ../src/01d_asp_adobe_smb_ss_avg_support_pageview_per_visit.hql'

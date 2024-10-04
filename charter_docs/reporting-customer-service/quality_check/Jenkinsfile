@@ -1,0 +1,16 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line, this is the magical library that does the, uh, 'magic'
+PIDeliveryPipeline {
+    azkabanProjectName = "cs_quality_check" // required, Azkaban project name. Jenkins build will prepend "${platform}_" before in prod/dev
+                                     // and append "_${branch}" after in dev Azkaban.
+    azkabanEnv = 'prod'              // optional, default to dev
+    azkabanProjectDesc = "This project contains QC job(s) for ensuring that Customer Service data exist and are accurate." // required
+    azkabanProjectOwner = 'Chris Longfield-Smith'    // required, put your AD login here
+    azkabanPlatform = 'ASP'        // required, one of ['ASP', 'Authentication', 'Core', 'DAI', 'DynExp', 'HSD', 'Mobile',
+                                    //          'MVNO', 'ODN', 'Platform Ops', 'SGR', 'SpecGuide', 'Venona', 'VOD', 'Voice', 'WiFi']
+    azkabanEscalation = 'Marjorie Truitt'  // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Michael Baldino', 'Nate Vogel']
+    azkabanSLA = 'Optional - Next Day' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun = [] // optional, leave out or empty([]) if you do not want to kick off specified flow as a test
+    azkabanProdFlowSchedule = [flowName:'daily_cs_qc', cronExpression: '0 0 15 ? * * *']
+    gitDir = 'quality_check'  // required, the sub dir where your project dir is
+}

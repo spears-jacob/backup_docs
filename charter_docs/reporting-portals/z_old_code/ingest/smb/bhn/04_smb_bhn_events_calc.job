@@ -1,0 +1,7 @@
+# SB.NET BHN Events Denormalization and Calculation azkaban job
+type=command
+dependencies=03_smb_bhn_events_init
+command=whoami
+
+command.1=pig -f -useHCatalog src/sbnet_bhn_denormalize.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}
+command.2=pig -f -useHCatalog src/sbnet_bhn_calc.pig -param TMP_db=${TMP_db} -param LKP_db=${LKP_db} -param ENV=${ENVIRONMENT}

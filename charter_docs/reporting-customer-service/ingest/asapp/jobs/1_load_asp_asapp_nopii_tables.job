@@ -1,0 +1,5 @@
+#database_initial_load job
+type=command
+
+dependencies=0_msck_nifi_asp_asapp_tables
+command=/bin/bash -c ' export DB_NIFI="${DB_NIFI}"; echo $DB_NIFI; export DB_TEMP="${DB_TEMP}"; echo $DB_TEMP; hive -f ../src/1_insert_asp_asapp_nopii_tables.hql'

@@ -1,0 +1,60 @@
+.login_data_variables: &login_data_variables
+  JOB_NAME: "outgoing-login-data"
+  LOGIN_DATA_DIR: "outgoing/login-data"
+  ARTIFACTS_DIR: "outgoing/login-data/artifacts"
+  TERRAFORM_DIR: "outgoing/login-data/terraform"
+  SCRIPTS_DIR: "outgoing/login-data/scripts"
+  S3_ARTIFACTS_DIR: "outgoing/login-data"
+
+login_data_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$LOGIN_DATA_DIR/ddl"
+    HQL_DIR: "$LOGIN_DATA_DIR/hql"
+    <<: *login_data_variables
+
+#stg
+login_data_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *login_data_variables
+  dependencies:
+    - login_data_build
+
+login_data_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *login_data_variables
+  dependencies:
+    - login_data_build
+    - login_data_plan_stg
+
+login_data_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *login_data_variables
+  dependencies:
+    - login_data_build
+
+#PROD
+login_data_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *login_data_variables
+  dependencies:
+    - login_data_build
+
+login_data_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *login_data_variables
+  dependencies:
+    - login_data_build
+    - login_data_plan_prod
+
+login_data_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *login_data_variables
+  dependencies:
+    - login_data_build

@@ -1,0 +1,7 @@
+# SB.NET TWC Events partition population azkaban job
+type=command
+dependencies=sbnet_twc_events
+command=whoami
+
+command.1=hive -f src/sbnet_twc_events_partition.hql
+command.2=hive -f src/sbnet_twc_truncate.hql

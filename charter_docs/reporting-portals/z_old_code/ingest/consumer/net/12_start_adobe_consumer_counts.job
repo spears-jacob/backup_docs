@@ -1,0 +1,7 @@
+# Groovy
+type=Groovy
+dependencies=11_net_views_aggregate
+
+groovy.command.1=println 'This job starts the Portals Adobe Consumer Counts extracts'
+groovy.command.2=import azkaban.executor.*
+groovy.command.3=azkaban.execute("asp_extract_adobe_consumer_counts", "asp_extract_adobe_consumer_counts_end")

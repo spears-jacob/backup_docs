@@ -1,0 +1,62 @@
+.d_etos_collateral_variables: &d_etos_collateral_variables
+  JOB_NAME: "d-etos-collateral"
+  D_ETOS_COLLATERAL_DIR: "si-jobs/daily-etos-collateral"
+  ARTIFACTS_DIR: "si-jobs/daily-etos-collateral/artifacts"
+  TERRAFORM_DIR: "si-jobs/daily-etos-collateral/terraform"
+  SCRIPTS_DIR: "si-jobs/daily-etos-collateral/scripts"
+  S3_ARTIFACTS_DIR: "si-jobs/daily-etos-collateral"
+
+d_etos_collateral_build:
+  extends: .build
+  variables:
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    DDL_DIR: "$D_ETOS_COLLATERAL_DIR/ddl"
+    HQL_DIR: "$D_ETOS_COLLATERAL_DIR/hql"
+    <<: *d_etos_collateral_variables
+
+#STG
+d_etos_collateral_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *d_etos_collateral_variables
+  dependencies:
+    - d_etos_collateral_build
+
+d_etos_collateral_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *d_etos_collateral_variables
+  dependencies:
+    - d_etos_collateral_build
+    - d_etos_collateral_plan_stg
+
+d_etos_collateral_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *d_etos_collateral_variables
+  dependencies:
+    - d_etos_collateral_build
+
+#PROD
+d_etos_collateral_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *d_etos_collateral_variables
+  dependencies:
+    - d_etos_collateral_build
+
+d_etos_collateraldeploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *d_etos_collateral_variables
+  dependencies:
+    - d_etos_collateral_build
+    - d_etos_collateral_plan_prod
+
+d_etos_collateral_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *d_etos_collateral_variables
+  dependencies:
+    - d_etos_collateral_build

@@ -1,0 +1,21 @@
+# Triggering Plume NiFi Flow
+
+type=triggerFlowJob
+
+# Specify Dependency job(s), if any
+dependencies=02_asapp_visitid_data_feed
+
+# Flow you want to trigger. specify the final job of the flow
+flowName=asp_extract_asapp_visitid_data_daily_ftp_end
+# Azkaban project you want to trigger
+projectName=asapp_visitid_data_ftp
+# To have your job poll the status of the other job
+waitForCompletion=true
+
+# Parameters being passed to triggering flow (in this case nifi flow)
+requestParameter.ENVIRONMENT=${ENVIRONMENT}
+requestParameter.RUN_DATE=${RUN_DATE}
+requestParameter.env.VAR01=${env.VAR01}
+
+# change to open_azkaban for testing
+azkaban.instance.name=secure_azkaban

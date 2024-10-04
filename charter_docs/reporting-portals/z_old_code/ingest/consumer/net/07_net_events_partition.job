@@ -1,0 +1,7 @@
+# .NET Events partition population azkaban job
+type=command
+
+dependencies=06_net_events_cleanup
+
+command=whoami
+command.1=hive -f src/net_events_load_partition.hql

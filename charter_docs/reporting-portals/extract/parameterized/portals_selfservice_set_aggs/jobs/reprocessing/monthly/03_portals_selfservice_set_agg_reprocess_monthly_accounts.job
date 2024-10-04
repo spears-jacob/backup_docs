@@ -1,0 +1,6 @@
+#  Azkaban job
+type=command
+dependencies=01_param_init_rm,02a_portals_selfservice_set_agg_reprocess_monthly_tableset
+command=whoami
+
+command.1=/bin/bash -c 'export execid=${azkaban.flow.execid}; export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE;  export label_date_denver="${LABEL_DATE_DENVER}"; echo $label_date_denver; export grain="${GRAIN}"; echo $grain; export FLOW_BACKFILL="${FLOW_BACKFILL}"; echo $FLOW_BACKFILL; export ProcessTimestamp="${ProcessTimestamp}"; echo $ProcessTimestamp; export ProcessUser="${azkaban.flow.submituser}"; echo $ProcessUser;  hive -f ../../../src/portals_selfservice_set_agg_accounts.hql '

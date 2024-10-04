@@ -1,0 +1,7 @@
+# database init azkaban job
+type=command
+command=whoami
+
+command.1=bash -c "export dbprefix_event_lkp=${dbprefix_event_lkp};export dbprefix_browser=${dbprefix_browser}; export dbprefix_country=${dbprefix_country}; export dbprefix_connection_type=${dbprefix_connection_type}; export dbprefix_os=${dbprefix_os}; export dbprefix_resolution=${dbprefix_resolution}; export dbprefix_search_engine=${dbprefix_search_engine}; export dbprefix_javascript=${dbprefix_javascript}; export dbprefix_language=${dbprefix_language}; hive -f ../init/lkp_tables_init.hql"
+command.2=bash -c "export export dbprefix_events=${dbprefix_events}; export dbprefix_raw_history=${dbprefix_raw_history}; hive -f ../init/tables_init.hql"
+command.3=bash -c "export dbprefix_raw=${dbprefix_raw}; export dbprefix_denorm=${dbprefix_denorm}; export dbprefix_calc=${dbprefix_calc}; export dbprefix_events_no_part=${dbprefix_events_no_part}; hive -f ../init/tmp_tables_init.hql"

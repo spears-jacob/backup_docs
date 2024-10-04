@@ -1,0 +1,4 @@
+type=command
+
+dependencies=initialize_tables
+command=/bin/bash -c 'export historical_load=${historical_load};/bin/bash ../bin/process_dates.sh'

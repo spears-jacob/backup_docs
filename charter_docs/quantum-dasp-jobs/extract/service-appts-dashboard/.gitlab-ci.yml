@@ -1,0 +1,69 @@
+# ---- replace the three lines below with your job name, case sensitive.--------
+# service-appts-dashboard --> your-job-neme
+# service_appts_dashboard --> your_job_name
+# SERVICE_APPTS_DASHBOARD --> YOUR_JOB_NAME
+
+# ---- if your job is in a different folder
+# find "extract" and replace it with the parent directory
+
+
+.service_appts_dashboard_variables: &service_appts_dashboard_variables
+  JOB_NAME: "service-appts-dashboard"
+  SERVICE_APPTS_DASHBOARD_DIR: "extract/service-appts-dashboard"
+  ARTIFACTS_DIR: "extract/service-appts-dashboard/artifacts"
+  TERRAFORM_DIR: "extract/service-appts-dashboard/terraform"
+  SCRIPTS_DIR: "extract/service-appts-dashboard/scripts"
+  S3_ARTIFACTS_DIR: "extract/service-appts-dashboard"
+
+service_appts_dashboard_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$SERVICE_APPTS_DASHBOARD_DIR/ddl"
+    HQL_DIR: "$SERVICE_APPTS_DASHBOARD_DIR/hql"
+    <<: *service_appts_dashboard_variables
+
+# STG
+service_appts_dashboard_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *service_appts_dashboard_variables
+  dependencies:
+    - service_appts_dashboard_build
+
+service_appts_dashboard_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *service_appts_dashboard_variables
+  dependencies:
+    - service_appts_dashboard_build
+    - service_appts_dashboard_plan_stg
+
+service_appts_dashboard_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *service_appts_dashboard_variables
+  dependencies:
+    - service_appts_dashboard_build
+
+# PROD
+service_appts_dashboard_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *service_appts_dashboard_variables
+  dependencies:
+    - service_appts_dashboard_build
+
+service_appts_dashboard_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *service_appts_dashboard_variables
+  dependencies:
+    - service_appts_dashboard_build
+    - service_appts_dashboard_plan_prod
+
+service_appts_dashboard_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *service_appts_dashboard_variables
+  dependencies:
+    - service_appts_dashboard_build

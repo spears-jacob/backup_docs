@@ -1,0 +1,18 @@
+# TWC Residential Global Events Lookup Table Load azkaban job
+type=command
+dependencies=azkaban-ftp
+
+command=whoami
+
+command.1=hive -f src/lookup_truncate.hql
+command.2=/bin/sh -c "tar -zxvf ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/*lookup*.tar.gz -C ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/"
+command.3=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/event.tsv /apps/hive/warehouse/${LKP_db}.db/twc_residential_global_event/"
+command.4=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/browser.tsv /apps/hive/warehouse/${LKP_db}.db/twc_residential_global_browser/"
+command.5=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/country.tsv /apps/hive/warehouse/${LKP_db}.db/twc_residential_global_country/"
+command.6=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/connection_type.tsv /apps/hive/warehouse/${LKP_db}.db/twc_residential_global_connection_type/"
+command.7=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/javascript_version.tsv /apps/hive/warehouse/${LKP_db}.db/twc_residential_global_javascript/"
+command.8=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/languages.tsv /apps/hive/warehouse/${LKP_db}.db/twc_residential_global_language/"
+command.9=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/operating_systems.tsv /apps/hive/warehouse/${LKP_db}.db/twc_residential_global_os/"
+command.10=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/resolution.tsv /apps/hive/warehouse/${LKP_db}.db/twc_residential_global_resolution/"
+command.11=/bin/sh -c "hadoop fs -copyFromLocal -f ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/search_engines.tsv /apps/hive/warehouse/${LKP_db}.db/twc_residential_global_search_engine/"
+command.12=/bin/sh -c "rm -rf ${data_sources_path}/twc_residential_global_adobe/${ENVIRONMENT}/*lookup*tar.gz"

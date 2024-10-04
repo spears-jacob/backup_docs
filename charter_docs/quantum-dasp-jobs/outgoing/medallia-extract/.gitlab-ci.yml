@@ -1,0 +1,61 @@
+.medallia_extract_variables: &medallia_extract_variables
+  JOB_NAME: "d-medallia-extract"
+  MEDALLIA_EXTRACT: "outgoing/medallia-extract"
+  ARTIFACTS_DIR: "outgoing/medallia-extract/artifacts"
+  TERRAFORM_DIR: "outgoing/medallia-extract/terraform"
+  SCRIPTS_DIR: "outgoing/medallia-extract/scripts"
+  S3_ARTIFACTS_DIR: "outgoing/medallia-extract"
+
+medallia_extract_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$MEDALLIA_EXTRACT/ddl"
+    HQL_DIR: "$MEDALLIA_EXTRACT/hql"
+    <<: *medallia_extract_variables
+
+#STG
+medallia_extract_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *medallia_extract_variables
+  dependencies:
+    - medallia_extract_build
+
+medallia_extract_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *medallia_extract_variables
+  dependencies:
+    - medallia_extract_build
+    - medallia_extract_plan_stg
+
+medallia_extract_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *medallia_extract_variables
+  dependencies:
+    - medallia_extract_build
+
+
+#PROD
+medallia_extract_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *medallia_extract_variables
+  dependencies:
+    - medallia_extract_build
+
+medallia_extract_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *medallia_extract_variables
+  dependencies:
+    - medallia_extract_build
+    - medallia_extract_plan_prod
+
+medallia_extract_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *medallia_extract_variables
+  dependencies:
+    - medallia_extract_build

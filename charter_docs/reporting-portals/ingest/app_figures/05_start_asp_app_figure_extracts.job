@@ -1,0 +1,7 @@
+# Groovy
+type=Groovy
+dependencies=04_appfigures_cleanup
+
+groovy.command.1=println 'This job starts the daily Portals appfigures extracts)'
+groovy.command.2=import azkaban.executor.*
+groovy.command.3=if ( '${ENVIRONMENT}' == 'prod' ) { println 'Starting app figures extracts in production.';  azkaban.execute("asp_extract_app_figures_ratings_daily", "asp_extract_app_figures_ratings_daily_end") } else { println ' -> process has ended. <-' }

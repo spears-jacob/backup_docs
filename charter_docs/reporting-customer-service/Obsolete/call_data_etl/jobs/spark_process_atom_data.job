@@ -1,0 +1,4 @@
+type=command
+
+dependencies=process_init
+command=/bin/bash -c 'export atom_process_buffer_days=${atom_process_buffer_days};/bin/bash ../bin/process_atom_data.sh'

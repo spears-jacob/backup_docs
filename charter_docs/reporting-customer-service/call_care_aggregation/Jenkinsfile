@@ -1,0 +1,16 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line, this is the magical library that does the, uh, 'magic'
+PIDeliveryPipeline {
+    azkabanProjectName = "call_care_aggregation" // required, Azkaban project name. Jenkins build will prepend "${platform}_" before in prod/dev
+                                     // and append "_${branch}" after in dev Azkaban.
+    azkabanEnv = 'prod'              // optional, default to dev
+    azkabanProjectDesc = "This project creates agg table and analysis view for disposition analysis based on call care data." // required
+    azkabanProjectOwner = 'Amanda Ramsay'    // required, put your AD login here
+    azkabanPlatform = 'ASP'        // required, one of ['ASP', 'Authentication', 'Core', 'DAI', 'DynExp', 'HSD', 'Mobile',
+                                    //          'MVNO', 'ODN', 'Platform Ops', 'SGR', 'SpecGuide', 'Venona', 'VOD', 'Voice', 'WiFi']
+    azkabanEscalation = 'Marjorie Truitt'  // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Michael Baldino', 'Nate Vogel']
+    azkabanSLA = 'Optional - Next Day' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun = [] // optional, leave out or empty([]) if you do not want to kick off specified flow as a test
+    azkabanProdFlowSchedule = [flowName:'update_call_care_data_agg', cronExpression: '0 0 2 ? * * *']
+    gitDir = 'call_care_aggregation'  // required, the sub dir where your project dir is
+}

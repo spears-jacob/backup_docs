@@ -1,0 +1,60 @@
+.m_summary_agg_variables: &m_summary_agg_variables
+  JOB_NAME: "m-summary-agg"
+  M_SUMMARY_AGG_DIR: "si-jobs/monthly-summary-agg"
+  ARTIFACTS_DIR: "si-jobs/monthly-summary-agg/artifacts"
+  TERRAFORM_DIR: "si-jobs/monthly-summary-agg/terraform"
+  SCRIPTS_DIR: "si-jobs/monthly-summary-agg/scripts"
+  S3_ARTIFACTS_DIR: "si-jobs/monthly-summary-agg"
+
+m_summary_agg_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$M_SUMMARY_AGG_DIR/ddl"
+    HQL_DIR: "$M_SUMMARY_AGG_DIR/hql"
+    <<: *m_summary_agg_variables
+
+#STG
+m_summary_agg_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *m_summary_agg_variables
+  dependencies:
+    - m_summary_agg_build
+
+m_summary_agg_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *m_summary_agg_variables
+  dependencies:
+    - m_summary_agg_build
+    - m_summary_agg_plan_stg
+
+m_summary_agg_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *m_summary_agg_variables
+  dependencies:
+    - m_summary_agg_build
+
+#PROD
+m_summary_agg_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *m_summary_agg_variables
+  dependencies:
+    - m_summary_agg_build
+
+m_summary_agg_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *m_summary_agg_variables
+  dependencies:
+    - m_summary_agg_build
+    - m_summary_agg_plan_prod
+
+m_summary_agg_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *m_summary_agg_variables
+  dependencies:
+    - m_summary_agg_build

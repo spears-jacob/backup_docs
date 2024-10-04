@@ -1,0 +1,60 @@
+.d_report_data_variables: &d_report_data_variables
+  JOB_NAME: "d-report-data"
+  D_REPORT_DATA_DIR: "portals-events/daily-report-data"
+  ARTIFACTS_DIR: "portals-events/daily-report-data/artifacts"
+  TERRAFORM_DIR: "portals-events/daily-report-data/terraform"
+  SCRIPTS_DIR: "portals-events/daily-report-data/scripts"
+  S3_ARTIFACTS_DIR: "portals-events/daily-report-data"
+
+d_report_data_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$D_REPORT_DATA_DIR/ddl"
+    HQL_DIR: "$D_REPORT_DATA_DIR/hql"
+    <<: *d_report_data_variables
+
+#STG
+d_report_data_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *d_report_data_variables
+  dependencies:
+    - d_report_data_build
+
+d_report_data_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *d_report_data_variables
+  dependencies:
+    - d_report_data_build
+    - d_report_data_plan_stg
+
+d_report_data_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *d_report_data_variables
+  dependencies:
+    - d_report_data_build
+
+#PROD
+d_report_data_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *d_report_data_variables
+  dependencies:
+    - d_report_data_build
+
+d_report_data_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *d_report_data_variables
+  dependencies:
+    - d_report_data_build
+    - d_report_data_plan_prod
+
+d_report_data_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *d_report_data_variables
+  dependencies:
+    - d_report_data_build

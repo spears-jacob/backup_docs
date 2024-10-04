@@ -1,0 +1,64 @@
+.sent_msgs_variables: &sent_msgs_variables
+  JOB_NAME: "ingest-sent-msgs"
+  JOBS_DIR: "ingest/sent-msgs"
+  ARTIFACTS_DIR: "${JOBS_DIR}/artifacts"
+  TERRAFORM_DIR: "${JOBS_DIR}/terraform"
+  SCRIPTS_DIR: "${JOBS_DIR}/scripts"
+  S3_ARTIFACTS_DIR: "${JOBS_DIR}"
+
+sent_msgs_build:
+  extends: .build
+  variables:
+    DDL_DIR: "${JOBS_DIR}/ddl"
+    HQL_DIR: "${JOBS_DIR}/hql"
+    CI_UTILS_SCRIPTS: >
+      spark/pyspark-utils.sh
+      spark/spark_sql3.py
+    <<: *sent_msgs_variables
+
+#STG
+sent_msgs_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *sent_msgs_variables
+  dependencies:
+    - sent_msgs_build
+
+sent_msgs_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *sent_msgs_variables
+  dependencies:
+    - sent_msgs_build
+    - sent_msgs_plan_stg
+
+sent_msgs_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *sent_msgs_variables
+  dependencies:
+    - sent_msgs_build
+
+
+#PROD
+sent_msgs_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *sent_msgs_variables
+  dependencies:
+    - sent_msgs_build
+
+sent_msgs_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *sent_msgs_variables
+  dependencies:
+    - sent_msgs_build
+    - sent_msgs_plan_prod
+
+sent_msgs_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *sent_msgs_variables
+  dependencies:
+    - sent_msgs_build

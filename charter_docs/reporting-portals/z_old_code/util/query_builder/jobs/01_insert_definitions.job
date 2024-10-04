@@ -1,0 +1,4 @@
+# insert definitions job
+type=command
+command=whoami
+command.1=/bin/bash -c "hive -f ../src/insert_definitions.hql"

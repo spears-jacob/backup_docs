@@ -1,0 +1,6 @@
+# SB.NET Events partition population azkaban job
+type=command
+dependencies=twc_residential_global_events
+command=whoami
+
+command.1=hive -e "set hive.execution.engine=mr; INSERT INTO TABLE ${ENVIRONMENT}.twc_residential_global_events PARTITION(partition_date_utc, partition_date_hour_utc) SELECT *, ${ENVIRONMENT}.epoch_converter(cast(message__timestamp*1000 as bigint),'UTC') as partition_date_utc, ${ENVIRONMENT}.epoch_datehour(cast(message__timestamp*1000 as bigint),'UTC') as partition_date_hour_utc FROM ${env:TMP_db}.twc_residential_global_events_no_part;"

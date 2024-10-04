@@ -1,0 +1,9 @@
+# BHN Bill Pay Events Init azkaban job
+type=command
+dependencies=02_bhn_bill_pay_lookup_load
+
+command=whoami
+
+command.1=hive -f src/bhn_bill_pay_truncate.hql
+command.2=hive -f nifi/load_raw_from_nifi.hql
+command.3=hive -f src/bhn_bill_pay_raw_history.hql

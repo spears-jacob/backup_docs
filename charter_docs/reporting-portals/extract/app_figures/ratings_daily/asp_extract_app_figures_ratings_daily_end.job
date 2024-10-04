@@ -1,0 +1,5 @@
+# app figures daily rating end Azkaban job
+type=noop
+dependencies=03_start_daily_operational
+
+### PLEASE KEEP THIS JOB AT THE END OF THE FLOW

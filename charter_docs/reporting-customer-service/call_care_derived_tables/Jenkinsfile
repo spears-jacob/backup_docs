@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _
+PIDeliveryPipeline {
+    azkabanProjectName = "cs_call_care_derived_tables"
+    azkabanEnv = 'prod'
+    azkabanProjectDesc = "This project contains the ETL code create the calls_with_prior_visits and the call_in_rate tables"
+    azkabanProjectOwner = 'Amanda Ramsay'
+    azkabanPlatform = 'ASP'
+    azkabanEscalation = 'Marjorie Truitt'
+    azkabanSLA = 'Important - Within 12 hrs'
+    azkabanFlowRun = []
+    azkabanProdFlowSchedule = [flowName:'cs_call_care_derived_tables', cronExpression: '0 30 21 ? * * *']
+    gitDir = 'call_care_derived_tables'
+}

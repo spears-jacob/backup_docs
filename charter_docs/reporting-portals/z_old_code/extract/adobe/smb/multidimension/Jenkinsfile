@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _    // don't miss the '_' at the end of the line, this is the magical library that does the, uh, 'magic'
+PIDeliveryPipeline {
+    azkabanProjectName = "asp_extract_adobe_smb_multidimension" // required
+    azkabanEnv = 'dev' // optional, default to dev
+    azkabanProjectDesc = "Comprehensive code base for preparing counts from the Adobe SMB data source that include one or more dimensions, such as page name, OS, app store, and so forth" // required
+    azkabanProjectOwner = 'eeasterly' // required, put your AD login here
+    azkabanPlatform = 'ASP'  // required
+    azkabanEscalation = 'Andrew Ngeow' // required, one of ['Andrew Ngeow', 'Yong Liu', 'Ty Prinkki', 'Marjorie Truitt', 'Micheal Baldino', 'Nate Vogel']
+    azkabanSLA = 'Critical - Immediate Response' // required, one of ['Optional - Next Day', 'Important - Within 12 hrs', 'Critical - Immediate Response']
+    azkabanFlowRun=[] // not implemented, could have loop here too
+    azkabanProdFlowSchedule=[flowName:'asp_extract_adobe_smb_multidimension_end', cronExpression:'0 19 13 ? * *']
+    gitDir='extract/adobe/smb/multidimension'  // the sub dir where your project dir is
+}

@@ -1,0 +1,14 @@
+#!/usr/bin/env groovy
+@Library('jenkins-util') _
+PIDeliveryPipeline {
+    azkabanProjectName = "cs_pageview_call_in_rate"
+    azkabanEnv = 'prod'
+    azkabanProjectDesc = "This project contains the ETL code to aggregate CID, CMP, and buttonclick details"
+    azkabanProjectOwner = 'Nate Blessing'
+    azkabanPlatform = 'ASP'
+    azkabanEscalation = 'Marjorie Truitt'
+    azkabanSLA = 'Important - Within 12 hrs'
+    azkabanFlowRun = []
+    azkabanProdFlowSchedule = [flowName:'pageview_call_in_rate', cronExpression: '0 12 ? * *']
+    gitDir = 'page_view_aggregates/pageview_call_in_rate'
+}

@@ -1,0 +1,2 @@
+type=command
+command=/bin/bash bin/appfigure_init.sh

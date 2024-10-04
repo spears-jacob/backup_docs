@@ -1,0 +1,16 @@
+{
+  "host": "ftp2.omniture.com",
+  "username": "twc_residential",
+  "password": "jMPmNkar",
+  "ftp_directory": "/webmail_metrics",
+  "filemask": "*webmail*.csv",
+  "local_directory":"/data/data_sources/net_webmail_twc_bhn/prod/",
+  "display": "PROD_webmail_twc_bhn",
+  "user": "twc_residential",
+  "curl": "/prod_webmail_twc_bhn",
+  "protocol": "sftp",
+  "processed_filemask": "",
+  "mode": "delete",
+  "ftp_archive_directory": "",
+  "removal_filemask": ""
+}

@@ -1,0 +1,8 @@
+# net_monthly_agg_totals job
+type=command
+dependencies=04_net_agg_totals
+command=whoami
+command.1=/bin/bash -c 'export CADENCE=${CADENCE}; echo $CADENCE; hive -f ../src/05_net_agg_calc_truncate.hql'
+
+# prepares parameters for subsequent job
+command.2=/bin/bash ../bin/working_dates.sh \"${TZ}\" ${IsCurrent1_Prior2_Reprocess3_ToBeProcessed} ${Cadence_CalendarMonth1_FiscalMonth2_Daily3} ${ReprocessingStartDate} ${ReprocessingEndDate}

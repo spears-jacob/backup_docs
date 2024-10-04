@@ -1,0 +1,36 @@
+# NET Events Lookup Table Load azkaban job
+type=command
+
+dependencies=01_azkaban-ftp
+
+command=whoami
+command.1=hive -f src/lookup_truncate.hql
+command.2=/bin/sh -c "tar -zxvf ${data_sources_path}/net_events/*lookup*.tar.gz -C ${data_sources_path}/net_events/"
+command.3=hadoop fs -rm -r /apps/hive/warehouse/${LKP_db}.db/net_event/
+command.4=hadoop fs -mkdir /apps/hive/warehouse/${LKP_db}.db/net_event/
+command.5=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_events/event.tsv /apps/hive/warehouse/${LKP_db}.db/net_event/"
+command.6=hadoop fs -rm -r /apps/hive/warehouse/${LKP_db}.db/net_browser/
+command.7=hadoop fs -mkdir /apps/hive/warehouse/${LKP_db}.db/net_browser/
+command.8=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_events/browser.tsv /apps/hive/warehouse/${LKP_db}.db/net_browser/"
+command.9=hadoop fs -rm -r /apps/hive/warehouse/${LKP_db}.db/net_country/
+command.10=hadoop fs -mkdir /apps/hive/warehouse/${LKP_db}.db/net_country/
+command.11=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_events/country.tsv /apps/hive/warehouse/${LKP_db}.db/net_country/"
+command.12=hadoop fs -rm -r /apps/hive/warehouse/${LKP_db}.db/net_connection_type/
+command.13=hadoop fs -mkdir /apps/hive/warehouse/${LKP_db}.db/net_connection_type/
+command.14=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_events/connection_type.tsv /apps/hive/warehouse/${LKP_db}.db/net_connection_type/"
+command.15=hadoop fs -rm -r /apps/hive/warehouse/${LKP_db}.db/net_javascript/
+command.16=hadoop fs -mkdir /apps/hive/warehouse/${LKP_db}.db/net_javascript/
+command.17=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_events/javascript_version.tsv /apps/hive/warehouse/${LKP_db}.db/net_javascript/"
+command.18=hadoop fs -rm -r /apps/hive/warehouse/${LKP_db}.db/net_language/
+command.19=hadoop fs -mkdir /apps/hive/warehouse/${LKP_db}.db/net_language/
+command.20=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_events/languages.tsv /apps/hive/warehouse/${LKP_db}.db/net_language/"
+command.21=hadoop fs -rm -r /apps/hive/warehouse/${LKP_db}.db/net_os/
+command.22=hadoop fs -mkdir /apps/hive/warehouse/${LKP_db}.db/net_os/
+command.23=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_events/operating_systems.tsv /apps/hive/warehouse/${LKP_db}.db/net_os/"
+command.24=hadoop fs -rm -r /apps/hive/warehouse/${LKP_db}.db/net_resolution/
+command.25=hadoop fs -mkdir /apps/hive/warehouse/${LKP_db}.db/net_resolution/
+command.26=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_events/resolution.tsv /apps/hive/warehouse/${LKP_db}.db/net_resolution/"
+command.27=hadoop fs -rm -r /apps/hive/warehouse/${LKP_db}.db/net_search_engine/
+command.28=hadoop fs -mkdir /apps/hive/warehouse/${LKP_db}.db/net_search_engine/
+command.29=/bin/sh -c "hadoop fs -copyFromLocal ${data_sources_path}/net_events/search_engines.tsv /apps/hive/warehouse/${LKP_db}.db/net_search_engine/"
+command.30=/bin/sh -c "rm -rf ${data_sources_path}/net_events/*lookup*tar.gz"

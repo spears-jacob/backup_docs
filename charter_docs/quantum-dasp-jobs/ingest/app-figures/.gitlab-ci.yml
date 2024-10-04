@@ -1,0 +1,59 @@
+.app_figures_variables: &app_figures_variables
+  JOB_NAME: "ingest-app-figures"
+  APP_FIGURES_DIR: "ingest/app-figures"
+  ARTIFACTS_DIR: "ingest/app-figures/artifacts"
+  TERRAFORM_DIR: "ingest/app-figures/terraform"
+  SCRIPTS_DIR: "ingest/app-figures/scripts"
+  S3_ARTIFACTS_DIR: "ingest/app-figures"
+
+app_figures_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$APP_FIGURES_DIR/ddl"
+    HQL_DIR: "$APP_FIGURES_DIR/hql"
+    <<: *app_figures_variables
+
+#STG
+app_figures_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *app_figures_variables
+  dependencies:
+    - app_figures_build
+
+app_figures_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *app_figures_variables
+  dependencies:
+    - app_figures_build
+    - app_figures_plan_stg
+
+app_figures_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *app_figures_variables
+  dependencies:
+    - app_figures_build
+#PROD
+app_figures_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *app_figures_variables
+  dependencies:
+    - app_figures_build
+
+app_figures_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *app_figures_variables
+  dependencies:
+    - app_figures_build
+    - app_figures_plan_prod
+
+app_figures_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *app_figures_variables
+  dependencies:
+    - app_figures_build

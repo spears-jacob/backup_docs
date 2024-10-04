@@ -1,0 +1,4 @@
+type=command
+
+dependencies=02_parameter_init
+command=/bin/bash -c 'export START_DATE="${START_DATE}"; echo $START_DATE; export END_DATE="${END_DATE}"; echo $END_DATE; export historical_load="${historical_load}"; echo $historical_load;/bin/bash ../bin/run_type.sh'

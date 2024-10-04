@@ -1,0 +1,62 @@
+.d_digital_adoption_monitor_variables: &d_digital_adoption_monitor_variables
+  JOB_NAME: "monitor-digital-adoption-monitor"
+  d_digital_adoption_monitor_DIR: "monitor/digital-adoption-monitor"
+  ARTIFACTS_DIR: "monitor/digital-adoption-monitor/artifacts"
+  TERRAFORM_DIR: "monitor/digital-adoption-monitor/terraform"
+  SCRIPTS_DIR: "monitor/digital-adoption-monitor/scripts"
+  S3_ARTIFACTS_DIR: "monitor/digital-adoption-monitor"
+
+d_digital_adoption_monitor_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$d_digital_adoption_monitor_DIR/ddl"
+    HQL_DIR: "$d_digital_adoption_monitor_DIR/hql"
+    POST_PROCESSING_SCRIPTS: >
+      $JOB_TEMPLATE_DIR/lambda/cmn-post-processors/pass_additional_params_as_step_arg_post_processor.py
+    <<: *d_digital_adoption_monitor_variables
+
+#STG
+d_digital_adoption_monitor_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *d_digital_adoption_monitor_variables
+  dependencies:
+    - d_digital_adoption_monitor_build
+
+d_digital_adoption_monitor_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *d_digital_adoption_monitor_variables
+  dependencies:
+    - d_digital_adoption_monitor_build
+    - d_digital_adoption_monitor_plan_stg
+
+d_digital_adoption_monitor_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *d_digital_adoption_monitor_variables
+  dependencies:
+    - d_digital_adoption_monitor_build
+
+#PROD
+d_digital_adoption_monitor_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *d_digital_adoption_monitor_variables
+  dependencies:
+    - d_digital_adoption_monitor_build
+
+d_digital_adoption_monitor_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *d_digital_adoption_monitor_variables
+  dependencies:
+    - d_digital_adoption_monitor_build
+    - d_digital_adoption_monitor_plan_prod
+
+d_digital_adoption_monitor_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *d_digital_adoption_monitor_variables
+  dependencies:
+    - d_digital_adoption_monitor_build

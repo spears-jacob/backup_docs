@@ -1,0 +1,60 @@
+.voice_of_customer_variables: &voice_of_customer_variables
+  JOB_NAME: "voice-of-customer"
+  JOB_DIR: "outgoing/voice-of-customer"
+  ARTIFACTS_DIR: "outgoing/voice-of-customer/artifacts"
+  TERRAFORM_DIR: "outgoing/voice-of-customer/terraform"
+  SCRIPTS_DIR: "outgoing/voice-of-customer/scripts"
+  S3_ARTIFACTS_DIR: "outgoing/voice-of-customer"
+
+voice_of_customer_build:
+  extends: .build
+  variables:
+    DDL_DIR: "$JOB_DIR/ddl"
+    HQL_DIR: "$JOB_DIR/hql"
+    <<: *voice_of_customer_variables
+
+#stg
+voice_of_customer_plan_stg:
+  extends: .plan_stg
+  variables:
+    <<: *voice_of_customer_variables
+  dependencies:
+    - voice_of_customer_build
+
+voice_of_customer_deploy_stg:
+  extends: .deploy_stg
+  variables:
+    <<: *voice_of_customer_variables
+  dependencies:
+    - voice_of_customer_build
+    - voice_of_customer_plan_stg
+
+voice_of_customer_destroy_stg:
+  extends: .destroy_stg
+  variables:
+    <<: *voice_of_customer_variables
+  dependencies:
+    - voice_of_customer_build
+
+#PROD
+voice_of_customer_plan_prod:
+  extends: .plan_prod
+  variables:
+    <<: *voice_of_customer_variables
+  dependencies:
+    - voice_of_customer_build
+
+voice_of_customer_deploy_prod:
+  extends: .deploy_prod
+  variables:
+    <<: *voice_of_customer_variables
+  dependencies:
+    - voice_of_customer_build
+    - voice_of_customer_plan_prod
+
+voice_of_customer_destroy_prod:
+  extends: .destroy_prod
+  variables:
+    <<: *voice_of_customer_variables
+  dependencies:
+    - voice_of_customer_build

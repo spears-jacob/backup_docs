@@ -1,0 +1,4 @@
+type=command
+
+dependencies=03_extract_quantum_event_data
+command=hive -f ../src/cid_cmp_fiscal_monthly_aggregate.hql

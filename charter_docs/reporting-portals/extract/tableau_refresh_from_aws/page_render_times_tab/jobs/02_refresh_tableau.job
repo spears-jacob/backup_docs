@@ -1,0 +1,7 @@
+#  refresh tableau
+type=command
+
+
+command=whoami
+
+command.1=/bin/bash -c "if [ ${tableau_post_load_refresh} -eq 1 ] && [ $ENVIRONMENT == 'prod' ];  then /usr/local/bin/tabcmd refreshextracts --url ${tableau_workbook} --incremental ; fi"
